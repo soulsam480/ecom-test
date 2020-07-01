@@ -10,7 +10,7 @@ collections:
     files:
       - label: "Product"
         name: "product"
-        file: "site/content/storedata.json"
+        file: "src/assets/content/storedata.json"
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Publish Date", name: "date", widget: "datetime"}
