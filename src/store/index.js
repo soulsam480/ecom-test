@@ -8,8 +8,7 @@ export default new Vuex.Store({
   state: {
     auth:false,
     productData: [],
-    user: "soulsam480",
-    githubToken: "8a34ca8ac73dc0bc631d70102b605dfd374ea494",
+ 
   },
   mutations: {
     getData(state) {
