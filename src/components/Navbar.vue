@@ -19,7 +19,7 @@
         <li><a href="">yoyo</a></li>
       </ul>
     </div>
-          <img src="../assets/logo.png" alt="" class="n-brand">
+          <img src="../assets/w-logo.png" alt="" class="n-brand">
  <div>
       <ul class="nav-desktop">
         <li><a href="">yoyo</a></li>
@@ -49,7 +49,7 @@ export default {
 <style scoped>
 
 .n-brand{
-    width: 30px;
+    width: 70px;
     display: block;
 }
 .Navbar {

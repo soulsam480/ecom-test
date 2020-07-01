@@ -14,7 +14,6 @@ export default new Vuex.Store({
     getData(state) {
       var starCountRef = firebase.database().ref("/Products");
       starCountRef.on("value", (snapshot) => {
-        console.log(snapshot.toJSON())
         state.productData = snapshot.toJSON()
       });
       

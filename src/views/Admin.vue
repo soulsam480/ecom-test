@@ -189,6 +189,7 @@ export default {
           title: this.b,
           desc: this.c,
           body: this.postBody,
+          imgUrl: this.picture,
         }).catch((error)=>{
           console.log(error)
         })

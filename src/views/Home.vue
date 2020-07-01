@@ -1,11 +1,14 @@
 <template>
   <div class="home">
+    <Slider/>
     <FeaturedProducts/>
   </div>
 </template>
 
 <script>
 import FeaturedProducts from '@/components/FeaturedProducts.vue'
+import Slider from '@/components/Slider.vue'
+
 // @ is an alias to /src
 export default {
   name: "Home",
@@ -18,7 +21,8 @@ export default {
   
   },
   components: {
-    FeaturedProducts
+    FeaturedProducts,
+    Slider
   },
 };
 </script>
