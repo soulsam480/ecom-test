@@ -5,10 +5,10 @@ media_folder: "public/img"
 public_folder: "/img"
 
 collections:
-  - name: 'blog'
-    label: 'Blog'
+  - name: 'product'
+    label: 'Product'
     format: 'json'
-    folder: 'src/assets/contents'
+    file: 'src/assets/contents'
     create: true
     slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
     editor:
