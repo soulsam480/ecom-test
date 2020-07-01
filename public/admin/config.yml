@@ -5,16 +5,15 @@ media_folder: "public/img"
 public_folder: "/img"
 
 collections:
-  - name: 'product'
-    label: 'Product'
-    format: 'json'
-    file: 'src/assets/contents'
-    create: true
-    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
-    editor:
-      preview: false
-    fields:
-      - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
-      - { label: 'Description', name: 'description', widget: 'string' }
-      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - label: "Products"
+    name: "products"
+    files:
+      - label: "Product"
+        name: "product"
+        file: "site/content/storedata.json"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Publish Date", name: "date", widget: "datetime"}
+          - {label: "Featured Image", name: "thumbnail", widget: "image"}
+          - {label: "Body", name: "body", widget: "markdown"}
+          
