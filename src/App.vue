@@ -20,8 +20,10 @@ export default {
 
 
 <style>
+
 :root {
   background-color: white;
+  
 }
 
 

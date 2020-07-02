@@ -2,7 +2,7 @@
   <div class="featuredProducts">
     <div class="row">
       <div
-        class="col-sm-2"
+        class="col-6 col-md-2"
         style="padding:10px;"
         v-for="item in getProducts"
         :key="item.id"

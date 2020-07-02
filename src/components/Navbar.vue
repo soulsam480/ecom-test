@@ -14,16 +14,16 @@
     <div>
       <ul class="nav-desktop" style="padding-inline-start:0 !important;">
         <li>
-          <a href>yoyo</a>
+          <a href>Home</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>Men</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>Women</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>Accessories</a>
         </li>
       </ul>
     </div>
@@ -33,10 +33,10 @@
     <div>
       <ul class="nav-desktop">
         <li>
-          <a href>yoyo</a>
+          <a href>Login</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>No</a>
         </li>
         <li>
           <a href>yoyo</a>
