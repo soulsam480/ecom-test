@@ -1,10 +1,10 @@
 <template>
-  <div class="featuredProducts">
+  <div class="women container-fluid">
     <div class="row">
       <div
         class="col-6 col-md-2"
         style="padding:10px;"
-        v-for="item in getProducts"
+        v-for="item in women"
         :key="item.id"
       >
         <router-link :to="{ path: '/product/' + item.id }">
@@ -30,12 +30,9 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "FeaturedProducts",
-  data: function() {
-    return {};
-  },
+  name: "Women",
   computed: {
-    ...mapGetters(["getProducts"]),
+    ...mapGetters(["women"]),
   },
   methods: {},
   created() {},
@@ -43,10 +40,9 @@ export default {
 </script>
 
 <style scoped>
-a{
+a {
   color: unset !important;
   text-decoration: none !important;
-
 }
 button:focus {
   outline: none;

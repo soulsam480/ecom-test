@@ -1,26 +1,26 @@
 <template>
-  <div class="Navbar">
+  <div class="Navbar sticky-top">
     <a @click="changeNav()" class="hamburger menu-btn" id="nav-tog">
       <span></span>
     </a>
     <div class="main-menu-wrap" id="mnav-wrap">
-      <div class="main-menu">
-        <a href>ypyo</a>
-        <a href>ypyo</a>
-        <a href>ypyo</a>
+      <div class="main-menu" >
+        <router-link to="/">Home</router-link>
+        <router-link to="/men">Men</router-link>
+        <router-link to="/women">Women</router-link>
         <a href>ypyo</a>
       </div>
     </div>
     <div>
       <ul class="nav-desktop" style="padding-inline-start:0 !important;">
         <li>
-          <a href>Home</a>
+          <router-link to="/">Home</router-link>
         </li>
         <li>
-          <a href>Men</a>
+          <router-link to="/men">Men</router-link>
         </li>
         <li>
-          <a href>Women</a>
+          <router-link to="/women">Women</router-link>
         </li>
         <li>
           <a href>Accessories</a>
@@ -36,13 +36,13 @@
           <a href>Login</a>
         </li>
         <li>
-          <a href>No</a>
+          <a href>Search</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>Wishlist</a>
         </li>
         <li>
-          <a href>yoyo</a>
+          <a href>Cart</a>
         </li>
       </ul>
     </div>
@@ -59,8 +59,8 @@ export default {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -107,7 +107,7 @@ export default {
 .nav-desktop li:hover {
 }
 .full {
-  width: 100% !important;
+  width: 80% !important;
 }
 .hamburger {
   display: block;
@@ -236,9 +236,9 @@ export default {
   background: #ffebee;
   width: 0;
   z-index: 1;
-  height: 100%;
+  height: 100vh;
   overflow: auto;
-  margin-top: 46px;
+  margin-top: 45px;
   transition: width 0.6s cubic-bezier(0.5, 1, 0.22, 1);
   -webkit-transition: width 0.6s cubic-bezier(0.5, 1, 0.22, 1);
 }

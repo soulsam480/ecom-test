@@ -1,30 +1,25 @@
 <template>
   <div id="app">
-    <Navbar/>
-    <div  class="container-fluid">
-        <router-view/>
+    <Navbar />
+    <div>
+      <router-view />
     </div>
   </div>
 </template>
 <script>
-import Navbar from '@/components/Navbar.vue'
+import Navbar from "@/components/Navbar.vue";
 export default {
-  components:{
-    Navbar
+  components: {
+    Navbar,
   },
-  created(){
-    this.$store.dispatch('addData')
-  }
-}
+  created() {
+    this.$store.dispatch("addData");
+  },
+};
 </script>
 
-
 <style>
-
 :root {
   background-color: white;
-  
 }
-
-
 </style>

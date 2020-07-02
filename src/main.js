@@ -9,7 +9,9 @@ import "firebase/firebase-database";
 import "firebase/firebase-auth";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import VueAgile from 'vue-agile';
 
+Vue.use(VueAgile)
 Vue.config.productionTip = false;
 
 firebase.initializeApp({

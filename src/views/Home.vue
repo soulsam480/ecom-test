@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <Slider/>
-    <FeaturedProducts/>
+   <div class="container-fluid">
+      <p class="display-4 text-center">New Arrivals</p>
+      <FeaturedProducts/>
+   </div>
   </div>
 </template>
 
@@ -26,3 +29,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>
+

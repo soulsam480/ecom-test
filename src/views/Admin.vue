@@ -4,7 +4,9 @@
       <h5>
         Admin :
         <b class="text-info">{{ authId }}</b>
-        <button class="btn btn-danger float-right" @click="Logout()">Admin Logout</button>
+        <button class="btn btn-danger float-right" @click="Logout()">
+          Admin Logout
+        </button>
       </h5>
       <br />
       <h3 class="text-center">Add a Product</h3>
@@ -133,7 +135,7 @@
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
-              type="checkbox"
+              type="radio"
               id="inlineCheckbox8"
               value="Men"
               v-model="checkedCats"
@@ -143,7 +145,7 @@
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
-              type="checkbox"
+              type="radio"
               id="inlineCheckbox9"
               value="Women"
               v-model="checkedCats"
@@ -153,7 +155,7 @@
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
-              type="checkbox"
+              type="radio"
               id="inlineCheckbox10"
               value="uncat"
               v-model="checkedCats"
@@ -201,7 +203,9 @@
       <br />
 
       <br />
-      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">Commit Post</button>
+      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">
+        Commit Post
+      </button>
       <br />
       <br />
       <div>
@@ -212,8 +216,18 @@
               <p class="card-header">{{ item[1] }}</p>
               <div class="card-body p-1">
                 <div class="btn-group">
-                  <button class="btn btn-info btn-sm" @click="editPost(item[0])">Edit</button>
-                  <button class="btn btn-success btn-sm" @click="updatePost(item[0])">Save</button>
+                  <button
+                    class="btn btn-info btn-sm"
+                    @click="editPost(item[0])"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-success btn-sm"
+                    @click="updatePost(item[0])"
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
@@ -232,10 +246,9 @@
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
-        <small
-          id="emailHelp"
-          class="form-text text-muted"
-        >We'll never share your email with anyone else.</small>
+        <small id="emailHelp" class="form-text text-muted"
+          >We'll never share your email with anyone else.</small
+        >
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
@@ -263,11 +276,12 @@ export default {
   name: "Admin",
   props: [],
   components: {
-    editor: Editor
+    editor: Editor,
   },
   data: function() {
     return {
       a: "",
+      b: "",
       c: "",
       checkedSizes: [],
       checkedColors: [],
@@ -279,40 +293,42 @@ export default {
       uploadValue: 0,
       editorText: "Add post content here",
       editorOptions: {
-        hideModeSwitch: true
+        hideModeSwitch: true,
       },
       postBody: "",
       editData: [],
-      onPostEdit: false
+      onPostEdit: false,
     };
   },
   computed: {
     getAuth() {
       return this.$store.getters.getAuth;
-    }
+    },
   },
   methods: {
     addData() {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
+      this.b =  Math.random().toString(36).slice(2); 
+      console.log(this.b)
       var newProduct = firebase
         .database()
         .ref()
         .child("Products")
         .push().key;
-      console.log(this.postBody);
       firebase
         .database()
         .ref(`/Products/${newProduct}`)
         .set({
+          id: this.b,
           name: this.a,
           price: this.c,
           sizes: this.checkedSizes,
           colors: this.checkedColors,
           cats: this.checkedCats,
           imgUrl: this.picture,
-          desc: this.postBody
+          desc: this.postBody,
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       this.$store.dispatch("addData");
@@ -333,16 +349,16 @@ export default {
         .put(this.imageData);
       storageRef.on(
         `state_changed`,
-        snapshot => {
+        (snapshot) => {
           this.uploadValue =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        error => {
+        (error) => {
           console.log(error.message);
         },
         () => {
           this.uploadValue = 100;
-          storageRef.snapshot.ref.getDownloadURL().then(url => {
+          storageRef.snapshot.ref.getDownloadURL().then((url) => {
             this.picture = url;
           });
         }
@@ -359,8 +375,8 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
   },
-  created() {}
+  created() {},
 };
 </script>
