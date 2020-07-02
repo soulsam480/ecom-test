@@ -1,31 +1,49 @@
 <template>
   <div class="Navbar">
-    <a @click="changeNav()" class="hamburger menu-btn" id="nav-tog"
-      ><span></span
-    ></a>
+    <a @click="changeNav()" class="hamburger menu-btn" id="nav-tog">
+      <span></span>
+    </a>
     <div class="main-menu-wrap" id="mnav-wrap">
       <div class="main-menu">
-        <a href="">ypyo</a>
-        <a href="">ypyo</a>
-        <a href="">ypyo</a>
-        <a href="">ypyo</a>
+        <a href>ypyo</a>
+        <a href>ypyo</a>
+        <a href>ypyo</a>
+        <a href>ypyo</a>
       </div>
     </div>
     <div>
       <ul class="nav-desktop" style="padding-inline-start:0 !important;">
-        <li><a href="">yoyo</a></li>
-        <li><a href="">yoyo</a></li>
-        <li><a href="">yoyo</a></li>
-        <li><a href="">yoyo</a></li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
       </ul>
     </div>
-          <img src="../assets/w-logo.png" alt="" class="n-brand">
- <div>
+    <router-link to="/">
+      <img src="../assets/w-logo.png" alt class="n-brand" />
+    </router-link>
+    <div>
       <ul class="nav-desktop">
-        <li><a href="">yoyo</a></li>
-        <li><a href="">yoyo</a></li>
-     <li><a href="">yoyo</a></li>
-        <li><a href="">yoyo</a></li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
+        <li>
+          <a href>yoyo</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -41,28 +59,27 @@ export default {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-
-.n-brand{
-    width: 70px;
-    display: block;
+.n-brand {
+  width: 70px;
+  display: block;
 }
 .Navbar {
   z-index: 2;
   width: 100%;
-  background-color: white;
+  background-color: #ffebee;
   color: black;
-/*   box-shadow: 0 0 5px .2px rgba(0, 0, 0, 0.466);
- */  padding: 0.5rem 1rem;
+  /*   box-shadow: 0 0 5px .2px rgba(0, 0, 0, 0.466);
+ */
+  padding: 0.5rem 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  
 }
 @media only screen and (max-width: 600px) {
   .nav-desktop {
@@ -74,22 +91,20 @@ export default {
   padding: 0px 10px 0px 10px;
 }
 
-.nav-desktop  {
-margin: 0 !important;
+.nav-desktop {
+  margin: 0 !important;
 }
-.nav-desktop a{
-    color: black !important;
+.nav-desktop a {
+  color: black !important;
 }
-.nav-desktop a:hover{
-    text-decoration: none;
+.nav-desktop a:hover {
+  text-decoration: none;
 }
-.nav-desktop a{
-    text-decoration: none;
+.nav-desktop a {
+  text-decoration: none;
 }
-
 
 .nav-desktop li:hover {
-
 }
 .full {
   width: 100% !important;
@@ -218,19 +233,20 @@ margin: 0 !important;
   top: 0;
   right: 0;
   width: 0;
-  background: white;
+  background: #ffebee;
   width: 0;
   z-index: 1;
   height: 100%;
   overflow: auto;
-  margin-top:46px;
+  margin-top: 46px;
   transition: width 0.6s cubic-bezier(0.5, 1, 0.22, 1);
   -webkit-transition: width 0.6s cubic-bezier(0.5, 1, 0.22, 1);
 }
 
 .main-menu {
-/*   padding-top: 50px;
- */  transition: opacity 0.5s ease-in-out;
+  /*   padding-top: 50px;
+ */
+  transition: opacity 0.5s ease-in-out;
   -webkit-transition: opacity 0.5s ease-in-out;
 }
 

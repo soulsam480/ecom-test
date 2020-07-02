@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="container-fluid">
+  <div id="app">
     <Navbar/>
-    <div >
+    <div  class="container-fluid">
         <router-view/>
     </div>
   </div>
@@ -20,8 +20,9 @@ export default {
 
 
 <style>
-/* #app {
-} */
+:root {
+  background-color: white;
+}
 
 
 </style>

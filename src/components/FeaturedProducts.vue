@@ -1,13 +1,23 @@
 <template>
   <div class="featuredProducts">
     <div class="row">
-      <div class="col-sm-2 prod " v-for="item in getProducts" :key="item.id">
-        <div class="prod-img">
-          <img :src="item.imgUrl" alt="" />
-        </div>
-        <div class="prod-title">
-          <p>{{ item.title }}</p>
-          <small> {{ item.desc }} </small>
+      <div
+        class="col-sm-2"
+        style="padding:10px;"
+        v-for="item in getProducts"
+        :key="item.id"
+      >
+        <div class="prod">
+          <div class="prod-img">
+            <img :src="item.imgUrl" alt />
+          </div>
+          <div class="prod-title">
+            <p>{{item.name}}</p>
+            <small> ₹ {{item.price}}</small>
+          </div>
+          <div style="padding-top:10px">
+            <button class="prod-btn">Buy</button>
+          </div>
         </div>
       </div>
     </div>
@@ -23,23 +33,44 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["getProducts"]),
+    ...mapGetters(["getProducts"])
   },
   methods: {},
-  created() {},
+  created() {}
 };
 </script>
 
 <style scoped>
+button:focus{
+  outline: none;
+}
+.prod-btn {
+  width: 100%;
+  background: #ce93d8;
+  border-radius: 2px;
+  font-size: 14px;
+  border: none;
+  padding: 5px 10px;
+
+}
+.prod-btn:hover {
+  opacity: .9;
+}
 .prod {
   border-radius: 2px;
+  /*   border: 1px solid black;
+ */
 }
-.prod:hover {
+/* .prod:hover {
   box-shadow: 0 0 20px 0.1px rgba(173, 173, 173, 0.438);
-}
+} */
 .prod-title {
-  width: 100%;
-  padding: 1rem 0.5rem;
+  padding: 5px 10px;
+}
+.prod-title p {
+  font-size: 15px;
+}
+.prod-title small {
   font-size: 13px;
 }
 p {
@@ -48,5 +79,6 @@ p {
 .prod-img img {
   vertical-align: middle;
   max-width: 100%;
+  border-radius: 0px 0px 2px 2px;
 }
 </style>
