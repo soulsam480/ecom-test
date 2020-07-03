@@ -33,7 +33,12 @@
     <div>
       <ul class="nav-desktop">
         <li>
-          <router-link to="/login">Login</router-link>
+          <div>
+            <router-link v-if="user.loggedIn" to="/user">
+              {{ user.data.displayName }}
+            </router-link>
+            <router-link v-else to="/login"> Login</router-link>
+          </div>
         </li>
         <li>
           <a href>Search</a>
@@ -50,17 +55,24 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Navbar",
   data: function() {
     return {};
   },
+  computed: {
+    ...mapGetters({
+      user: "user",
+    }),
+  },
   methods: {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
-    }
-  }
+    },
+  },
 };
 </script>
 

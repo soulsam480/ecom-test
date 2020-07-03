@@ -8,6 +8,10 @@ export default new Vuex.Store({
   state: {
     auth: false,
     productData: [],
+    user: {
+      loggedIn: false,
+      data: null
+    }
   },
   mutations: {
     getData(state) {
@@ -22,6 +26,12 @@ export default new Vuex.Store({
     cAuth(state) {
       state.auth = !state.auth;
     },
+    setLogIn(state, value) {
+      state.user.loggedIn = value;
+    },
+    setUser(state, data) {
+      state.user.data = data;
+    }
   },
   actions: {
     addData(context) {
@@ -30,6 +40,18 @@ export default new Vuex.Store({
     changeAuth(context) {
       context.commit("cAuth");
     },
+    fetchUser({ commit }, user) {
+      commit("setLogIn", user !== null);
+      if (user) {
+        commit("setUser", {
+          displayName: user.displayName,
+          email: user.email,
+          imgUrl: user.photoURL
+        });
+      } else {
+        commit("setUser", null);
+      }
+    }
   },
   getters: {
     getProducts(state) {
@@ -43,6 +65,9 @@ export default new Vuex.Store({
     },
     women: (state) => state.productData.filter((el) => el.cats === "Women"),
     men: (state) => state.productData.filter((el) => el.cats === "Men"),
+    user(state){
+      return state.user
+    }
   },
   modules: {},
 });
