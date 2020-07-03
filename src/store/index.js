@@ -11,6 +11,7 @@ export default new Vuex.Store({
   },
   mutations: {
     getData(state) {
+      state.productData = [];
       var starCountRef = firebase.database().ref("/Products");
       starCountRef.on("value", (snapshot) => {
         snapshot.forEach((childSnapshot) => {

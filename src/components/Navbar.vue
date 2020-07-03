@@ -4,7 +4,7 @@
       <span></span>
     </a>
     <div class="main-menu-wrap" id="mnav-wrap">
-      <div class="main-menu" >
+      <div class="main-menu">
         <router-link to="/">Home</router-link>
         <router-link to="/men">Men</router-link>
         <router-link to="/women">Women</router-link>
@@ -33,7 +33,7 @@
     <div>
       <ul class="nav-desktop">
         <li>
-          <a href>Login</a>
+          <router-link to="/login">Login</router-link>
         </li>
         <li>
           <a href>Search</a>
@@ -59,8 +59,8 @@ export default {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
-    },
-  },
+    }
+  }
 };
 </script>
 

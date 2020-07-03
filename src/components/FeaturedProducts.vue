@@ -7,7 +7,7 @@
         v-for="item in getProducts"
         :key="item.id"
       >
-        <router-link :to="{ path: '/product/' + item.id }">
+        <router-link :to="{ path: '/product/' + item.id }" v-if="item.featured">
           <div class="prod">
             <div class="prod-img">
               <img :src="item.imgUrl" alt />

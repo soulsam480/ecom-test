@@ -4,9 +4,7 @@
       <h5>
         Admin :
         <b class="text-info">{{ authId }}</b>
-        <button class="btn btn-danger float-right" @click="Logout()">
-          Admin Logout
-        </button>
+        <button class="btn btn-danger float-right" @click="Logout()">Admin Logout</button>
       </h5>
       <br />
       <h3 class="text-center">Add a Product</h3>
@@ -23,19 +21,6 @@
             placeholder="Product Name"
           />
         </div>
-        <!--  <div class="form-group">
-          <label for>
-            <b>Product Description</b>
-          </label>
-          <input
-            v-model="b"
-            type="text"
-            class="form-control"
-            id="inputTitle"
-            placeholder="Product Descrption"
-          />
-        </div>-->
-
         <div class="form-group">
           <label for="inputDesc">
             <b>Product Price</b>
@@ -163,6 +148,16 @@
             <label class="form-check-label" for="inlineCheckbox10">uncat</label>
           </div>
         </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="featured"
+            :value="true"
+            v-model="featured"
+          />
+          <label class="form-check-label" for="featured">Featured roduct</label>
+        </div>
         <div class="form-group">
           <label for="Image">
             <b>Product Image</b>
@@ -203,31 +198,20 @@
       <br />
 
       <br />
-      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">
-        Commit Post
-      </button>
+      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">Commit Product</button>
       <br />
       <br />
       <div>
         <h3 class="text-center">Update Post</h3>
         <div class="row">
-          <div class="col-sm-4 p-1" v-for="item in editData" :key="item[0]">
+          <div class="col-sm-4" v-for="item in getProducts" :key="item.id">
             <div class="card">
-              <p class="card-header">{{ item[1] }}</p>
+              <p class="card-header">{{ item.name }}</p>
               <div class="card-body p-1">
                 <div class="btn-group">
-                  <button
-                    class="btn btn-info btn-sm"
-                    @click="editPost(item[0])"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    class="btn btn-success btn-sm"
-                    @click="updatePost(item[0])"
-                  >
-                    Save
-                  </button>
+                  <button class="btn btn-info btn-sm" @click="editPost(item.id)">Edit</button>
+                  <button class="btn btn-success btn-sm" @click="updateProduct(item.id)">Save</button>
+                  <button class="btn btn-danger btn-sm" @click="removeProduct(item.id)">Remove</button>
                 </div>
               </div>
             </div>
@@ -246,9 +230,10 @@
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
-        <small id="emailHelp" class="form-text text-muted"
-          >We'll never share your email with anyone else.</small
-        >
+        <small
+          id="emailHelp"
+          class="form-text text-muted"
+        >We'll never share your email with anyone else.</small>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
@@ -276,13 +261,14 @@ export default {
   name: "Admin",
   props: [],
   components: {
-    editor: Editor,
+    editor: Editor
   },
   data: function() {
     return {
       a: "",
       b: "",
       c: "",
+      featured: false,
       checkedSizes: [],
       checkedColors: [],
       checkedCats: [],
@@ -293,28 +279,72 @@ export default {
       uploadValue: 0,
       editorText: "Add post content here",
       editorOptions: {
-        hideModeSwitch: true,
+        hideModeSwitch: true
       },
       postBody: "",
-      editData: [],
-      onPostEdit: false,
+      onPostEdit: false
     };
   },
   computed: {
     getAuth() {
       return this.$store.getters.getAuth;
     },
+    getProducts() {
+      return this.$store.getters.getProducts;
+    }
   },
   methods: {
+    removeProduct(id) {
+firebase
+        .database()
+        .ref(`/Products/${id}`).remove().then( ()=>{
+          window.alert('Product deleted successfully!')
+        })
+    },
+    editPost(id) {
+      var main = this.$store.getters.getProducts.find(el => el.id === id);
+      (this.a = main.name),
+        (this.c = main.price),
+        (this.checkedSizes = main.sizes),
+        (this.checkedColors = main.colors),
+        (this.checkedCats = main.cats),
+        (this.picture = main.imgUrl),
+        (this.featured = main.featured),
+        this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
+      this.onPostEdit = true;
+    },
+    updateProduct(id) {
+      this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
+
+      firebase
+        .database()
+        .ref(`/Products/${id}`)
+        .update({
+          name: this.a,
+          price: this.c,
+          sizes: this.checkedSizes,
+          colors: this.checkedColors,
+          cats: this.checkedCats,
+          imgUrl: this.picture,
+          desc: this.postBody,
+          featured: this.featured
+        }).then( ()=>{
+          window.alert('updated successfully!')
+        });
+      this.onPostEdit = false;
+    },
     addData() {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
-      this.b =  Math.random().toString(36).slice(2); 
-      console.log(this.b)
-      var newProduct = firebase
-        .database()
-        .ref()
-        .child("Products")
-        .push().key;
+      this.b =
+        Math.random()
+          .toString(36)
+          .slice(2) +
+        Math.random()
+          .toString(36)
+          .slice(2);
+      console.log(this.b);
+      var newProduct = this.b;
+      console.log(newProduct);
       firebase
         .database()
         .ref(`/Products/${newProduct}`)
@@ -327,11 +357,16 @@ export default {
           cats: this.checkedCats,
           imgUrl: this.picture,
           desc: this.postBody,
+          featured: this.featured
         })
-        .catch((error) => {
+        .then(() => {
+          window.alert("Product added Successfully.");
+        })
+        .catch(error => {
           console.log(error);
         });
-      this.$store.dispatch("addData");
+      /*       this.$store.dispatch("addData");
+       */
     },
     previewImage(event) {
       console.log(event);
@@ -349,16 +384,16 @@ export default {
         .put(this.imageData);
       storageRef.on(
         `state_changed`,
-        (snapshot) => {
+        snapshot => {
           this.uploadValue =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        (error) => {
+        error => {
           console.log(error.message);
         },
         () => {
           this.uploadValue = 100;
-          storageRef.snapshot.ref.getDownloadURL().then((url) => {
+          storageRef.snapshot.ref.getDownloadURL().then(url => {
             this.picture = url;
           });
         }
@@ -371,12 +406,12 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.authId, this.authPass)
-        .then(this.$store.dispatch("changeAuth"))
+        .then(this.$store.dispatch("changeAuth"), (this.authPass = ""))
         .catch(function(error) {
           console.log(error);
         });
-    },
+    }
   },
-  created() {},
+  created() {}
 };
 </script>
