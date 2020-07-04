@@ -4,12 +4,29 @@
       <span></span>
     </a>
     <div class="main-menu-wrap" id="mnav-wrap">
-      <div class="main-menu">
+      <div class="main-menu" @click="close">
         <router-link to="/">Home</router-link>
         <router-link to="/men">Men</router-link>
         <router-link to="/women">Women</router-link>
-        <a href>ypyo</a>
+        <a href>Accessories</a>
+        <hr />
+        <div>
+          <router-link v-if="user.loggedIn" to="/user">
+            Hi, {{ user.data.displayName }} !
+          </router-link>
+          <router-link v-else to="/login"> Login</router-link>
+        </div>
+        <a href="">Wishlist</a>
+
+        <a v-if="user.loggedIn" @click="logOut">Sign Out</a>
       </div>
+    </div>
+    <div class="m-leftnav">
+      <ul>
+        <li><img src="../assets/bag.svg" alt="" /></li>
+        <li><img src="../assets/heart.svg" alt="" /></li>
+        <li><img src="../assets/search.svg" alt="" /></li>
+      </ul>
     </div>
     <div>
       <ul class="nav-desktop" style="padding-inline-start:0 !important;">
@@ -33,21 +50,26 @@
     <div>
       <ul class="nav-desktop">
         <li>
-          <div>
+          <div v-bind:class="{ dropdown : user.loggedIn }">
             <router-link v-if="user.loggedIn" to="/user">
-              {{ user.data.displayName }}
+             Hi, {{ user.data.displayName }} !
             </router-link>
             <router-link v-else to="/login"> Login</router-link>
+            <div class="d-content">
+              <a href="">Orders</a>
+              <a href="">Addresses</a>
+              <a @click="logOut">Sign Out</a>
+            </div>
           </div>
         </li>
         <li>
-          <a href>Search</a>
+          <a href><img src="../assets/search.svg" alt=""/></a>
         </li>
         <li>
-          <a href>Wishlist</a>
+          <a href><img src="../assets/heart.svg" alt=""/></a>
         </li>
         <li>
-          <a href>Cart</a>
+          <a href><img src="../assets/bag.svg" alt=""/></a>
         </li>
       </ul>
     </div>
@@ -56,6 +78,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import firebase from "firebase";
 
 export default {
   name: "Navbar",
@@ -72,11 +95,72 @@ export default {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
     },
+    logOut() {
+      firebase.auth().signOut();
+    },
+    close() {
+      document.getElementById("mnav-wrap").classList.toggle("full");
+    },
   },
 };
 </script>
 
 <style scoped>
+/* Dropdown Content (Hidden by Default) */
+.d-content {
+  display: none;
+  position: absolute;
+  background-color: #ffebee;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+/* Links inside the dropdown */
+.d-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 19px;
+}
+
+/* Change color of dropdown links on hover */
+.d-content a:hover {
+  background-color: #fddde2;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .d-content {
+  display: block;
+}
+.nav-desktop li a img {
+  width: 18px;
+}
+@media only screen and (min-width: 768px) {
+  .m-leftnav {
+    display: none;
+  }
+}
+
+.m-leftnav {
+  position: absolute;
+}
+.m-leftnav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.m-leftnav ul li {
+  padding: 0 9px 0 9px;
+}
+.m-leftnav ul li img {
+  width: 18px;
+}
 .n-brand {
   width: 70px;
   display: block;
@@ -93,7 +177,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .nav-desktop {
     display: none !important;
   }
@@ -114,9 +198,11 @@ export default {
 }
 .nav-desktop a {
   text-decoration: none;
+  font-size: 19px;
 }
 
 .nav-desktop li:hover {
+  background-color: #fddde2;
 }
 .full {
   width: 80% !important;
@@ -132,7 +218,7 @@ export default {
   top: 0;
   margin: 10px 10px 0 0;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 768px) {
   .hamburger {
     display: none;
   }
@@ -143,7 +229,7 @@ export default {
   position: absolute;
   top: 50%;
   width: 25px;
-  height: 3px;
+  height: 2px;
   background-color: rgb(3, 3, 3);
   display: none;
   -webkit-transition-duration: 0s;
@@ -169,7 +255,7 @@ export default {
 .hamburger span:before,
 .hamburger span:after {
   width: 25px;
-  height: 3px;
+  height: 2px;
   background-color: #353e4a;
   display: block;
 }
@@ -271,9 +357,9 @@ export default {
 .main-menu a {
   color: #353e4a;
   display: block;
-  font-size: 1.5em;
-  margin-bottom: 10px;
-  padding: 10px;
+  font-size: 23px;
+  padding: 15px 20px;
+  text-align: right;
   text-decoration: none;
 }
 

@@ -19,7 +19,12 @@ export default {
 </script>
 
 <style>
-:root {
-  background-color: white;
+ @font-face {
+  font-family: Function Regular;
+  src: url(~@/assets/functionregular.ttf);
+}
+#app{
+    font-family: Function Regular;
+
 }
 </style>

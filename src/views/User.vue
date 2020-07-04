@@ -130,6 +130,29 @@ export default {
 </script>
 
 <style scoped>
+.col-xs-5, .col-xs-7{
+  padding: 10px;
+}
+@media (min-width: 576px){
+.col-sm-3 {
+    max-width: 100% !important;
+    flex:none;
+}
+.col-sm-9 {
+    max-width: 100% !important;
+    flex:none;
+}
+}
+@media (min-width: 768px){
+.col-sm-3 {
+    max-width: 25% !important;
+    flex: 0 0 25%;
+}
+.col-sm-9 {
+    max-width: 25% !important;
+    flex: 0 0 25%;
+}
+}
 .u-img {
   width: 100px;
   border-radius: 50%;
@@ -165,9 +188,7 @@ a:hover {
   background-color: #fddde2;
   opacity: 0.9 !important;
 }
-@media only screen and (min-width: 600px) {
-  .tabs-left {
-  }
+@media only screen and (min-width:768px) {
   .tabs-left {
     display: flex !important;
     flex-direction: column !important;

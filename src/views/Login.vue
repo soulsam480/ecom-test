@@ -100,6 +100,7 @@
               <div class="form-group">
                 <label for="logemail">Email address</label>
                 <input
+                  v-model="uId"
                   type="email"
                   class="form-control"
                   id="logemail"
@@ -113,6 +114,7 @@
               <div class="form-group">
                 <label for="log-password">Password</label>
                 <input
+                  v-model="uPass"
                   type="password"
                   class="form-control"
                   id="log-password"
@@ -120,7 +122,9 @@
                 />
               </div>
 
-              <button type="submit" class="prod-btn">Submit</button>
+              <button type="submit" class="prod-btn" @click="loginUser">
+                Submit
+              </button>
               <br />
               <br />
               <div class="text-center">
@@ -133,6 +137,9 @@
               </div>
             </form>
           </div>
+
+          <!--           Create an account
+ -->
           <div
             class="tab-pane fade"
             id="profile"
@@ -143,6 +150,7 @@
               <div class="form-group">
                 <label for="sign-email">Email address</label>
                 <input
+                  v-model="uId"
                   type="email"
                   class="form-control"
                   id="sign-email"
@@ -156,13 +164,16 @@
               <div class="form-group">
                 <label for="sign-pass">Password</label>
                 <input
+                  v-model="uPass"
                   type="password"
                   class="form-control"
                   id="sign-pass"
                   placeholder="Password"
                 />
               </div>
-              <button type="submit" class="prod-btn">Submit</button>
+              <button type="submit" @click="createUser" class="prod-btn">
+                Submit
+              </button>
             </form>
           </div>
         </div>
@@ -173,21 +184,51 @@
 
 <script>
 import firebase from "firebase";
-import router from "@/router/index.js"
+import router from "@/router/index.js";
 export default {
   name: "Login",
+  data() {
+    return {
+      uId: "",
+      uPass: "",
+    };
+  },
   methods: {
+    loginUser() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.uId, this.uPass)
+        .then(() => {
+          router.replace({ name: "User" });
+        })
+        .catch(function(error) {
+          window.alert(error.message);
+        });
+    },
+    createUser() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.uId, this.uPass)
+        .then(() => {
+          this.uId = "";
+          this.uPass = "";
+          window.alert("Please Signin to continue.");
+        })
+        .catch((error) => {
+          window.alert(error.message);
+        });
+    },
     google() {
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase
         .auth()
         .signInWithPopup(provider)
         .then(function(result) {
-         console.log(result)
+          console.log(result);
           router.replace({ name: "User" });
         })
         .catch(function(error) {
-          console.log(error)
+          console.log(error);
         });
     },
   },

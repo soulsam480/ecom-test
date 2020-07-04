@@ -1,5 +1,5 @@
 <template>
-  <div class="admin p-2">
+  <div class="admin container-fluid">
     <div id="afterlogin" v-if="getAuth">
       <h5>
         Admin :
