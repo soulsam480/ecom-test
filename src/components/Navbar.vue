@@ -50,9 +50,9 @@
     <div>
       <ul class="nav-desktop">
         <li>
-          <div v-bind:class="{ dropdown : user.loggedIn }">
+          <div v-bind:class="{ dropdown: user.loggedIn }">
             <router-link v-if="user.loggedIn" to="/user">
-             Hi, {{ user.data.displayName }} !
+              Hi, {{ user.data.displayName }} !
             </router-link>
             <router-link v-else to="/login"> Login</router-link>
             <div class="d-content">
@@ -100,6 +100,7 @@ export default {
     },
     close() {
       document.getElementById("mnav-wrap").classList.toggle("full");
+      document.getElementById("nav-tog").classList.toggle("active");
     },
   },
 };
@@ -124,6 +125,7 @@ export default {
   text-decoration: none;
   display: block;
   font-size: 19px;
+  cursor: pointer;
 }
 
 /* Change color of dropdown links on hover */

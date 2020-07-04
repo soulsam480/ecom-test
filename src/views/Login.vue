@@ -198,7 +198,8 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.uId, this.uPass)
-        .then(() => {
+        .then((response) => {
+          console.log(response)
           router.replace({ name: "User" });
         })
         .catch(function(error) {
@@ -212,7 +213,7 @@ export default {
         .then(() => {
           this.uId = "";
           this.uPass = "";
-          window.alert("Please Signin to continue.");
+          window.alert("Please Sign in to continue.");
         })
         .catch((error) => {
           window.alert(error.message);
@@ -223,11 +224,10 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(function(result) {
-          console.log(result);
+        .then(() => {
           router.replace({ name: "User" });
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error);
         });
     },
