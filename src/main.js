@@ -1,17 +1,29 @@
-import Vue from 'vue'
-import App from './App.vue'
-import './registerServiceWorker'
-import router from './router'
-import store from './store'
+import Vue from "vue";
+import App from "./App.vue";
+import "./registerServiceWorker";
+import router from "./router";
+import store from "./store";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/firebase-database";
 import "firebase/firebase-auth";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import VueAgile from 'vue-agile';
+import VueAgile from "vue-agile";
+import VueLazyload from "vue-lazyload";
 
-Vue.use(VueAgile)
+/* const $ = require('jquery')
+window.$ = $ */
+Vue.use(VueLazyload);
+
+// or with options
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: "dist/error.png",
+  loading: "dist/loading.gif",
+  attempt: 1,
+});
+Vue.use(VueAgile);
 Vue.config.productionTip = false;
 
 firebase.initializeApp({
@@ -21,15 +33,16 @@ firebase.initializeApp({
   projectId: "ecom-test-53555",
   storageBucket: "ecom-test-53555.appspot.com",
   messagingSenderId: "328860335019",
-  appId: "1:328860335019:web:0af8f449243f35648ef0ee"
+  appId: "1:328860335019:web:0af8f449243f35648ef0ee",
 });
 
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
+  store.dispatch("fetchWishlist", user);
 });
 
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");

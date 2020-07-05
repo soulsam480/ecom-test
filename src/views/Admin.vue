@@ -4,7 +4,9 @@
       <h5>
         Admin :
         <b class="text-info">{{ authId }}</b>
-        <button class="btn btn-danger float-right" @click="Logout()">Admin Logout</button>
+        <button class="btn btn-danger float-right" @click="Logout()">
+          Admin Logout
+        </button>
       </h5>
       <br />
       <h3 class="text-center">Add a Product</h3>
@@ -158,17 +160,19 @@
           />
           <label class="form-check-label" for="featured">Featured roduct</label>
         </div>
+        <br>
         <div class="form-group">
           <label for="Image">
-            <b>Product Image</b>
+            <b>Product Image</b> ( <small aria-describedby="Image">Upload 3 Product Images at once</small>)
           </label>
-
+         
           <input
             type="file"
             class="form-control-file"
             @change="previewImage"
             accept="image/*"
             id="Image"
+            multiple
           />
           <br />
           <p>
@@ -198,20 +202,37 @@
       <br />
 
       <br />
-      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">Commit Product</button>
+      <button class="btn btn-primary" @click="addData()" :disabled="onPostEdit">
+        Commit Product
+      </button>
       <br />
       <br />
       <div>
-        <h3 class="text-center">Update Post</h3>
+        <h3 class="text-center">Update Product</h3>
         <div class="row">
           <div class="col-sm-4" v-for="item in getProducts" :key="item.id">
             <div class="card">
               <p class="card-header">{{ item.name }}</p>
               <div class="card-body p-1">
                 <div class="btn-group">
-                  <button class="btn btn-info btn-sm" @click="editPost(item.id)">Edit</button>
-                  <button class="btn btn-success btn-sm" @click="updateProduct(item.id)">Save</button>
-                  <button class="btn btn-danger btn-sm" @click="removeProduct(item.id)">Remove</button>
+                  <button
+                    class="btn btn-info btn-sm"
+                    @click="editPost(item.id)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-success btn-sm"
+                    @click="updateProduct(item.id)"
+                  >
+                    Save
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    @click="removeProduct(item.id)"
+                  >
+                    Remove
+                  </button>
                 </div>
               </div>
             </div>
@@ -230,10 +251,9 @@
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
-        <small
-          id="emailHelp"
-          class="form-text text-muted"
-        >We'll never share your email with anyone else.</small>
+        <small id="emailHelp" class="form-text text-muted"
+          >We'll never share your email with anyone else.</small
+        >
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
@@ -261,7 +281,7 @@ export default {
   name: "Admin",
   props: [],
   components: {
-    editor: Editor
+    editor: Editor,
   },
   data: function() {
     return {
@@ -274,15 +294,15 @@ export default {
       checkedCats: [],
       authId: "",
       authPass: "",
-      imageData: null,
-      picture: null,
+      imageData: [],
+      picture: [],
       uploadValue: 0,
       editorText: "Add post content here",
       editorOptions: {
-        hideModeSwitch: true
+        hideModeSwitch: true,
       },
       postBody: "",
-      onPostEdit: false
+      onPostEdit: false,
     };
   },
   computed: {
@@ -291,24 +311,32 @@ export default {
     },
     getProducts() {
       return this.$store.getters.getProducts;
+    },
+    authCredGet(){
+      return this.$store.getters.authCredGet;
     }
   },
   methods: {
+    /* generateId() {
+      
+    }, */
     removeProduct(id) {
-firebase
+      firebase
         .database()
-        .ref(`/Products/${id}`).remove().then( ()=>{
-          window.alert('Product deleted successfully!')
-        })
+        .ref(`/Products/${id}`)
+        .remove()
+        .then(() => {
+          window.alert("Product deleted successfully!");
+        });
     },
     editPost(id) {
-      var main = this.$store.getters.getProducts.find(el => el.id === id);
+      var main = this.$store.getters.getProducts.find((el) => el.id === id);
       (this.a = main.name),
         (this.c = main.price),
         (this.checkedSizes = main.sizes),
         (this.checkedColors = main.colors),
         (this.checkedCats = main.cats),
-        (this.picture = main.imgUrl),
+        (this.picture = main.imgUrls),
         (this.featured = main.featured),
         this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
       this.onPostEdit = true;
@@ -325,26 +353,18 @@ firebase
           sizes: this.checkedSizes,
           colors: this.checkedColors,
           cats: this.checkedCats,
-          imgUrl: this.picture,
+          imgUrls: this.picture,
           desc: this.postBody,
-          featured: this.featured
-        }).then( ()=>{
-          window.alert('updated successfully!')
+          featured: this.featured,
+        })
+        .then(() => {
+          window.alert("updated successfully!");
         });
       this.onPostEdit = false;
     },
     addData() {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
-      this.b =
-        Math.random()
-          .toString(36)
-          .slice(2) +
-        Math.random()
-          .toString(36)
-          .slice(2);
-      console.log(this.b);
       var newProduct = this.b;
-      console.log(newProduct);
       firebase
         .database()
         .ref(`/Products/${newProduct}`)
@@ -355,63 +375,81 @@ firebase
           sizes: this.checkedSizes,
           colors: this.checkedColors,
           cats: this.checkedCats,
-          imgUrl: this.picture,
+          imgUrls: this.picture,
           desc: this.postBody,
-          featured: this.featured
+          featured: this.featured,
         })
         .then(() => {
           window.alert("Product added Successfully.");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       /*       this.$store.dispatch("addData");
        */
     },
     previewImage(event) {
-      console.log(event);
+      this.b =
+        Math.random()
+          .toString(36)
+          .slice(2) +
+        Math.random()
+          .toString(36)
+          .slice(2);
       this.uploadValue = 0;
       this.picture = null;
-      this.imageData = event.target.files[0];
+      var files = event.target.files;
+      files.forEach((el) => {
+        this.imageData.push(el);
+      });
+      /*       this.imageData = event.target.files[0];
+       */
     },
 
     onUpload() {
-      this.picture = null;
-
-      const storageRef = firebase
-        .storage()
-        .ref(`${this.imageData.name}`)
-        .put(this.imageData);
-      storageRef.on(
-        `state_changed`,
-        snapshot => {
-          this.uploadValue =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        },
-        error => {
-          console.log(error.message);
-        },
-        () => {
-          this.uploadValue = 100;
-          storageRef.snapshot.ref.getDownloadURL().then(url => {
-            this.picture = url;
-          });
-        }
-      );
+      this.picture = [];
+      var a = 0
+      this.imageData.forEach((el) => {
+          a = a+1
+        const storageRef = firebase
+          .storage()
+          .ref(`/Products/${this.b}/${a}`)
+          .put(el);
+        storageRef.on(
+          `state_changed`,
+          (snapshot) => {
+            this.uploadValue =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          },
+          (error) => {
+            console.log(error.message);
+          },
+          () => {
+            this.uploadValue = 100;
+            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+              this.imageData = []
+              this.picture.push(url)
+            });
+          }
+        );
+      });
     },
     Logout() {
       this.$store.dispatch("changeAuth");
     },
     Auth() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.authId, this.authPass)
-        .then(this.$store.dispatch("changeAuth"), (this.authPass = ""))
+        if(this.authId === this.authCredGet.id && this.authPass === this.authCredGet.password){
+          this.$store.dispatch("changeAuth"), 
+          (this.authPass = "")
+        }else{
+          window.alert('BHAG BS*K')
+        }
+        /* .then(this.$store.dispatch("changeAuth"), (this.authPass = ""))
         .catch(function(error) {
           console.log(error);
-        });
-    }
+        }); */
+    },
   },
-  created() {}
+  created() {},
 };
 </script>

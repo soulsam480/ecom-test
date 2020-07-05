@@ -36,7 +36,7 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/Women.vue')
   },
   {
-    path: '/admin',
+    path: '/fu*ktheadmin',
     name: 'Admin',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

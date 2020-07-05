@@ -2,7 +2,7 @@
   <div>
     <agile :options="myOptions">
       <div class="slide">
-        <img src="..//assets/1.jpg" alt="" />
+        <img src="../assets/1.jpg" alt="" />
       </div>
       <div class="slide">
         <img src="../assets/2.jpg" alt="" />

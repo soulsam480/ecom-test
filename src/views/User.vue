@@ -5,10 +5,11 @@
         <div class="col-md-4">
           <div class="row">
             <div class="col-xs-5">
-              <img :src="user.data.imgUrl" class="u-img" alt="" />
+              <img v-lazy="user.data.imgUrl" class="u-img" alt="" />
             </div>
             <div class="col-xs-7 ">
               <h4>{{ user.data.displayName }}</h4>
+              <h6> {{user.data.email}} </h6>
               <button class="btn btn-outline-danger btn-sm" @click="logOut()">
                 Logout
               </button>
@@ -85,7 +86,7 @@
               <form class="text-left">
                 <div>
                   <div class="form-group">
-                    <label for="sign-name">Display Name</label>
+                    <label for="sign-name">Display Name </label>
                     <input
                       v-model="uName"
                       type="text"
@@ -99,9 +100,8 @@
                     <input
                       @change="previewImage"
                       type="file"
-                      class="form-control-file"
+                      class="form-control-file "
                       id="sign-img"
-                      :placeholder="user.data.imgUrl"
                     />
                   </div>
                   <button
@@ -109,10 +109,13 @@
                     @click="updateUser(user.data)"
                     class="prod-btn"
                   >
+                    <div class="loader" id="loader">
+                      <img src="../assets/loader.gif" alt="" />
+                    </div>
                     Save
                   </button>
                 </div>
-                <br>
+                <br />
                 <div class="form-group">
                   <label for="sign-number">Phone Number</label>
                   <input
@@ -124,8 +127,11 @@
                     aria-describedby="phonehelp"
                   />
                   <small id="phonehelp" class="form-text text-muted"
-                  >Phone Number followed by Country Code.</small
-                >
+                    >Phone Number followed by Country Code.</small
+                  >
+                   <div class="loader" id="loader1">
+                    <img src="../assets/loader.gif" alt="" />
+                  </div>
                 </div>
                 <div id="recaptcha-container"></div>
                 <button
@@ -180,6 +186,7 @@ export default {
       picture: null,
       uPhone: null,
       emailVerified: null,
+      uploadValue: 0,
     };
   },
   methods: {
@@ -192,9 +199,12 @@ export default {
       this.imageData = event.target.files[0];
     },
     updatePhone(data) {
+      document.getElementById("loader1").style.display = "block";
+
       if (this.uPhone === null) {
         this.uPhone = data.pNum;
       }
+
       const user = firebase.auth().currentUser;
       const applicationVerifier = new firebase.auth.RecaptchaVerifier(
         "recaptcha-container"
@@ -203,7 +213,7 @@ export default {
       provider
         .verifyPhoneNumber(this.uPhone, applicationVerifier)
         .then(function(verificationId) {
-          document.getElementById('recaptcha-container').style.display = 'none'
+          document.getElementById("recaptcha-container").style.display = "none";
           const verificationCode = window.prompt(
             "Please enter the verification " +
               "code that was sent to your mobile device."
@@ -215,23 +225,44 @@ export default {
         })
         .then(function(phoneCredential) {
           return user.updatePhoneNumber(phoneCredential);
-        }).then( ()=>{
-          this.uPhone = null;
         })
+        .then(() => {
+          document.getElementById("loader1").style.display = "block";
+          window.alert("Updated Successfully!");
+          this.uPhone = null;
+        });
     },
 
     async updateUser(data) {
+      document.getElementById("loader").style.display = "block";
       if (this.uName === null && this.picture === null) {
         this.uName = data.displayName;
         this.picture = data.imgUrl;
       }
+      /*   const storageRef = await firebase
+        .storage()
+        .ref(`/Users/${data.userId}`)
+        .put(this.imageData);
+      storageRef.on(
+        `state_changed`,
+        snapshot => {
+          this.uploadValue =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        },
+        error => {
+          console.log(error.message);
+        },
+        () => {
+          this.uploadValue = 100;
+          storageRef.snapshot.ref.getDownloadURL().then(url => {
+            this.picture = url;
+          });
+        }
+      ); */
       await firebase
         .storage()
         .ref(`/Users/${data.userId}`)
-        .put(this.imageData)
-        .then(() => {
-          console.log("success");
-        });
+        .put(this.imageData);
 
       await firebase
         .storage()
@@ -239,7 +270,6 @@ export default {
         .getDownloadURL()
         .then((url) => {
           this.picture = url;
-          console.log(this.picture);
         });
 
       firebase
@@ -249,7 +279,10 @@ export default {
           photoURL: this.picture,
         })
         .then(() => {
-          console.log("success");
+            this.$store.dispatch("fetchUser");
+
+          document.getElementById("loader").style.display = "none";
+          window.alert("Updated Successfully!");
         });
     },
   },
@@ -257,6 +290,13 @@ export default {
 </script>
 
 <style scoped>
+.loader {
+  display: none;
+}
+.loader img {
+  width: 20px;
+}
+
 .prod-btn {
   width: 100%;
   background: #ce93d8;

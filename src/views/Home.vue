@@ -2,13 +2,20 @@
   <div class="home">
     <Slider />
     <div class="container-fluid">
-            <p class="h-intro">CATEGORIES</p>
-
+      <p class="h-intro">CATEGORIES</p>
       <div class="row d-flex justify-content-center">
         <div class="col-sm-12">
           <div class="row d-flex justify-content-center">
-            <div class="col-6 col-sm-4"><router-link to="/men"><img class="cat-img" src="../assets/mencat.webp" alt=""></router-link> </div>
-            <div class="col-6 col-sm-4"><router-link to="/women"><img class="cat-img" src="../assets/womencat.webp" alt=""></router-link> </div>
+            <div class="col-6 col-sm-4">
+              <router-link to="/men"
+                ><img class="cat-img" src="../assets/mencat.webp" alt=""
+              /></router-link>
+            </div>
+            <div class="col-6 col-sm-4">
+              <router-link to="/women"
+                ><img class="cat-img" src="../assets/womencat.webp" alt=""
+              /></router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -38,7 +45,7 @@ export default {
 };
 </script>
 <style scoped>
-.cat-img{
+.cat-img {
   max-width: 100%;
 }
 .h-intro {

@@ -198,9 +198,9 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.uId, this.uPass)
-        .then((response) => {
-          console.log(response)
+        .then((user) => {
           router.replace({ name: "User" });
+          console.log(user)
         })
         .catch(function(error) {
           window.alert(error.message);
@@ -228,7 +228,7 @@ export default {
           router.replace({ name: "User" });
         })
         .catch((error) => {
-          console.log(error);
+          window.alert(error.message);
         });
     },
   },
