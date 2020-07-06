@@ -437,10 +437,14 @@ export default {
     Logout() {
       this.$store.dispatch("changeAuth");
     },
-    Auth() {
+    async Auth() {
         if(this.authId === this.authCredGet.id && this.authPass === this.authCredGet.password){
-          this.$store.dispatch("changeAuth"), 
+          await firebase.auth().signInWithEmailAndPassword(this.authId,this.authPass).then(
+          ()=>{
+            this.$store.dispatch("changeAuth"), 
           (this.authPass = "")
+          }
+          ) 
         }else{
           window.alert('BHAG BS*K')
         }

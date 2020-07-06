@@ -46,7 +46,7 @@
                       alt="..."
                     />
                   </div>
-                  <div class="carousel-item" data-interval="1000">
+                  <div class="carousel-item" data-interval="1000" v-if="item.imgUrls[1]">
                     <img
                       :src="item.imgUrls[1]"
                       class="d-block w-100"
@@ -103,7 +103,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 100;
+  z-index: 2;
 }
 .heart {
   background-color: #fa8080;

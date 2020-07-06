@@ -11,7 +11,7 @@
             <div class="carousel-item active" data-interval="1500">
               <img :src="product.imgUrls[0]" class="d-block p-img" alt="..." />
             </div>
-            <div class="carousel-item" data-interval="1500">
+            <div class="carousel-item" data-interval="1500" v-if="product.imgUrls[1]">
               <img :src="product.imgUrls[1]" class="d-block p-img" alt="..." />
             </div>
           </div>
@@ -191,7 +191,7 @@ export default {
 }
 .carousel-control-next,
 .carousel-control-prev {
-  z-index: 100 !important;
+  z-index: 1 !important;
   /* top: 39%;
   bottom: 50%; */
 }

@@ -106,7 +106,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 /* Dropdown Content (Hidden by Default) */
 .d-content {
   display: none;
@@ -335,7 +335,7 @@ export default {
   width: 0;
   background: #ffebee;
   width: 0;
-  z-index: 1;
+  z-index: 3;
   height: 100vh;
   overflow: auto;
   margin-top: 45px;

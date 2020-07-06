@@ -10,7 +10,7 @@
         <router-link :to="{ path: '/product/' + item.id }">
           <div class="prod">
             <div class="prod-img">
-              <img :src="item.imgUrl" alt />
+              <img :src="item.imgUrls[0]" alt />
             </div>
             <div class="prod-title">
               <p>{{ item.name }}</p>
