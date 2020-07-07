@@ -1,8 +1,8 @@
 <template>
-  <div class="men container-fluid">
+  <div class="men container">
     <div class="row">
       <div
-        class="col-6 col-md-2"
+        class="col-6 col-md-3"
         style="padding:10px;"
         v-for="item in men"
         :key="item.id"
@@ -70,10 +70,10 @@ button:focus {
   padding: 5px 10px;
 }
 .prod-title p {
-  font-size: 15px;
+  font-size: 18px;
 }
 .prod-title small {
-  font-size: 13px;
+  font-size: 16px;
 }
 p {
   margin: 0;

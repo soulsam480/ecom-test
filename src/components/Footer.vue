@@ -1,6 +1,5 @@
 <template>
   <div class="footer container">
-        <hr>
 
     <p>Tiaamo.com 2020</p>
 

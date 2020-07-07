@@ -10,7 +10,7 @@
         <router-link :to="{ path: '/product/' + item.id }" v-if="item.featured">
           <div class="prod">
             <div class="prod-img">
-              <img v-lazy="item.imgUrls[0]" alt="">
+              <img v-lazy="item.imgUrls[0]" alt="" />
             </div>
             <div class="prod-title">
               <p>{{ item.name }}</p>
@@ -37,15 +37,12 @@ export default {
   computed: {
     ...mapGetters(["getProducts"]),
   },
-  methods: {
-
-    },
+  methods: {},
   created() {},
 };
 </script>
 
 <style scoped>
-
 a {
   color: unset !important;
   text-decoration: none !important;
@@ -59,10 +56,10 @@ button:focus {
   border-radius: 2px;
   font-size: 14px;
   border: none;
-  padding: 5px 10px;
+  padding: 7px 10px;
 }
 .prod-btn:hover {
-  opacity: 0.9;
+  background-color: #d29eda;
 }
 .prod {
   border-radius: 2px;
@@ -76,10 +73,10 @@ button:focus {
   padding: 5px 10px;
 }
 .prod-title p {
-  font-size: 15px;
+  font-size: 18px;
 }
 .prod-title small {
-  font-size: 13px;
+  font-size: 16px;
 }
 p {
   margin: 0;

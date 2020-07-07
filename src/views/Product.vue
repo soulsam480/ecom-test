@@ -1,5 +1,5 @@
 <template>
-  <div class="product container-fluid">
+  <div class="product container">
     <div class="row">
       <div class="col-sm-7">
         <div
@@ -42,21 +42,44 @@
       <div class="col-sm-5">
         <div class="p-spec">
           <p class="p-spec-name">{{ product.name }}</p>
-          <h6 class="text-muted" v-html="product.desc">{{ product.desc }}</h6>
+          <h6 class="text-muted"><!-- {{ product.desc }} --> Short Description Here</h6>
           <h3>₹ {{ product.price }}</h3>
+          <br />
+
           <label for="sizes">Size</label>
           <div v-if="product.sizes" id="sizes" class="size">
-            <select v-model="size" class="size-picker">
-              <option :value="null" disabled hidden>Size</option>
-              <option
-                v-for="(size, key) in product.sizes"
-                :key="key"
-                :value="size"
-                >{{ size }}</option
-              >
-            </select>
+            <div
+              v-if="product.sizes.includes('S')"
+              :class="{ act: size === 'S' }"
+              @click="size = 'S'"
+            >
+              S
+            </div>
+            <div
+              :class="{ act: size === 'M' }"
+              v-if="product.sizes.includes('M')"
+              @click="size = 'M'"
+            >
+              M
+            </div>
+            <div
+              :class="{ act: size === 'L' }"
+              v-if="product.sizes.includes('L')"
+              @click="size = 'L'"
+            >
+              L
+            </div>
+            <div
+              :class="{ act: size === 'XL' }"
+              v-if="product.sizes.includes('XL')"
+              @click="size = 'XL'"
+            >
+              XL
+            </div>
           </div>
-          <label for="color">Colors</label>
+          <label for="color"
+            >Color <small class="text-muted"> {{ color }} </small>
+          </label>
           <div class="color-picker" id="color">
             <div
               v-if="product.colors.includes('black')"
@@ -104,14 +127,27 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <button class="prod-btn" :disabled="color===''">ADD TO CART</button>
+                <button class="prod-btn" :disabled="color === ''">
+                  ADD TO CART
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <br />
+    <br />
+      <hr>
 
-        <!--         <Wishlist :pId="product.id" />
- -->
+    <div class="row">
+      <div class="col-sm-6">
+                <h4>Description</h4>
+        <div v-html="product.desc">{{ product.desc }}</div>
+
+      </div>
+      <div class="col-sm-6">
+        <h4>Reviews</h4>
       </div>
     </div>
   </div>
@@ -182,7 +218,7 @@ label {
   content: "";
   padding: 0.7px 8px;
   margin-left: -8px;
-  margin-top: -16px;
+  margin-top: 20px;
   background-color: black;
 }
 .border {
@@ -190,7 +226,7 @@ label {
 }
 .black {
   background-color: black;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid black !important;
   margin: 5px;
   cursor: pointer;
@@ -198,7 +234,7 @@ label {
 }
 .white {
   background-color: white;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid black !important;
   margin: 5px;
   cursor: pointer;
@@ -206,7 +242,7 @@ label {
 }
 .yellow {
   background-color: yellow;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid black !important;
   margin: 5px;
   cursor: pointer;
@@ -241,6 +277,7 @@ label {
   border: none;
   background-color: #ffebee;
   font-weight: bold;
+  color: black;
 }
 .carousel-control-next,
 .carousel-control-prev {
@@ -256,32 +293,50 @@ label {
 }
 @media only screen and (min-width: 768px) {
   .carousel-control-next {
-    right: 80px;
+    right: 50px;
   }
   .carousel-control-prev {
-    left: 80px;
+    left: 50px;
   }
 }
 .size {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
   margin-bottom: 10px;
+}
+.size div {
+  background-color: #ffebee;
+  border: 1px solid black !important;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 2px;
+  height: 32px;
+  width: 32px;
+  text-align: center;
+  line-height: 32px;
+  font-weight: bold;
+}
+.act {
+  box-shadow: 0 0 5px 0.1px #ce93d8;
+}
+.act::before {
+  text-align: center;
+  display: block;
+  position: absolute;
+  content: "";
+  padding: 0.7px 10px;
+  margin-left: 5px;
+  margin-top: 37px;
+  background-color: black;
 }
 .p-spec-name {
   font-size: 32px;
   margin-bottom: 5px;
 }
-.size-picker {
-  width: 130px;
-  font-size: 20px;
-  height: 100%;
-  border: 0;
-  background-color: white;
-  outline: 1px solid #ccc;
-  outline-offset: -1px;
-}
 
-.col-sm-7,
-.col-sm-5 {
-  padding-top: 20px;
+.product{
+  padding-top: 15px;
 }
 .p-img {
   max-width: 100%;
@@ -290,7 +345,7 @@ label {
 }
 @media only screen and (min-width: 768px) {
   .p-img {
-    max-width: 75%;
+    max-width: 80%;
   }
 }
 </style>

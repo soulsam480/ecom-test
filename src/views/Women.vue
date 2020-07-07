@@ -70,10 +70,10 @@ button:focus {
   padding: 5px 10px;
 }
 .prod-title p {
-  font-size: 15px;
+  font-size: 18px;
 }
 .prod-title small {
-  font-size: 13px;
+  font-size: 16px;
 }
 p {
   margin: 0;

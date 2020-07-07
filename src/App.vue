@@ -4,7 +4,8 @@
     <div>
       <router-view />
     </div>
-    <Footer/>
+    <hr />
+    <Footer />
   </div>
 </template>
 <script>
@@ -14,7 +15,7 @@ import Footer from "@/components/Footer.vue";
 export default {
   components: {
     Navbar,
-    Footer
+    Footer,
   },
   created() {
     this.$store.dispatch("addData");
@@ -23,12 +24,11 @@ export default {
 </script>
 
 <style>
- @font-face {
+@font-face {
   font-family: Function Regular;
   src: url(~@/assets/functionregular.ttf);
 }
-#app{
-    font-family: Function Regular;
-
+#app {
+  font-family: Function Regular;
 }
 </style>
