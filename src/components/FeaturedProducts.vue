@@ -2,59 +2,15 @@
   <div class="featuredProducts">
     <div class="row">
       <div
-        class="col-6 col-md-2"
+        class="col-6 col-md-3"
         style="padding:10px;"
         v-for="item in getProducts"
         :key="item.name"
       >
-        <div class="heart-wrap">
-          <a @click="addToWishlist"> <span class="heart" id="heart"> </span></a>
-        </div>
-        <div>
-          <a
-            class="carousel-control-prev"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a
-            class="carousel-control-next"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
         <router-link :to="{ path: '/product/' + item.id }" v-if="item.featured">
           <div class="prod">
             <div class="prod-img">
-              <div
-                id="carouselExampleControls"
-                class="carousel slide"
-                data-ride="carousel"
-              >
-                <div class="carousel-inner">
-                  <div class="carousel-item active" data-interval="1000">
-                    <img
-                      :src="item.imgUrls[0]"
-                      class="d-block w-100"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="carousel-item" data-interval="1000" v-if="item.imgUrls[1]">
-                    <img
-                      :src="item.imgUrls[1]"
-                      class="d-block w-100"
-                      alt="..."
-                    />
-                  </div>
-                </div>
-              </div>
+              <img v-lazy="item.imgUrls[0]" alt="">
             </div>
             <div class="prod-title">
               <p>{{ item.name }}</p>
@@ -82,65 +38,14 @@ export default {
     ...mapGetters(["getProducts"]),
   },
   methods: {
-    addToWishlist() {
-      document.getElementById("heart").classList.toggle("red");
+
     },
-  },
   created() {},
 };
 </script>
 
 <style scoped>
-.red {
-  background-color: red !important;
-}
-.red:before,
-.red:after {
-  background-color: red !important;
-}
-.heart-wrap {
-  cursor: pointer;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 2;
-}
-.heart {
-  background-color: #fa8080;
-  display: inline-block;
-  height: 13px;
-  margin: 0 10px;
-  position: relative;
-  top: 0;
-  transform: rotate(-45deg);
-  width: 13px;
-}
 
-.heart:before,
-.heart:after {
-  content: "";
-  background-color: #fa8080;
-  border-radius: 50%;
-  height: 13px;
-  position: absolute;
-  width: 13px;
-}
-
-.heart:before {
-  top: -6.5px;
-  left: 0;
-}
-
-.heart:after {
-  left: 6.5px;
-  top: 0;
-}
-.carousel-control-next-icon,
-.carousel-control-prev-icon {
-  background-color: rgb(124, 124, 124);
-  width: 22px;
-  height: 30px;
-}
 a {
   color: unset !important;
   text-decoration: none !important;

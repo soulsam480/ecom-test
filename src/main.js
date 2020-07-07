@@ -38,7 +38,9 @@ firebase.initializeApp({
 
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
-  store.dispatch("fetchWishlist", user);
+  /* if (user) {
+    store.dispatch("addWishes", user.uid);
+  } */
 });
 
 new Vue({

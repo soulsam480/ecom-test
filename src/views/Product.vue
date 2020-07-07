@@ -11,7 +11,11 @@
             <div class="carousel-item active" data-interval="1500">
               <img :src="product.imgUrls[0]" class="d-block p-img" alt="..." />
             </div>
-            <div class="carousel-item" data-interval="1500" v-if="product.imgUrls[1]">
+            <div
+              class="carousel-item"
+              data-interval="1500"
+              v-if="product.imgUrls[1]"
+            >
               <img :src="product.imgUrls[1]" class="d-block p-img" alt="..." />
             </div>
           </div>
@@ -39,7 +43,7 @@
         <div class="p-spec">
           <p class="p-spec-name">{{ product.name }}</p>
           <h6 class="text-muted" v-html="product.desc">{{ product.desc }}</h6>
-          <h4>₹ {{ product.price }}</h4>
+          <h3>₹ {{ product.price }}</h3>
           <label for="sizes">Size</label>
           <div v-if="product.sizes" id="sizes" class="size">
             <select v-model="size" class="size-picker">
@@ -52,27 +56,62 @@
               >
             </select>
           </div>
-          <!-- <div v-if="product.sizes" id="sizes" class="size">
-            <select v-model="size" class="size-picker">
-              <option :value="null" disabled hidden>Size</option>
-              <option
-                v-for="(size, key) in product.sizes"
-                :key="key"
-                :value="size"
-                >{{ size }}</option
-              >
-            </select>
-          </div> -->
+          <label for="color">Colors</label>
+          <div class="color-picker" id="color">
+            <div
+              v-if="product.colors.includes('black')"
+              :class="{ border: color === 'black' }"
+              class="black"
+              @click="color = 'black'"
+            ></div>
+            <div
+              :class="{ border: color === 'white' }"
+              v-if="product.colors.includes('white')"
+              class="white"
+              @click="color = 'white'"
+            ></div>
+            <div
+              :class="{ border: color === 'yellow' }"
+              v-if="product.colors.includes('yellow')"
+              class="yellow"
+              @click="color = 'yellow'"
+            ></div>
+          </div>
         </div>
         <br />
-        <div class="heart-wrap">
-          <a @click="addToWishlist(product.id)">
-            <span class="heart" :class="{ red: getWishlist }" id="heart"></span>
-            <span style="font-size:18px;" v-if="getWishlist">In Wishlist</span>
-            <span style="font-size:18px;" v-else> Add to wishlist</span>
-          </a>
+        <br />
+
+        <div class="row d-flex justify-content-left">
+          <div class="col-10">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="quantity">
+                  <button
+                    style="padding:10px 20px"
+                    class="update-num"
+                    @click="quantity > 1 ? quantity-- : (quantity = 1)"
+                  >
+                    -
+                  </button>
+                  <input type="number" v-model="quantity" disabled />
+                  <button
+                    style="padding:10px 17px"
+                    class="update-num"
+                    @click="quantity++"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <button class="prod-btn" :disabled="color===''">ADD TO CART</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <small v-if="getWishlist">Remove from wishlist currenty not supported.</small>
+
+        <!--         <Wishlist :pId="product.id" />
+ -->
       </div>
     </div>
   </div>
@@ -80,13 +119,15 @@
 
 <script>
 import { mapGetters } from "vuex";
-import firebase from "firebase";
-export default {
+/* import Wishlist from "@/components/Wishlist.vue"
+ */ export default {
   name: "Product",
   data() {
     return {
       id: this.$route.params.id,
-      size: "",
+      size: "S",
+      quantity: 1,
+      color: "",
     };
   },
   computed: {
@@ -96,12 +137,6 @@ export default {
     ...mapGetters({
       user: "user",
     }),
-    getWishlist() {
-      return this.$store.getters.getWishlist(this.id);
-    },
-    getWishlistLoc() {
-      return this.$store.getters.getWishlistLoc(this.id);
-    },
   },
   methods: {
     getSize: function(event) {
@@ -109,85 +144,103 @@ export default {
       console.log(si);
       this.size = toString(si);
     },
-    addToWishlist(Id) {
-      var wishlist = [Id];
-      if (this.getWishlist) {
-        console.log("working");
-        firebase
-          .database()
-          .ref(
-            `/Users/${this.user.data.userId}/wishlist/${[this.getWishlistLoc]}`
-          )
-          .remove()
-          .then(() => {
-            console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        firebase
-          .database()
-          .ref(`/Users/${this.user.data.userId}`)
-          .set({
-            wishlist: wishlist,
-          })
-          .then(() => {
-            window.alert("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    },
+  },
+  components: {
+    /*     Wishlist
+     */
   },
 };
 </script>
 
 <style scoped>
-.red {
-  background-color: red !important;
+@media only screen and (max-width: 768px) {
+  .col-10 {
+    max-width: 100% !important;
+    flex: 0 0 100%;
+  }
+  .col-sm-6 {
+    width: 100% !important;
+  }
 }
-.red:before,
-.red:after {
-  background-color: red !important;
+.prod-btn:focus {
+  outline: none;
 }
-.heart-wrap {
-  padding: 10px 13px 6px 13px;
-  cursor: pointer;
-  width: 170px;
-  background-color: #ce93d8;
-  border-radius: 5px;
+label {
+  font-weight: bold;
 }
-.heart {
-  background-color: #fa8080;
-  display: inline-block;
-  height: 13px;
-  margin: 0 10px;
-  position: relative;
-  top: 0;
-  transform: rotate(-45deg);
-  width: 13px;
+.prod-btn {
+  background: #ce93d8;
+  border-radius: 2px;
+  font-size: 14px;
+  border: none;
+  padding: 15px 20px;
+  width: 100%;
+  font-weight: bold;
 }
-
-.heart:before,
-.heart:after {
-  content: "";
-  background-color: #fa8080;
-  border-radius: 50%;
-  height: 13px;
+.border::before {
   position: absolute;
-  width: 13px;
+  content: "";
+  padding: 0.7px 8px;
+  margin-left: -8px;
+  margin-top: -16px;
+  background-color: black;
 }
-
-.heart:before {
-  top: -6.5px;
-  left: 0;
+.border {
+  box-shadow: 0 0 5px 0.1px #ce93d8;
 }
-
-.heart:after {
-  left: 6.5px;
-  top: 0;
+.black {
+  background-color: black;
+  padding: 10px;
+  border: 1px solid black !important;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.white {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid black !important;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.yellow {
+  background-color: yellow;
+  padding: 10px;
+  border: 1px solid black !important;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+.update-num {
+  background: #ce93d8;
+  border-radius: 2px;
+  font-size: 20px;
+  border: none;
+  font-weight: bold;
+}
+.update-num:hover {
+  background-color: #d29eda;
+}
+.update-num:focus {
+  outline: none;
+}
+.quantity {
+  display: flex;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.quantity input {
+  width: 100%;
+  text-align: center !important;
+  border: none;
+  background-color: #ffebee;
+  font-weight: bold;
 }
 .carousel-control-next,
 .carousel-control-prev {
@@ -209,8 +262,12 @@ export default {
     left: 80px;
   }
 }
+.size {
+  margin-bottom: 10px;
+}
 .p-spec-name {
-  font-size: 30px;
+  font-size: 32px;
+  margin-bottom: 5px;
 }
 .size-picker {
   width: 130px;

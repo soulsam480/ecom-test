@@ -20,7 +20,9 @@
         </div>
       </div>
       <p class="h-intro">NEW ARRIVALS</p>
-      <FeaturedProducts />
+      <div class="container">
+        <FeaturedProducts />
+      </div>
     </div>
   </div>
 </template>

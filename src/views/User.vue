@@ -296,6 +296,9 @@ export default {
 .loader img {
   width: 20px;
 }
+.prod-btn:focus{
+  outline:none;
+}
 
 .prod-btn {
   width: 100%;

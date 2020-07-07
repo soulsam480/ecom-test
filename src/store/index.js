@@ -11,22 +11,31 @@ export default new Vuex.Store({
     user: {
       loggedIn: false,
       data: null,
-    },
+/*       wishlist: [],
+ */    },
     authCred: {
       id: "soulsam480@gmail.com",
       password: "i877isfu*kC9Tt",
     },
-    Wishlist: [],
   },
   mutations: {
     getData(state) {
-      state.productData = [];
       var starCountRef = firebase.database().ref("/Products");
-      starCountRef.on("value", (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          state.productData.push(childSnapshot.val());
+      var main = state.productData;
+      if (main.length === 0) {
+        starCountRef.on("value", (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            state.productData.push(childSnapshot.val());
+          });
         });
-      });
+      } else {
+        var pos = main.length;
+        starCountRef.on("value", (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            state.productData.splice(pos, 0, childSnapshot.val());
+          });
+        });
+      }
     },
     cAuth(state) {
       state.auth = !state.auth;
@@ -36,15 +45,28 @@ export default new Vuex.Store({
     },
     setUser(state, data) {
       state.user.data = data;
-    },
-    addWishlist(state, id) {
-      var wishlist = firebase.database().ref(`/Users/${id}/wishlist`);
-      wishlist.on("value", (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          state.Wishlist.push(childSnapshot.val());
+    }/* ,
+    syncWishlist(state, id) {
+      var wishRef = firebase.database().ref(`/Users/${id}/wishlist`);
+      var wish = state.user.wishlist;
+      if (wish.length === 0) {
+        wishRef.on("value", (snap) => {
+          snap.forEach((childSnapshot) => {
+            wish.push(childSnapshot.val());
+          });
         });
-      });
+      } else {
+        var wishPos = wish.length;
+        wishRef.on("value", (snap) => {
+          snap.forEach((childSnapshot) => {
+            wish.splice(wishPos, 0, childSnapshot.val());
+          });
+        });
+      }
     },
+    changeWishes(state,data){
+      state.user.wishlist = data;
+    } */
   },
   actions: {
     addData(context) {
@@ -67,12 +89,10 @@ export default new Vuex.Store({
       } else {
         commit("setUser", null);
       }
-    },
-    fetchWishlist({ commit }, user) {
-      if (user) {
-        commit("addWishlist", user.uid);
-      }
-    },
+    }/* ,
+    addWishes({ commit }, id) {
+      commit("syncWishlist", id);
+    } */
   },
   getters: {
     getProducts(state) {
@@ -91,13 +111,10 @@ export default new Vuex.Store({
     },
     authCredGet(state) {
       return state.authCred;
-    },
-    getWishlist: (state) => (id) => {
-      return state.Wishlist.includes(id);
-    },
-    getWishlistLoc: (state) => (id) => {
-      return state.Wishlist.indexOf(id);
-    },
+    }/* ,
+    getWishlist: (state) => {
+      return state.user.wishlist;
+    } */
   },
   modules: {},
 });
