@@ -127,13 +127,15 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <button class="prod-btn" :disabled="color === ''">
+                <button class="prod-btn" :disabled="color === ''" @click="cartAdd">
                   ADD TO CART
                 </button>
               </div>
             </div>
           </div>
         </div>
+        <br>
+        <Wishlist :pId="product.id"/>
       </div>
     </div>
     <br />
@@ -150,11 +152,15 @@
         <h4>Reviews</h4>
       </div>
     </div>
+    <FeaturedProducts/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import FeaturedProducts from "@/components/FeaturedProducts.vue"
+import Wishlist from "@/components/Wishlist.vue"
+
 /* import Wishlist from "@/components/Wishlist.vue"
  */ export default {
   name: "Product",
@@ -164,6 +170,7 @@ import { mapGetters } from "vuex";
       size: "S",
       quantity: 1,
       color: "",
+      tempcart: []
     };
   },
   computed: {
@@ -180,11 +187,32 @@ import { mapGetters } from "vuex";
       console.log(si);
       this.size = toString(si);
     },
+     cartAdd() {
+      if (this.product.sizes && !this.size) {
+        this.showSizeRequiredMessage = true;
+        return;
+      }
+
+      let item = this.product;
+      item = { 
+        ...item, 
+        quantity: this.quantity, 
+        size: this.size 
+      };
+      this.tempcart.push(item);
+      this.$store.commit("addToCart", {...item});
+    }
   },
   components: {
+    Wishlist,
+    FeaturedProducts
     /*     Wishlist
-     */
+     */ 
   },
+  beforeRouteUpdate(to,from,next){
+    this.$store.getters.product(to.params.id)
+    next()
+  }
 };
 </script>
 

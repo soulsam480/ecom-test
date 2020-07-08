@@ -15,7 +15,6 @@ import VueLazyload from "vue-lazyload";
 /* const $ = require('jquery')
 window.$ = $ */
 Vue.use(VueLazyload);
-
 // or with options
 Vue.use(VueLazyload, {
   preLoad: 1.3,
@@ -38,6 +37,9 @@ firebase.initializeApp({
 
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
+  if(user){
+    store.dispatch("syncCart",user.uid)
+  }
   /* if (user) {
     store.dispatch("addWishes", user.uid);
   } */

@@ -9,7 +9,7 @@
             </div>
             <div class="col-xs-7 ">
               <h4>{{ user.data.displayName }}</h4>
-              <h6> {{user.data.email}} </h6>
+              <h6>{{ user.data.email }}</h6>
               <button class="btn btn-outline-danger btn-sm" @click="logOut()">
                 Logout
               </button>
@@ -129,7 +129,7 @@
                   <small id="phonehelp" class="form-text text-muted"
                     >Phone Number followed by Country Code.</small
                   >
-                   <div class="loader" id="loader1">
+                  <div class="loader" id="loader1">
                     <img src="../assets/loader.gif" alt="" />
                   </div>
                 </div>
@@ -168,7 +168,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import firebase from "firebase";
 import router from "@/router/index.js";
 
@@ -178,6 +178,7 @@ export default {
     ...mapGetters({
       user: "user",
     }),
+    ...mapState(["cart", "checkedOut"]),
   },
   data() {
     return {
@@ -191,8 +192,20 @@ export default {
   },
   methods: {
     logOut() {
-      firebase.auth().signOut();
-      router.replace({ name: "Login" });
+      if (!this.checkedOut) {
+        firebase
+          .database()
+          .ref(`/Users/${this.user.data.userId}`)
+          .set({
+            cart: this.cart,
+          })
+          .then(firebase.auth().signOut(), this.$store.commit("clearCart"));
+
+        router.replace({ name: "Login" });
+      } else {
+        firebase.auth().signOut();
+        router.replace({ name: "Login" });
+      }
     },
     previewImage(event) {
       this.picture = null;
@@ -279,7 +292,7 @@ export default {
           photoURL: this.picture,
         })
         .then(() => {
-            this.$store.dispatch("fetchUser");
+          this.$store.dispatch("fetchUser");
 
           document.getElementById("loader").style.display = "none";
           window.alert("Updated Successfully!");
@@ -296,8 +309,8 @@ export default {
 .loader img {
   width: 20px;
 }
-.prod-btn:focus{
-  outline:none;
+.prod-btn:focus {
+  outline: none;
 }
 
 .prod-btn {

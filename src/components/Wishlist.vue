@@ -5,87 +5,37 @@
         <span
           class="heart"
           id="heart"
-          :class="{ red: Wish.includes(this.pId) }"
+          :class="{ red: wish.includes(this.pId) }"
         ></span>
-        <span style="font-size:18px;" v-if="Wish.includes(this.pId)"
+        <span style="font-size:18px;" v-if="wish.includes(this.pId)"
           >In Wishlist</span
         >
         <span style="font-size:18px;" v-else> Add to wishlist</span>
       </a>
     </div>
-    <small v-if="Wish.includes(this.pId)"
+    <small v-if="wish.includes(this.pId)"
       >Remove from wishlist currenty not supported.</small
     >
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
 import { mapGetters } from "vuex";
 export default {
   props: ["pId"],
   name: "Wishlist",
   computed: {
     ...mapGetters({
-      Wish: "getWishlist",
-    }),
-    ...mapGetters({
       user: "user",
+      wish: "getWishlist"
     }),
   },
   methods: {
-    addToWishlist() {
-      const wRef = firebase.database().ref(`/Users/${this.user.data.userId}`);
-      var newWishlist = [];
-      var pos = this.Wish.length;
-      if (pos === 0) {
-        newWishlist.push(this.pId);
-        wRef
-          .set({
-            wishlist: newWishlist,
-          })
-          .then(() => {
-            this.$store.dispatch("addWishes", this.user.data.userId);
-
-            /*             this.$store.dispatch("changeOnWishlist", this.pId);
-             */ console.log("success");
-            newWishlist = [];
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else if (this.Wish.includes(this.pId)) {
-        newWishlist = this.Wish.slice();
-        var remPos = newWishlist.indexOf(this.pId);
-        newWishlist.splice(remPos, 1);
-        wRef
-          .set({
-            wishlist: newWishlist,
-          })
-          .then(() => {
-            this.$store.dispatch("addWishes", this.user.data.userId);
-            this.$store.commit("changeWishes", newWishlist);
-            /*             this.$store.dispatch("changeOnWishlist", this.pId);
-             */ console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        newWishlist = this.Wish.slice();
-        newWishlist.splice(pos, 0, this.pId);
-        wRef
-          .set({
-            wishlist: newWishlist,
-          })
-          .then(() => {
-            this.$store.dispatch("addWishes", this.user.data.userId);
-            newWishlist = [];
-            console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    addToWishlist(pId) {
+      if(this.wish.includes(pId)){
+        this.$store.commit("removeFromWishlist",pId)
+      }else{
+        this.$store.commit("addToWishlist",pId)
       }
     },
   },

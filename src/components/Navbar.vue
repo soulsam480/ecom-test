@@ -25,7 +25,13 @@
       <ul>
         <li><img src="../assets/bag.svg" alt="" /></li>
         <li><img src="../assets/heart.svg" alt="" /></li>
-        <li><img src="../assets/search.svg" alt="" /></li>
+        <li>
+          <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
+
+          <router-link to="/cart"
+            ><img src="../assets/bag.svg" alt=""
+          /></router-link>
+        </li>
       </ul>
     </div>
     <div>
@@ -69,7 +75,10 @@
           <a href><img src="../assets/heart.svg" alt=""/></a>
         </li>
         <li>
-          <a href><img src="../assets/bag.svg" alt=""/></a>
+          <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
+          <router-link to="/cart"
+            ><img src="../assets/bag.svg" alt=""
+          /></router-link>
         </li>
       </ul>
     </div>
@@ -77,7 +86,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import firebase from "firebase";
 
 export default {
@@ -89,14 +98,27 @@ export default {
     ...mapGetters({
       user: "user",
     }),
+    ...mapGetters(["cartCount"]),
+    ...mapState(["cart","checkedOut"])
   },
   methods: {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
     },
-    logOut() {
-      firebase.auth().signOut();
+     logOut() {
+      if (!this.checkedOut) {
+         firebase
+          .database()
+          .ref(`/Users/${this.user.data.userId}`)
+          .set({
+            cart: this.cart,
+          })
+          .then(firebase.auth().signOut(),
+          this.$store.commit('clearCart'));
+      } else {
+        firebase.auth().signOut();
+      }
     },
     close() {
       document.getElementById("mnav-wrap").classList.toggle("full");
@@ -106,7 +128,28 @@ export default {
 };
 </script>
 
-<style >
+<style>
+.carttotal {
+  position: absolute;
+  border-radius: 1000px;
+  background: black;
+  color: white;
+  font-size: 10px;
+  top: 8px;
+  right: 12px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+}
+@media only screen and (max-width: 768px) {
+  .carttotal {
+    top: -3px;
+    right: -4px;
+  }
+}
 /* Dropdown Content (Hidden by Default) */
 .d-content {
   display: none;
@@ -152,7 +195,7 @@ export default {
 .m-leftnav ul {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   list-style-type: none;
   margin: 0;
   padding: 0;

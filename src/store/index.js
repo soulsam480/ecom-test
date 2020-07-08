@@ -1,6 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPersistence from 'vuex-persist'
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+  reducer: (state) => ({cart: state.cart , wishlist: state.user.wishlist}),
 
+})
 import firebase from "firebase/app";
 Vue.use(Vuex);
 
@@ -11,12 +16,15 @@ export default new Vuex.Store({
     user: {
       loggedIn: false,
       data: null,
-/*       wishlist: [],
- */    },
+      wishlist: [],
+    },
     authCred: {
       id: "soulsam480@gmail.com",
       password: "i877isfu*kC9Tt",
     },
+    cart: [],
+    cartUIStatus: "idle",
+    checkedOut: false,
   },
   mutations: {
     getData(state) {
@@ -45,28 +53,57 @@ export default new Vuex.Store({
     },
     setUser(state, data) {
       state.user.data = data;
-    }/* ,
-    syncWishlist(state, id) {
-      var wishRef = firebase.database().ref(`/Users/${id}/wishlist`);
-      var wish = state.user.wishlist;
-      if (wish.length === 0) {
-        wishRef.on("value", (snap) => {
-          snap.forEach((childSnapshot) => {
-            wish.push(childSnapshot.val());
-          });
-        });
-      } else {
-        var wishPos = wish.length;
-        wishRef.on("value", (snap) => {
-          snap.forEach((childSnapshot) => {
-            wish.splice(wishPos, 0, childSnapshot.val());
-          });
-        });
-      }
     },
-    changeWishes(state,data){
-      state.user.wishlist = data;
-    } */
+    updateCartUI: (state, payload) => {
+      state.cartUIStatus = payload;
+    },
+    clearCart: (state) => {
+      //this clears the cart
+      (state.cart = []), (state.cartUIStatus = "idle");
+    },
+    addToCart: (state, payload) => {
+      let itemfound = state.cart.find((el) => el.id === payload.id);
+      itemfound
+        ? (itemfound.quantity += payload.quantity)
+        : state.cart.push(payload);
+    },
+    setClientSecret: (state, payload) => {
+      state.clientSecret = payload;
+    },
+    addOneToCart: (state, payload) => {
+      let itemfound = state.cart.find((el) => el.id === payload.id);
+      itemfound ? itemfound.quantity++ : state.cart.push(payload);
+    },
+    removeOneFromCart: (state, payload) => {
+      let index = state.cart.findIndex((el) => el.id === payload.id);
+      state.cart[index].quantity
+        ? state.cart[index].quantity--
+        : state.cart.splice(index, 1);
+    },
+    removeAllFromCart: (state, payload) => {
+      state.cart = state.cart.filter((el) => el.id !== payload.id);
+    },
+    fromLogin(state, id) {
+      const cartref = firebase.database().ref(`/Users/${id}/cart`);
+      cartref.on("value", (snap) => {
+        snap.forEach((csnap) => {
+          let itemfound = state.cart.find((el) => el.id === csnap.val().id);
+          itemfound
+            ? state.cart.splice(state.cart.indexOf(itemfound), 1, csnap.val())
+            : state.cart.push(csnap.val());
+        });
+      });
+    },
+    addToWishlist(state, load) {
+      let itemfound = state.user.wishlist.find((el) => el === load);
+      itemfound
+        ? state.user.wishlist.splice(state.user.wishlist.indexOf(itemfound), 1, load)
+        : state.user.wishlist.push(load);
+    },
+    removeFromWishlist(state, load) {
+      let itemfound = state.user.wishlist.find((el) => el === load);
+      state.user.wishlist.splice(state.user.wishlist.indexOf(itemfound), 1);
+    },
   },
   actions: {
     addData(context) {
@@ -89,10 +126,10 @@ export default new Vuex.Store({
       } else {
         commit("setUser", null);
       }
-    }/* ,
-    addWishes({ commit }, id) {
-      commit("syncWishlist", id);
-    } */
+    },
+    syncCart({ commit }, id) {
+      commit("fromLogin", id);
+    },
   },
   getters: {
     getProducts(state) {
@@ -111,10 +148,34 @@ export default new Vuex.Store({
     },
     authCredGet(state) {
       return state.authCred;
-    }/* ,
-    getWishlist: (state) => {
-      return state.user.wishlist;
-    } */
+    },
+    cartCount: (state) => {
+      if (!state.cart.length) return 0;
+      return state.cart.length;
+      /*       return state.cart.reduce((ac, next) => ac + next.quantity, 0);
+       */
+    },
+    cartTotal: (state) => {
+      if (!state.cart.length) return 0;
+      return state.cart.reduce(
+        (ac, next) => ac + next.quantity * next.price,
+        0
+      );
+    },
+    cartItems: (state) => {
+      if (!state.cart.length) return [];
+      return state.cart.map((item) => {
+        return {
+          id: item.id,
+          quantity: item.quantity,
+        };
+      });
+    },
+    getWishlist: (state) =>{
+      return state.user.wishlist
+    }
   },
+  plugins: [vuexLocal.plugin],
+
   modules: {},
 });
