@@ -35,10 +35,12 @@ firebase.initializeApp({
   appId: "1:328860335019:web:0af8f449243f35648ef0ee",
 });
 
+
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
   if(user){
-    store.dispatch("syncCart",user.uid)
+    store.dispatch("syncCart",user.uid);
+    store.commit('addWishes',user.uid)
   }
   /* if (user) {
     store.dispatch("addWishes", user.uid);

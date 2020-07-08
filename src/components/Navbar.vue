@@ -16,21 +16,29 @@
           </router-link>
           <router-link v-else to="/login"> Login</router-link>
         </div>
-        <a href="">Wishlist</a>
-
+        <router-link to="/wishlist">Wishlist</router-link>
         <a v-if="user.loggedIn" @click="logOut">Sign Out</a>
       </div>
     </div>
     <div class="m-leftnav">
       <ul>
-        <li><img src="../assets/bag.svg" alt="" /></li>
-        <li><img src="../assets/heart.svg" alt="" /></li>
         <li>
           <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
 
           <router-link to="/cart"
             ><img src="../assets/bag.svg" alt=""
           /></router-link>
+        </li>
+        <li>
+          <div v-if="wishCount > 0" class="wishcount">
+            {{ wishCount }}
+          </div>
+          <router-link to="/wishlist">
+            <img src="../assets/heart.svg" alt=""
+          /></router-link>
+        </li>
+        <li>
+          <img src="../assets/search.svg" alt="" />
         </li>
       </ul>
     </div>
@@ -72,7 +80,12 @@
           <a href><img src="../assets/search.svg" alt=""/></a>
         </li>
         <li>
-          <a href><img src="../assets/heart.svg" alt=""/></a>
+          <div v-if="wishCount > 0" class="wishcount">
+            {{ wishCount }}
+          </div>
+          <router-link to="/wishlist">
+            <img src="../assets/heart.svg" alt=""
+          /></router-link>
         </li>
         <li>
           <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
@@ -98,24 +111,25 @@ export default {
     ...mapGetters({
       user: "user",
     }),
-    ...mapGetters(["cartCount"]),
-    ...mapState(["cart","checkedOut"])
+    ...mapGetters(["cartCount", "wishCount"]),
+    ...mapState(["cart", "checkedOut"]),
   },
   methods: {
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
     },
-     logOut() {
+    logOut() {
       if (!this.checkedOut) {
-         firebase
+        firebase
           .database()
           .ref(`/Users/${this.user.data.userId}`)
           .set({
             cart: this.cart,
+            wishlist: this.user.wishlist,
           })
-          .then(firebase.auth().signOut(),
-          this.$store.commit('clearCart'));
+          .then(firebase.auth().signOut(), this.$store.commit("clearCart")),
+          this.$store.commit("clearWishlist");
       } else {
         firebase.auth().signOut();
       }
@@ -129,6 +143,24 @@ export default {
 </script>
 
 <style>
+a:hover{
+  text-decoration: none !important;
+}
+.wishcount {
+  position: absolute;
+  border-radius: 1000px;
+  background: black;
+  color: white;
+  font-size: 10px;
+  top: 8px;
+  right: 53px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+}
 .carttotal {
   position: absolute;
   border-radius: 1000px;
@@ -147,7 +179,11 @@ export default {
 @media only screen and (max-width: 768px) {
   .carttotal {
     top: -3px;
-    right: -4px;
+    left: 18px;
+  }
+  .wishcount {
+    top: -3px;
+    left: 55px;
   }
 }
 /* Dropdown Content (Hidden by Default) */
@@ -265,6 +301,11 @@ export default {
 }
 @media only screen and (min-width: 768px) {
   .hamburger {
+    display: none;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .main-menu-wrap {
     display: none;
   }
 }

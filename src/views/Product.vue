@@ -135,7 +135,7 @@
           </div>
         </div>
         <br>
-        <Wishlist :pId="product.id"/>
+        <Wishlist :product="product"/>
       </div>
     </div>
     <br />

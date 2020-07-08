@@ -1,15 +1,18 @@
 <template>
   <div class="container">
-    <h1 class="center">Your Cart</h1>
+    <br>
+    <h5 class="d-inline">{{ user.data.displayName }}'s <h2 class="d-inline">Cart</h2></h5>
+    <hr>
     <section v-if="cartUIStatus === 'idle'">
       <section v-if="cartCount > 0">
-        <table class="table ">
+        <table class="table table-borderless">
           <thead class="w-100">
             <tr>
               <th scope="col">Product</th>
               <th scope="col">Price</th>
               <th scope="col">Quantity</th>
               <th scope="col">Total</th>
+              <th></th>
             </tr>
           </thead>
           <tbody class="w-100">
@@ -38,7 +41,7 @@
                 <div>
                   <button
                   @click="removeOneFromCart(item)"
-                  style="padding:5px 14px"
+                  style="padding:2px 14px"
                   class="update-num"
                 >
                   -
@@ -46,7 +49,7 @@
                 <strong style="margin:0 10px 0 10px"> {{ item.quantity }}</strong>
                 <button
                   @click="addToCart(item)"
-                  style="padding:5px 10px"
+                  style="padding:2px 10px"
                   class="update-num"
                 >
                   +
@@ -101,7 +104,7 @@ export default {
   computed: {
     ...mapState(["cartUIStatus"]),
     ...mapState(["cart"]),
-    ...mapGetters(["cartCount","cartTotal"]),
+    ...mapGetters(["cartCount","cartTotal","user"]),
   },
   methods: {
     addToCart(item) {
@@ -118,6 +121,10 @@ export default {
 </script>
 
 <style scoped>
+tr{
+  border-bottom: 1px solid black;
+  width: 100%;
+}
 .loader {
   display: flex;
   justify-content: center;
@@ -165,7 +172,6 @@ button a {
   font-size: 20px;
   border: none;
   font-weight: bold;
-  line-height: 20px;
 }
 .update-num:hover {
   background-color: #d29eda;

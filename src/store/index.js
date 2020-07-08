@@ -1,11 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import VuexPersistence from 'vuex-persist'
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage,
-  reducer: (state) => ({cart: state.cart , wishlist: state.user.wishlist}),
+import createPersistedState from "vuex-persistedstate";
 
-})
 import firebase from "firebase/app";
 Vue.use(Vuex);
 
@@ -67,9 +63,6 @@ export default new Vuex.Store({
         ? (itemfound.quantity += payload.quantity)
         : state.cart.push(payload);
     },
-    setClientSecret: (state, payload) => {
-      state.clientSecret = payload;
-    },
     addOneToCart: (state, payload) => {
       let itemfound = state.cart.find((el) => el.id === payload.id);
       itemfound ? itemfound.quantity++ : state.cart.push(payload);
@@ -94,14 +87,31 @@ export default new Vuex.Store({
         });
       });
     },
+    addWishes(state, id) {
+      const wishref = firebase.database().ref(`/Users/${id}/wishlist`);
+      wishref.on("value", (snap) => {
+        snap.forEach((csnap) => {
+          let wishFound = state.user.wishlist.find((el) => el.id === csnap.val().id);
+          wishFound
+            ? state.user.wishlist.splice(
+                state.user.wishlist.indexOf(wishFound),
+                1,
+                csnap.val()
+              )
+            : state.user.wishlist.push(csnap.val());
+        });
+      });
+    },
+    clearWishlist(state) {
+      state.user.wishlist = [];
+    },
     addToWishlist(state, load) {
-      let itemfound = state.user.wishlist.find((el) => el === load);
+      let itemfound = state.user.wishlist.find((el) => el.id === load.id);
       itemfound
-        ? state.user.wishlist.splice(state.user.wishlist.indexOf(itemfound), 1, load)
-        : state.user.wishlist.push(load);
+        ? window.alert('Already on Wishlist') : state.user.wishlist.push(load);
     },
     removeFromWishlist(state, load) {
-      let itemfound = state.user.wishlist.find((el) => el === load);
+      let itemfound = state.user.wishlist.find((el) => el.id === load.id);
       state.user.wishlist.splice(state.user.wishlist.indexOf(itemfound), 1);
     },
   },
@@ -171,11 +181,19 @@ export default new Vuex.Store({
         };
       });
     },
-    getWishlist: (state) =>{
-      return state.user.wishlist
-    }
+    getWishlist: (state) => {
+      return state.user.wishlist;
+    },
+    wishCount: (state) => {
+      if (!state.user.wishlist.length) return 0;
+      return state.user.wishlist.length;
+    },
   },
-  plugins: [vuexLocal.plugin],
+  plugins: [
+    createPersistedState({
+      paths: ["cart", "user.wishlist"],
+    }),
+  ],
 
   modules: {},
 });

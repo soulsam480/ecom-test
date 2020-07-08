@@ -198,8 +198,13 @@ export default {
           .ref(`/Users/${this.user.data.userId}`)
           .set({
             cart: this.cart,
+            wishlist: this.user.wishlist,
           })
-          .then(firebase.auth().signOut(), this.$store.commit("clearCart"));
+          .then(
+            firebase.auth().signOut(),
+            this.$store.commit("clearCart"),
+            this.$store.commit("clearWishlist")
+          );
 
         router.replace({ name: "Login" });
       } else {

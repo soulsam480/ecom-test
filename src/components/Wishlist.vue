@@ -1,28 +1,25 @@
 <template>
   <div>
     <div class="heart-wrap">
-      <a @click="addToWishlist(pId)">
+      <a @click="addToWishlist(product)">
         <span
           class="heart"
           id="heart"
-          :class="{ red: wish.includes(this.pId) }"
+          :class="{ red: wish.includes(product) }"
         ></span>
-        <span style="font-size:18px;" v-if="wish.includes(this.pId)"
+        <span style="font-size:18px;" v-if="wish.includes(product)"
           >In Wishlist</span
         >
         <span style="font-size:18px;" v-else> Add to wishlist</span>
       </a>
     </div>
-    <small v-if="wish.includes(this.pId)"
-      >Remove from wishlist currenty not supported.</small
-    >
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["pId"],
+  props: ["product"],
   name: "Wishlist",
   computed: {
     ...mapGetters({
@@ -31,11 +28,11 @@ export default {
     }),
   },
   methods: {
-    addToWishlist(pId) {
-      if(this.wish.includes(pId)){
-        this.$store.commit("removeFromWishlist",pId)
+    addToWishlist(product) {
+      if(this.wish.includes(product)){
+        this.$store.commit("removeFromWishlist",product)
       }else{
-        this.$store.commit("addToWishlist",pId)
+        this.$store.commit("addToWishlist",product)
       }
     },
   },
