@@ -41,6 +41,7 @@ firebase.auth().onAuthStateChanged((user) => {
   if(user){
     store.dispatch("syncCart",user.uid);
     store.commit('addWishes',user.uid)
+    store.commit('syncAddress',user.uid)
   }
   /* if (user) {
     store.dispatch("addWishes", user.uid);

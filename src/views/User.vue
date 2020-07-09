@@ -151,186 +151,251 @@
               role="tabpanel"
               aria-labelledby="pills-contact-tab"
             >
-              <h5>Add a new Address</h5>
-              <form class="form-horizontal">
-                <fieldset>
-                  <div class="form-group">
-                    <label>Full Name</label>
-                    <div class="controls">
-                      <input
-                        v-model="uName"
-                        id="full-name"
-                        name="full-name"
-                        type="text"
-                        :placeholder="user.data.displayName"
-                        class="form-control"
-                      />
-                      <p class="help-block"></p>
+              <div v-if="!addAddress">
+                <div class="d-flex justify-content-between">
+                  <h5>My Addresses </h5> <button class="prod-btn "  @click="addAddress = true">
+                  +
+                </button>
+                </div>
+                <div class="row">
+                  <div
+                    class="col-sm-4"
+                    v-for="address in addresses"
+                    :key="address.id"
+                  >
+                    <div class="card">
+                      <p class="card-header">{{ address.adName }}</p>
+                      <div class="card-body p-1">
+                        <div class="btn-group">
+                          <button
+                            class="btn btn-info btn-sm"
+                            @click="editAddress(address.id)"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            class="btn btn-danger btn-sm"
+                            @click="removeAddress(address.id)"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label>Country</label>
-                    <div class="controls">
-                      <input
-                        disabled
-                        v-model="country"
-                        id="region"
-                        name="region"
-                        type="text"
-                        placeholder="Country"
-                        class="form-control"
-                      />
-                      <p class="help-block"></p>
+                </div>
+                
+              </div>
+              <div v-else>
+                <h5>
+                  <span v-if="eAddress">Edit an</span>
+                  <span v-else>Add a new</span> Address
+                </h5>
+                <form class="form-horizontal">
+                  <fieldset>
+                    <div class="form-group">
+                      <label>Save Address as</label>
+                      <div class="controls">
+                        <input
+                          v-model="adName"
+                          id="adName"
+                          name="adName"
+                          type="text"
+                          placeholder="Enter a name for this Address"
+                          class="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <!-- address-line1 input-->
-                  <div class="form-group">
-                    <label>Street Address</label>
-                    <input
-                      v-model="street"
-                      id="address-line1"
-                      name="address-line1"
-                      type="text"
-                      placeholder="Street Address"
-                      class="form-control"
-                    />
-                    <small id="help-block" class="form-text text-muted">
-                      Street address, P.O. box, company name, c/o
-                    </small>
-                  </div>
-                  <!-- address-line2 input-->
-
-                  <!-- city input-->
-                  <div class="form-group">
-                    <label>City / Town</label>
-                    <div class="controls">
+                    <div class="form-group">
+                      <label>Full Name</label>
+                      <div class="controls">
+                        <input
+                          v-model="uName"
+                          id="full-name"
+                          name="full-name"
+                          type="text"
+                          :placeholder="user.data.displayName"
+                          class="form-control"
+                        />
+                        <p class="help-block"></p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Country</label>
+                      <div class="controls">
+                        <input
+                          disabled
+                          v-model="country"
+                          id="region"
+                          name="region"
+                          type="text"
+                          placeholder="Country"
+                          class="form-control"
+                        />
+                        <p class="help-block"></p>
+                      </div>
+                    </div>
+                    <!-- address-line1 input-->
+                    <div class="form-group">
+                      <label>Street Address</label>
                       <input
-                        v-model="city"
-                        id="city"
-                        name="city"
+                        v-model="street"
+                        id="address-line1"
+                        name="address-line1"
                         type="text"
-                        placeholder="city"
+                        placeholder="Street Address"
                         class="form-control"
                       />
                       <small id="help-block" class="form-text text-muted">
-                        City, Town or Local Landmark
+                        Street address, P.O. box, company name, c/o
                       </small>
                     </div>
-                  </div>
-                  <!-- State input-->
-                  <div class="form-group">
-                    <label>State</label>
-                    <div>
-                      <select
-                        v-model="state"
-                        name="state"
-                        id="state"
-                        class="form-control"
-                      >
-                        <option disabled value="Please Select One"
-                          >Please Select One</option
-                        >
-                        <option value="Andhra Pradesh">Andhra Pradesh</option>
-                        <option value="Andaman and Nicobar Islands"
-                          >Andaman and Nicobar Islands</option
-                        >
-                        <option value="Arunachal Pradesh"
-                          >Arunachal Pradesh</option
-                        >
-                        <option value="Assam">Assam</option>
-                        <option value="Bihar">Bihar</option>
-                        <option value="Chandigarh">Chandigarh</option>
-                        <option value="Chhattisgarh">Chhattisgarh</option>
-                        <option value="Dadar and Nagar Haveli"
-                          >Dadar and Nagar Haveli</option
-                        >
-                        <option value="Daman and Diu">Daman and Diu</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Lakshadweep">Lakshadweep</option>
-                        <option value="Puducherry">Puducherry</option>
-                        <option value="Goa">Goa</option>
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Haryana">Haryana</option>
-                        <option value="Himachal Pradesh"
-                          >Himachal Pradesh</option
-                        >
-                        <option value="Jammu and Kashmir"
-                          >Jammu and Kashmir</option
-                        >
-                        <option value="Jharkhand">Jharkhand</option>
-                        <option value="Karnataka">Karnataka</option>
-                        <option value="Kerala">Kerala</option>
-                        <option value="Madhya Pradesh">Madhya Pradesh</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Manipur">Manipur</option>
-                        <option value="Meghalaya">Meghalaya</option>
-                        <option value="Mizoram">Mizoram</option>
-                        <option value="Nagaland">Nagaland</option>
-                        <option value="Odisha">Odisha</option>
-                        <option value="Punjab">Punjab</option>
-                        <option value="Rajasthan">Rajasthan</option>
-                        <option value="Sikkim">Sikkim</option>
-                        <option value="Tamil Nadu">Tamil Nadu</option>
-                        <option value="Telangana">Telangana</option>
-                        <option value="Tripura">Tripura</option>
-                        <option value="Uttar Pradesh">Uttar Pradesh</option>
-                        <option value="Uttarakhand">Uttarakhand</option>
-                        <option value="West Bengal">West Bengal</option>
-                      </select>
+                    <!-- address-line2 input-->
+
+                    <!-- city input-->
+                    <div class="form-group">
+                      <label>City / Town</label>
+                      <div class="controls">
+                        <input
+                          v-model="city"
+                          id="city"
+                          name="city"
+                          type="text"
+                          placeholder="city"
+                          class="form-control"
+                        />
+                        <small id="help-block" class="form-text text-muted">
+                          City, Town or Local Landmark
+                        </small>
+                      </div>
                     </div>
-                  </div>
-                  <!-- postal-code input-->
-                  <div class="form-group">
-                    <label>Postal Code</label>
-                    <div class="controls">
-                      <input
-                        v-model="postalCode"
-                        id="postal-code"
-                        name="postal-code"
-                        type="text"
-                        placeholder="Postal code"
-                        class="form-control"
-                      />
-                      <p class="help-block"></p>
+                    <!-- State input-->
+                    <div class="form-group">
+                      <label>State</label>
+                      <div>
+                        <select
+                          v-model="state"
+                          name="state"
+                          id="state"
+                          class="form-control"
+                        >
+                          <option disabled value="Please Select One"
+                            >Please Select One</option
+                          >
+                          <option value="Andhra Pradesh">Andhra Pradesh</option>
+                          <option value="Andaman and Nicobar Islands"
+                            >Andaman and Nicobar Islands</option
+                          >
+                          <option value="Arunachal Pradesh"
+                            >Arunachal Pradesh</option
+                          >
+                          <option value="Assam">Assam</option>
+                          <option value="Bihar">Bihar</option>
+                          <option value="Chandigarh">Chandigarh</option>
+                          <option value="Chhattisgarh">Chhattisgarh</option>
+                          <option value="Dadar and Nagar Haveli"
+                            >Dadar and Nagar Haveli</option
+                          >
+                          <option value="Daman and Diu">Daman and Diu</option>
+                          <option value="Delhi">Delhi</option>
+                          <option value="Lakshadweep">Lakshadweep</option>
+                          <option value="Puducherry">Puducherry</option>
+                          <option value="Goa">Goa</option>
+                          <option value="Gujarat">Gujarat</option>
+                          <option value="Haryana">Haryana</option>
+                          <option value="Himachal Pradesh"
+                            >Himachal Pradesh</option
+                          >
+                          <option value="Jammu and Kashmir"
+                            >Jammu and Kashmir</option
+                          >
+                          <option value="Jharkhand">Jharkhand</option>
+                          <option value="Karnataka">Karnataka</option>
+                          <option value="Kerala">Kerala</option>
+                          <option value="Madhya Pradesh">Madhya Pradesh</option>
+                          <option value="Maharashtra">Maharashtra</option>
+                          <option value="Manipur">Manipur</option>
+                          <option value="Meghalaya">Meghalaya</option>
+                          <option value="Mizoram">Mizoram</option>
+                          <option value="Nagaland">Nagaland</option>
+                          <option value="Odisha">Odisha</option>
+                          <option value="Punjab">Punjab</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                          <option value="Sikkim">Sikkim</option>
+                          <option value="Tamil Nadu">Tamil Nadu</option>
+                          <option value="Telangana">Telangana</option>
+                          <option value="Tripura">Tripura</option>
+                          <option value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option value="Uttarakhand">Uttarakhand</option>
+                          <option value="West Bengal">West Bengal</option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Email</label>
-                    <div class="controls">
-                      <input
-                        v-model="uEmail"
-                        id="Email"
-                        name="email"
-                        type="email"
-                        :placeholder="user.data.email"
-                        class="form-control"
-                      />
+                    <!-- postal-code input-->
+                    <div class="form-group">
+                      <label>Postal Code</label>
+                      <div class="controls">
+                        <input
+                          v-model="postalCode"
+                          id="postal-code"
+                          name="postal-code"
+                          type="text"
+                          placeholder="Postal code"
+                          class="form-control"
+                        />
+                        <p class="help-block"></p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Phone Number</label>
-                    <div class="controls">
-                      <input
-                        v-model="uPhone"
-                        id="Phone-number"
-                        name="Phone-number"
-                        type="tel"
-                        :placeholder="user.data.pNum"
-                        class="form-control"
-                      />
-                      <p class="help-block"></p>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <div class="controls">
+                        <input
+                          v-model="uEmail"
+                          id="Email"
+                          name="email"
+                          type="email"
+                          :placeholder="user.data.email"
+                          class="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <!-- country select -->
-                </fieldset>
-              </form>
-              <button
-                type="submit"
-                @click="saveAddress(user.data)"
-                class="prod-btn"
-              >
-                Save Address
-              </button>
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <div class="controls">
+                        <input
+                          v-model="uPhone"
+                          id="Phone-number"
+                          name="Phone-number"
+                          type="tel"
+                          :placeholder="user.data.pNum"
+                          class="form-control"
+                        />
+                        <p class="help-block"></p>
+                      </div>
+                    </div>
+                    <!-- country select -->
+                  </fieldset>
+                </form>
+                <button
+                  type="submit"
+                  @click="saveAddress()"
+                  class="prod-btn"
+                  v-if="editAddress"
+                >
+                  Save Address
+                </button>
+                <button
+                  type="submit"
+                  @click="updateAddress()"
+                  class="prod-btn"
+                  v-if="eAddress"
+                >
+                  Update Address
+                </button>
+                <button @click="cancel" class="prod-btn" v-if="eAddress">
+                  Cancel
+                </button>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -369,6 +434,7 @@ export default {
   computed: {
     ...mapGetters({
       user: "user",
+      addresses: "getAddresses",
     }),
     ...mapState(["cart", "checkedOut"]),
   },
@@ -386,19 +452,38 @@ export default {
       city: "",
       state: "",
       postalCode: "",
+      adId: "",
+      adName: "",
+      addAddress: false,
+      eAddress: false,
     };
   },
   methods: {
-    saveAddress() {
-      window.alert('address support is coming')
-      /* NProgress.start();
+    removeAddress(id) {
+      firebase
+        .database()
+        .ref(`/Users/${this.user.data.userId}/address/${id}`)
+        .remove()
+        .then(() => {
+          this.$store.commit("syncAddress", this.user.data.userId);
+          window.alert("Removed Successfully.");
+        });
+    },
+    cancel() {
+      this.addAddress = false;
+      this.eAddress = false;
+    },
+    updateAddress() {
+      NProgress.start();
       NProgress.set(0.1);
       NProgress.inc(0.2);
-      this.uName === null ? (this.uName = data.displayName) : this.uName;
-      this.uEmail === null ? (this.uEmail = data.email) : this.uEmail;
-      this.uPhone === null ? (this.uPhone = data.pNum) : this.uPhone;
-      let address = [
-        {
+      const editRef = firebase
+        .database()
+        .ref(`/Users/${this.user.data.userId}/address/${this.adId}`);
+      editRef
+        .update({
+          adName: this.adName,
+          id: this.adId,
           name: this.uName,
           email: this.uEmail,
           phone: this.uPhone,
@@ -407,15 +492,11 @@ export default {
           city: this.city,
           state: this.state,
           postal: this.postalCode,
-        },
-      ];
-      const adRef = firebase.database().ref(`/Users/${data.userId}/address`);
-      adRef
-        .set({
-          address,  
         })
         .then(() => {
-          (this.country = "India"),
+          (this.adName = ""),
+            (this.adId = ""),
+            (this.country = "India"),
             (this.street = ""),
             (this.city = ""),
             (this.state = ""),
@@ -423,8 +504,73 @@ export default {
             (this.uPhone = ""),
             (this.uEmail = ""),
             (this.uName = "");
+          window.alert("Updated Successfully");
+          this.eAddress = false;
+          this.addAddress = false;
           setTimeout(() => NProgress.done(), 2000);
-        }); */
+        });
+    },
+    editAddress(id) {
+      var toEdit = this.addresses.find((el) => el.id === id);
+      this.adName = toEdit.adName;
+      this.adId = toEdit.id;
+      this.country = toEdit.country;
+      this.street = toEdit.street;
+      this.city = toEdit.city;
+      this.state = toEdit.state;
+      this.postalCode = toEdit.postal;
+      this.uPhone = toEdit.phone;
+      this.uEmail = toEdit.email;
+      this.uName = toEdit.name;
+      this.eAddress = true;
+      this.addAddress = true;
+    },
+    saveAddress() {
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
+      this.uName === null
+        ? (this.uName = this.user.data.displayName)
+        : this.uName;
+      this.uEmail === null ? (this.uEmail = this.user.data.email) : this.uEmail;
+      this.uPhone === null ? (this.uPhone = this.user.data.pNum) : this.uPhone;
+      this.adId =
+        Math.random()
+          .toString(36)
+          .slice(2) +
+        Math.random()
+          .toString(36)
+          .slice(2);
+      const adRef = firebase
+        .database()
+        .ref(`/Users/${this.user.data.userId}/address/${this.adId}`);
+      adRef
+        .set({
+          adName: this.adName,
+          id: this.adId,
+          name: this.uName,
+          email: this.uEmail,
+          phone: this.uPhone,
+          country: this.country,
+          street: this.street,
+          city: this.city,
+          state: this.state,
+          postal: this.postalCode,
+        })
+        .then(() => {
+          (this.adName = ""),
+            (this.adId = ""),
+            (this.country = "India"),
+            (this.street = ""),
+            (this.city = ""),
+            (this.state = ""),
+            (this.postalCode = ""),
+            (this.uPhone = ""),
+            (this.uEmail = ""),
+            (this.uName = "");
+          this.addresses = false;
+          setTimeout(() => NProgress.done(), 2000);
+        });
     },
     logOut() {
       if (!this.checkedOut) {
@@ -557,6 +703,7 @@ export default {
   font-size: 14px;
   border: none;
   padding: 7px 20px;
+  margin: 5px;
 }
 .prod-btn:hover {
   opacity: 0.9;

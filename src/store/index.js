@@ -13,6 +13,7 @@ export default new Vuex.Store({
       loggedIn: false,
       data: null,
       wishlist: [],
+      address: [],
     },
     authCred: {
       id: "soulsam480@gmail.com",
@@ -126,6 +127,23 @@ export default new Vuex.Store({
       let itemfound = state.user.wishlist.find((el) => el.id === load.id);
       state.user.wishlist.splice(state.user.wishlist.indexOf(itemfound), 1);
     },
+    syncAddress: (state, id) => {
+      const adRef = firebase.database().ref(`/Users/${id}/address`);
+      adRef.on("value", (snap) => {
+        snap.forEach((csnap) => {
+          let adFound = state.user.address.find(
+            (el) => el.id === csnap.val().id
+          );
+          adFound
+            ? state.user.address.splice(
+                state.user.addData.indexOf(adFound.id),
+                1,
+                csnap.val()
+              )
+            : state.user.address.push(csnap.val());
+        });
+      });
+    },
   },
   actions: {
     addData(context) {
@@ -200,6 +218,9 @@ export default new Vuex.Store({
       if (!state.user.wishlist.length) return 0;
       return state.user.wishlist.length;
     },
+    getAddresses: (state)=>{
+       return state.user.address
+    }
   },
   plugins: [
     createPersistedState({
