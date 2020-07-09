@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div class="product container">
-    <div class="row">
+<!--     <Loader :hidden="loading"/>
+ -->    <div class="row">
       <div class="col-sm-7">
         <div
           id="carouselExampleControls"
@@ -42,7 +44,10 @@
       <div class="col-sm-5">
         <div class="p-spec">
           <p class="p-spec-name">{{ product.name }}</p>
-          <h6 class="text-muted"><!-- {{ product.desc }} --> Short Description Here</h6>
+          <h6 class="text-muted">
+            <!-- {{ product.desc }} -->
+            Short Description Here
+          </h6>
           <h3>₹ {{ product.price }}</h3>
           <br />
 
@@ -127,39 +132,43 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <button class="prod-btn" :disabled="color === ''" @click="cartAdd">
+                <button
+                  class="prod-btn"
+                  :disabled="color === ''"
+                  @click="cartAdd"
+                >
                   ADD TO CART
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <br>
-        <Wishlist :product="product"/>
+        <br />
+        <Wishlist :product="product" />
       </div>
     </div>
     <br />
     <br />
-      <hr>
+    <hr />
 
     <div class="row">
       <div class="col-sm-6">
-                <h4>Description</h4>
+        <h4>Description</h4>
         <div v-html="product.desc">{{ product.desc }}</div>
-
       </div>
       <div class="col-sm-6">
         <h4>Reviews</h4>
       </div>
     </div>
-    <FeaturedProducts/>
+    <FeaturedProducts />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import FeaturedProducts from "@/components/FeaturedProducts.vue"
-import Wishlist from "@/components/Wishlist.vue"
+/* import Loader from "@/components/Loader.vue";
+ */import { mapGetters } from "vuex";
+import FeaturedProducts from "@/components/FeaturedProducts.vue";
+import Wishlist from "@/components/Wishlist.vue";
 
 /* import Wishlist from "@/components/Wishlist.vue"
  */ export default {
@@ -170,7 +179,8 @@ import Wishlist from "@/components/Wishlist.vue"
       size: "S",
       quantity: 1,
       color: "",
-      tempcart: []
+      tempcart: [],
+      loading: false,
     };
   },
   computed: {
@@ -187,32 +197,38 @@ import Wishlist from "@/components/Wishlist.vue"
       console.log(si);
       this.size = toString(si);
     },
-     cartAdd() {
+    cartAdd() {
       if (this.product.sizes && !this.size) {
         this.showSizeRequiredMessage = true;
         return;
       }
 
       let item = this.product;
-      item = { 
-        ...item, 
-        quantity: this.quantity, 
-        size: this.size 
+      item = {
+        ...item,
+        quantity: this.quantity,
+        size: this.size,
       };
       this.tempcart.push(item);
-      this.$store.commit("addToCart", {...item});
-    }
+      this.$store.commit("addToCart", { ...item });
+    },
   },
   components: {
     Wishlist,
-    FeaturedProducts
-    /*     Wishlist
-     */ 
+    FeaturedProducts,
+/*     Loader
+ */    /*     Wishlist
+     */
   },
-  beforeRouteUpdate(to,from,next){
-    this.$store.getters.product(to.params.id)
-    next()
-  }
+  created() {
+  setTimeout(
+       ()=> this.loading = true, 3000
+    )
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.getters.product(to.params.id);
+    next();
+  },
 };
 </script>
 
@@ -363,7 +379,7 @@ label {
   margin-bottom: 5px;
 }
 
-.product{
+.product {
   padding-top: 15px;
 }
 .p-img {

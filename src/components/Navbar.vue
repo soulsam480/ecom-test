@@ -316,6 +316,7 @@ a:hover{
   top: 50%;
   width: 25px;
   height: 2px;
+  border-radius: 1px;
   background-color: rgb(3, 3, 3);
   display: none;
   -webkit-transition-duration: 0s;
@@ -342,7 +343,8 @@ a:hover{
 .hamburger span:after {
   width: 25px;
   height: 2px;
-  background-color: #353e4a;
+  border-radius: 1px;
+  background-color: black;
   display: block;
 }
 

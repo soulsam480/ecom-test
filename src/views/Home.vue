@@ -43,7 +43,8 @@ export default {
   components: {
     FeaturedProducts,
     Slider,
-  },
+    
+  }
 };
 </script>
 <style scoped>

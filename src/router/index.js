@@ -2,8 +2,16 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Product from "../views/Product.vue";
-Vue.use(VueRouter);
+import NProgress from 'f:/MY CODEBASE/ecom-test/node_modules/nprogress'
 
+ NProgress.configure({ 
+  showSpinner: false,
+  trickleSpeed: 200,
+  easing: 'ease', speed: 500,
+ })
+
+import 'nprogress/nprogress.css';
+Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
@@ -16,6 +24,10 @@ const routes = [
     props: true,
     component: Product,
     meta: { scrollToTop: true },
+    beforeEnter: (to, form, next) => {
+      console.log(to.path);
+      next();
+    },
   },
   {
     path: "/men",
@@ -67,13 +79,18 @@ const routes = [
 const router = new VueRouter({
   routes,
   // eslint-disable-next-line no-unused-vars
-  scrollBehavior: (to, from, savedPosition) => {
-    const position = {};
-    if (to.matched.some((m) => m.meta.scrollToTop)) {
-      position.x = 0;
-      position.y = 0;
-    }
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
   },
 });
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  NProgress.set(0.1)
+  NProgress.inc(0.2)
+  next()
+})
+router.afterEach(() => {
+  setTimeout(() => NProgress.done(), 2000)
+})
 
 export default router;

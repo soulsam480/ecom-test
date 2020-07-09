@@ -3,7 +3,8 @@
     <br />
     <h5 class="d-inline">{{ user.data.displayName }}'s <h2 class="d-inline">Wishlist</h2></h5>
     <hr />
-    <div class="row">
+    <div v-if="count>0">
+      <div class="row">
       <div
         class="col-6 col-md-3"
         style="padding:10px;"
@@ -26,6 +27,10 @@
         </div>
       </div>
     </div>
+    </div>
+    <div v-else>
+      <h5> It's empty. Let's add something !</h5>
+    </div>
   </div>
 </template>
 
@@ -34,7 +39,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "WishPage",
   computed: {
-    ...mapGetters({ user: "user" }),
+    ...mapGetters({ user: "user",count: "wishCount" }),
     ...mapGetters({ wishes: "getWishlist" }),
   },
   methods: {

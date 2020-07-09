@@ -385,8 +385,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      /*       this.$store.dispatch("addData");
-       */
     },
     previewImage(event) {
       this.b =
@@ -402,8 +400,6 @@ export default {
       files.forEach((el) => {
         this.imageData.push(el);
       });
-      /*       this.imageData = event.target.files[0];
-       */
     },
 
     onUpload() {

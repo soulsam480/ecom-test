@@ -5,9 +5,9 @@
         <span
           class="heart"
           id="heart"
-          :class="{ red: wish.includes(product) }"
+          :class="{ red: wish.find((el)=> el.id === product.id)}"
         ></span>
-        <span style="font-size:18px;" v-if="wish.includes(product)"
+        <span style="font-size:18px;" v-if="wish.find((el)=> el.id === product.id)"
           >In Wishlist</span
         >
         <span style="font-size:18px;" v-else> Add to wishlist</span>
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     addToWishlist(product) {
-      if(this.wish.includes(product)){
+      if(this.wish.find((el)=> el.id === product.id)){
         this.$store.commit("removeFromWishlist",product)
       }else{
         this.$store.commit("addToWishlist",product)

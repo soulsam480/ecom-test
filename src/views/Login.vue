@@ -1,66 +1,5 @@
 <template>
   <div class="login container">
-    <!-- <div class="row">
-      <div class="col-sm-6">
-      <h3>Log In</h3>
-      <form>
-        <div class="form-group">
-          <label for="logemail">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="logemail"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
-        </div>
-        <div class="form-group">
-          <label for="log-password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="log-password"
-            placeholder="Password"
-          />
-        </div>
-        
-        <button type="submit" class="prod-btn">Submit</button>
-      </form>
-    </div>
-
-    <div class="col-sm-6">
-      <h3>Sign Up</h3>
-      <form>
-        <div class="form-group">
-          <label for="sign-email">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="sign-email"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
-        </div>
-        <div class="form-group">
-          <label for="sign-pass">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="sign-pass"
-            placeholder="Password"
-          />
-        </div>
-      =
-        <button type="submit" class="prod-btn">Submit</button>
-      </form>
-    </div>
-   </div> -->
     <div class="row d-flex justify-content-center">
       <div class="nav-center col-md-4">
         <ul class="nav nav-tabs " id="myTab" role="tablist">
@@ -183,6 +122,16 @@
 </template>
 
 <script>
+import NProgress from "f:/MY CODEBASE/ecom-test/node_modules/nprogress";
+
+NProgress.configure({
+  showSpinner: false,
+  trickleSpeed: 200,
+  easing: "ease",
+  speed: 500,
+});
+
+import "nprogress/nprogress.css";
 import firebase from "firebase";
 import router from "@/router/index.js";
 export default {
@@ -195,18 +144,24 @@ export default {
   },
   methods: {
     loginUser() {
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       firebase
         .auth()
         .signInWithEmailAndPassword(this.uId, this.uPass)
-        .then((user) => {
+        .then(() => {
           router.replace({ name: "User" });
-          console.log(user)
+          setTimeout(() => NProgress.done(), 2000);
         })
         .catch(function(error) {
           window.alert(error.message);
         });
     },
     createUser() {
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.uId, this.uPass)
@@ -214,6 +169,7 @@ export default {
           this.uId = "";
           this.uPass = "";
           window.alert("Please Sign in to continue.");
+          setTimeout(() => NProgress.done(), 2000);
         })
         .catch((error) => {
           window.alert(error.message);
@@ -221,11 +177,15 @@ export default {
     },
     google() {
       var provider = new firebase.auth.GoogleAuthProvider();
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       firebase
         .auth()
         .signInWithPopup(provider)
         .then(() => {
           router.replace({ name: "User" });
+          setTimeout(() => NProgress.done(), 2000);
         })
         .catch((error) => {
           window.alert(error.message);

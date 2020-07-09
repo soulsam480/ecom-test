@@ -69,9 +69,9 @@
 
       <section v-else class="center">
         <p>Your cart is empty, fill it up!</p>
-        <button class="pay-with-stripe">
-          <router-link to="/">Home</router-link>
-        </button>
+      
+          <router-link to="/" class="prod-btn">Home</router-link>
+
       </section>
     </section>
 
@@ -82,9 +82,8 @@
         business days.
       </p>
       <p>Forgot something?</p>
-      <button class="pay-with-stripe">
-        <router-link to="/">Home</router-link>
-      </button>
+    
+        <router-link to="/" class="prod-btn">Home</router-link>
     </section>
 
     <section v-else-if="cartUIStatus === 'failure'">
@@ -121,6 +120,18 @@ export default {
 </script>
 
 <style scoped>
+.prod-btn {
+  color: black;
+  width: 100%;
+  background: #ce93d8;
+  border-radius: 2px;
+  font-size: 14px;
+  border: none;
+  padding: 5px 10px;
+}
+.prod-btn:hover {
+  opacity: 0.9;
+}
 tr{
   border-bottom: 1px solid black;
   width: 100%;
@@ -160,11 +171,6 @@ tr{
 
 .num {
   text-align: right;
-}
-
-button a {
-  color: white;
-  transition: 0.3s all ease;
 }
 .update-num {
   background: #ce93d8;

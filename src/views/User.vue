@@ -109,9 +109,6 @@
                     @click="updateUser(user.data)"
                     class="prod-btn"
                   >
-                    <div class="loader" id="loader">
-                      <img src="../assets/loader.gif" alt="" />
-                    </div>
                     Save
                   </button>
                 </div>
@@ -129,9 +126,6 @@
                   <small id="phonehelp" class="form-text text-muted"
                     >Phone Number followed by Country Code.</small
                   >
-                  <div class="loader" id="loader1">
-                    <img src="../assets/loader.gif" alt="" />
-                  </div>
                 </div>
                 <div id="recaptcha-container"></div>
                 <button
@@ -149,7 +143,7 @@
               role="tabpanel"
               aria-labelledby="pills-profile-tab"
             >
-              ...
+              <div class="row"></div>
             </div>
             <div
               class="tab-pane fade"
@@ -157,7 +151,195 @@
               role="tabpanel"
               aria-labelledby="pills-contact-tab"
             >
-              ...
+              <h5>Add a new Address</h5>
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="controls">
+                      <input
+                        v-model="uName"
+                        id="full-name"
+                        name="full-name"
+                        type="text"
+                        :placeholder="user.data.displayName"
+                        class="form-control"
+                      />
+                      <p class="help-block"></p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Country</label>
+                    <div class="controls">
+                      <input
+                        disabled
+                        v-model="country"
+                        id="region"
+                        name="region"
+                        type="text"
+                        placeholder="Country"
+                        class="form-control"
+                      />
+                      <p class="help-block"></p>
+                    </div>
+                  </div>
+                  <!-- address-line1 input-->
+                  <div class="form-group">
+                    <label>Street Address</label>
+                    <input
+                      v-model="street"
+                      id="address-line1"
+                      name="address-line1"
+                      type="text"
+                      placeholder="Street Address"
+                      class="form-control"
+                    />
+                    <small id="help-block" class="form-text text-muted">
+                      Street address, P.O. box, company name, c/o
+                    </small>
+                  </div>
+                  <!-- address-line2 input-->
+
+                  <!-- city input-->
+                  <div class="form-group">
+                    <label>City / Town</label>
+                    <div class="controls">
+                      <input
+                        v-model="city"
+                        id="city"
+                        name="city"
+                        type="text"
+                        placeholder="city"
+                        class="form-control"
+                      />
+                      <small id="help-block" class="form-text text-muted">
+                        City, Town or Local Landmark
+                      </small>
+                    </div>
+                  </div>
+                  <!-- State input-->
+                  <div class="form-group">
+                    <label>State</label>
+                    <div>
+                      <select
+                        v-model="state"
+                        name="state"
+                        id="state"
+                        class="form-control"
+                      >
+                        <option disabled value="Please Select One"
+                          >Please Select One</option
+                        >
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Andaman and Nicobar Islands"
+                          >Andaman and Nicobar Islands</option
+                        >
+                        <option value="Arunachal Pradesh"
+                          >Arunachal Pradesh</option
+                        >
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Dadar and Nagar Haveli"
+                          >Dadar and Nagar Haveli</option
+                        >
+                        <option value="Daman and Diu">Daman and Diu</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh"
+                          >Himachal Pradesh</option
+                        >
+                        <option value="Jammu and Kashmir"
+                          >Jammu and Kashmir</option
+                        >
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- postal-code input-->
+                  <div class="form-group">
+                    <label>Postal Code</label>
+                    <div class="controls">
+                      <input
+                        v-model="postalCode"
+                        id="postal-code"
+                        name="postal-code"
+                        type="text"
+                        placeholder="Postal code"
+                        class="form-control"
+                      />
+                      <p class="help-block"></p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <div class="controls">
+                      <input
+                        v-model="uEmail"
+                        id="Email"
+                        name="email"
+                        type="email"
+                        :placeholder="user.data.email"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="controls">
+                      <input
+                        v-model="uPhone"
+                        id="Phone-number"
+                        name="Phone-number"
+                        type="tel"
+                        :placeholder="user.data.pNum"
+                        class="form-control"
+                      />
+                      <p class="help-block"></p>
+                    </div>
+                  </div>
+                  <!-- country select -->
+                </fieldset>
+              </form>
+              <button
+                type="submit"
+                @click="saveAddress(user.data)"
+                class="prod-btn"
+              >
+                Save Address
+              </button>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-support"
+              role="tabpanel"
+              aria-labelledby="pills-support-tab"
+            >
+              qaswdw
+              <!-- <div class="row"></div> -->
             </div>
           </div>
         </div>
@@ -168,6 +350,16 @@
 </template>
 
 <script>
+import NProgress from "f:/MY CODEBASE/ecom-test/node_modules/nprogress";
+
+NProgress.configure({
+  showSpinner: false,
+  trickleSpeed: 200,
+  easing: "ease",
+  speed: 500,
+});
+
+import "nprogress/nprogress.css";
 import { mapGetters, mapState } from "vuex";
 import firebase from "firebase";
 import router from "@/router/index.js";
@@ -186,11 +378,54 @@ export default {
       imageData: null,
       picture: null,
       uPhone: null,
+      uEmail: null,
       emailVerified: null,
       uploadValue: 0,
+      country: "India",
+      street: "",
+      city: "",
+      state: "",
+      postalCode: "",
     };
   },
   methods: {
+    saveAddress() {
+      window.alert('address support is coming')
+      /* NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
+      this.uName === null ? (this.uName = data.displayName) : this.uName;
+      this.uEmail === null ? (this.uEmail = data.email) : this.uEmail;
+      this.uPhone === null ? (this.uPhone = data.pNum) : this.uPhone;
+      let address = [
+        {
+          name: this.uName,
+          email: this.uEmail,
+          phone: this.uPhone,
+          country: this.country,
+          street: this.street,
+          city: this.city,
+          state: this.state,
+          postal: this.postalCode,
+        },
+      ];
+      const adRef = firebase.database().ref(`/Users/${data.userId}/address`);
+      adRef
+        .set({
+          address,  
+        })
+        .then(() => {
+          (this.country = "India"),
+            (this.street = ""),
+            (this.city = ""),
+            (this.state = ""),
+            (this.postalCode = ""),
+            (this.uPhone = ""),
+            (this.uEmail = ""),
+            (this.uName = "");
+          setTimeout(() => NProgress.done(), 2000);
+        }); */
+    },
     logOut() {
       if (!this.checkedOut) {
         firebase
@@ -217,8 +452,9 @@ export default {
       this.imageData = event.target.files[0];
     },
     updatePhone(data) {
-      document.getElementById("loader1").style.display = "block";
-
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       if (this.uPhone === null) {
         this.uPhone = data.pNum;
       }
@@ -245,14 +481,17 @@ export default {
           return user.updatePhoneNumber(phoneCredential);
         })
         .then(() => {
-          document.getElementById("loader1").style.display = "block";
           window.alert("Updated Successfully!");
+          setTimeout(() => NProgress.done(), 2000);
+
           this.uPhone = null;
         });
     },
 
     async updateUser(data) {
-      document.getElementById("loader").style.display = "block";
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       if (this.uName === null && this.picture === null) {
         this.uName = data.displayName;
         this.picture = data.imgUrl;
@@ -298,8 +537,8 @@ export default {
         })
         .then(() => {
           this.$store.dispatch("fetchUser");
+          setTimeout(() => NProgress.done(), 2000);
 
-          document.getElementById("loader").style.display = "none";
           window.alert("Updated Successfully!");
         });
     },
@@ -308,23 +547,16 @@ export default {
 </script>
 
 <style scoped>
-.loader {
-  display: none;
-}
-.loader img {
-  width: 20px;
-}
 .prod-btn:focus {
   outline: none;
 }
 
 .prod-btn {
-  width: 100%;
   background: #ce93d8;
   border-radius: 2px;
   font-size: 14px;
   border: none;
-  padding: 5px 10px;
+  padding: 7px 20px;
 }
 .prod-btn:hover {
   opacity: 0.9;
@@ -358,8 +590,16 @@ export default {
     flex: 0 0 25%;
   }
   .col-sm-9 {
-    max-width: 25% !important;
-    flex: 0 0 25%;
+    max-width: 75% !important;
+    flex: 0 0 75%;
+  }
+  .form-control {
+    max-width: 70%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .form-control {
+    width: 100% !important;
   }
 }
 .u-img {
@@ -402,7 +642,7 @@ a:hover {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start;
-    height: 500px;
+    height: 600px;
   }
 }
 </style>

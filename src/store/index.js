@@ -26,7 +26,16 @@ export default new Vuex.Store({
     getData(state) {
       var starCountRef = firebase.database().ref("/Products");
       var main = state.productData;
-      if (main.length === 0) {
+      starCountRef.on("value", (snapshot) => {
+        snapshot.forEach((csnap) => {
+          let productFound = main.find((el) => el.id === csnap.id);
+          console.log(productFound);
+          productFound
+            ? main.splice(main.indexOf(productFound), 1, csnap.val())
+            : main.push(csnap.val());
+        });
+      });
+      /*  if (main.length === 0) {
         starCountRef.on("value", (snapshot) => {
           snapshot.forEach((childSnapshot) => {
             state.productData.push(childSnapshot.val());
@@ -39,7 +48,7 @@ export default new Vuex.Store({
             state.productData.splice(pos, 0, childSnapshot.val());
           });
         });
-      }
+      } */
     },
     cAuth(state) {
       state.auth = !state.auth;
@@ -91,7 +100,9 @@ export default new Vuex.Store({
       const wishref = firebase.database().ref(`/Users/${id}/wishlist`);
       wishref.on("value", (snap) => {
         snap.forEach((csnap) => {
-          let wishFound = state.user.wishlist.find((el) => el.id === csnap.val().id);
+          let wishFound = state.user.wishlist.find(
+            (el) => el.id === csnap.val().id
+          );
           wishFound
             ? state.user.wishlist.splice(
                 state.user.wishlist.indexOf(wishFound),
@@ -108,7 +119,8 @@ export default new Vuex.Store({
     addToWishlist(state, load) {
       let itemfound = state.user.wishlist.find((el) => el.id === load.id);
       itemfound
-        ? window.alert('Already on Wishlist') : state.user.wishlist.push(load);
+        ? window.alert("Already on Wishlist")
+        : state.user.wishlist.push(load);
     },
     removeFromWishlist(state, load) {
       let itemfound = state.user.wishlist.find((el) => el.id === load.id);
