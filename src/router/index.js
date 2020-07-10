@@ -2,15 +2,16 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Product from "../views/Product.vue";
-import NProgress from 'f:/MY CODEBASE/ecom-test/node_modules/nprogress'
+import NProgress from "f:/MY CODEBASE/ecom-test/node_modules/nprogress";
 
- NProgress.configure({ 
+NProgress.configure({
   showSpinner: false,
   trickleSpeed: 200,
-  easing: 'ease', speed: 500,
- })
+  easing: "ease",
+  speed: 500,
+});
 
-import 'nprogress/nprogress.css';
+import "nprogress/nprogress.css";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -25,55 +26,53 @@ const routes = [
     component: Product,
     meta: { scrollToTop: true },
     beforeEnter: (to, form, next) => {
-      console.log(to.path);
       next();
     },
   },
   {
     path: "/men",
     name: "Men",
-    component: () => import(/* webpackChunkName: "about" */ "../views/Men.vue"),
+    component: () => import("../views/Men.vue"),
     meta: { scrollToTop: true },
   },
   {
     path: "/women",
     name: "Women",
 
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Women.vue"),
+    component: () => import("../views/Women.vue"),
     meta: { scrollToTop: true },
   },
   {
     path: "/fu*ktheadmin",
     name: "Admin",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Admin.vue"),
+    component: () => import("../views/Admin.vue"),
   },
   {
     path: "/login",
     name: "Login",
 
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/user",
     name: "User",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/User.vue"),
+    component: () => import("../views/User.vue"),
   },
   {
     path: "/cart",
     name: "Cart",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Cart.vue"),
+    component: () => import("../views/Cart.vue"),
   },
   {
     path: "/wishlist",
     name: "WishPage",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Wishlist.vue"),
+    component: () => import("../views/Wishlist.vue"),
   },
+  {
+    path:'*',
+    component: () => import("../views/404.vue"),
+    name: 'Fof'
+  }
 ];
 
 const router = new VueRouter({
@@ -84,13 +83,13 @@ const router = new VueRouter({
   },
 });
 router.beforeEach((to, from, next) => {
-  NProgress.start()
-  NProgress.set(0.1)
-  NProgress.inc(0.2)
-  next()
-})
+  NProgress.start();
+  NProgress.set(0.1);
+  NProgress.inc(0.2);
+  next();
+});
 router.afterEach(() => {
-  setTimeout(() => NProgress.done(), 2000)
-})
+  setTimeout(() => NProgress.done(), 2000);
+});
 
 export default router;

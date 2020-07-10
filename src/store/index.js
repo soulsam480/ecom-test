@@ -16,8 +16,7 @@ export default new Vuex.Store({
       address: [],
     },
     authCred: {
-      id: "soulsam480@gmail.com",
-      password: "i877isfu*kC9Tt",
+      uid: "lSC134A31NZqjxaEtGvaKfG0PTA3",
     },
     cart: [],
     cartUIStatus: "idle",
@@ -29,26 +28,16 @@ export default new Vuex.Store({
       var main = state.productData;
       starCountRef.on("value", (snapshot) => {
         snapshot.forEach((csnap) => {
-          let productFound = main.find((el) => el.id === csnap.id);
+          let productFound = main.find((el) => el.id === csnap.val().id);
           productFound
-            ? main.splice(main.indexOf(productFound), 1, csnap.val())
+            ? main.splice(
+                main.findIndex((x) => x.id === productFound.id),
+                1,
+                csnap.val()
+              )
             : main.push(csnap.val());
         });
       });
-      /*  if (main.length === 0) {
-        starCountRef.on("value", (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            state.productData.push(childSnapshot.val());
-          });
-        });
-      } else {
-        var pos = main.length;
-        starCountRef.on("value", (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            state.productData.splice(pos, 0, childSnapshot.val());
-          });
-        });
-      } */
     },
     cAuth(state) {
       state.auth = !state.auth;
@@ -91,7 +80,11 @@ export default new Vuex.Store({
         snap.forEach((csnap) => {
           let itemfound = state.cart.find((el) => el.id === csnap.val().id);
           itemfound
-            ? state.cart.splice(state.cart.indexOf(itemfound), 1, csnap.val())
+            ? state.cart.splice(
+                state.cart.findIndex((x) => x.id === itemfound.id),
+                1,
+                csnap.val()
+              )
             : state.cart.push(csnap.val());
         });
       });
@@ -105,7 +98,7 @@ export default new Vuex.Store({
           );
           wishFound
             ? state.user.wishlist.splice(
-                state.user.wishlist.indexOf(wishFound),
+                state.user.wishlist.findIndex((x) => x.id === wishFound.id),
                 1,
                 csnap.val()
               )
@@ -135,7 +128,7 @@ export default new Vuex.Store({
           );
           adFound
             ? state.user.address.splice(
-                state.user.addData.indexOf(adFound.id),
+                state.user.addData.findIndex((x) => x.id === adFound.id),
                 1,
                 csnap.val()
               )
@@ -217,13 +210,13 @@ export default new Vuex.Store({
       if (!state.user.wishlist.length) return 0;
       return state.user.wishlist.length;
     },
-    getAddresses: (state)=>{
-       return state.user.address
-    }
+    getAddresses: (state) => {
+      return state.user.address;
+    },
   },
   plugins: [
     createPersistedState({
-      paths: ["cart", "user.wishlist"],
+      paths: ["cart", "user.wishlist", "auth"],
     }),
   ],
 

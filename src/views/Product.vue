@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 <template>
   <div class="product container">
-<!--     <Loader :hidden="loading"/>
- -->    <div class="row">
+    <!--     <Loader :hidden="loading"/>
+ -->
+    <div class="row">
       <div class="col-sm-7">
         <div
           id="carouselExampleControls"
@@ -166,7 +167,7 @@
 
 <script>
 /* import Loader from "@/components/Loader.vue";
- */import { mapGetters } from "vuex";
+ */ import { mapGetters } from "vuex";
 import FeaturedProducts from "@/components/FeaturedProducts.vue";
 import Wishlist from "@/components/Wishlist.vue";
 
@@ -202,7 +203,6 @@ import Wishlist from "@/components/Wishlist.vue";
         this.showSizeRequiredMessage = true;
         return;
       }
-
       let item = this.product;
       item = {
         ...item,
@@ -216,14 +216,6 @@ import Wishlist from "@/components/Wishlist.vue";
   components: {
     Wishlist,
     FeaturedProducts,
-/*     Loader
- */    /*     Wishlist
-     */
-  },
-  created() {
-  setTimeout(
-       ()=> this.loading = true, 3000
-    )
   },
   beforeRouteUpdate(to, from, next) {
     this.$store.getters.product(to.params.id);

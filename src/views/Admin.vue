@@ -1,8 +1,9 @@
 <template>
-  <div class="admin container-fluid">
+  <div class="admin container">
+    <br>
     <div id="afterlogin" v-if="getAuth">
       <h5>
-        Admin :
+        Admin : {{ user.data.displayName }}
         <b class="text-info">{{ authId }}</b>
         <button class="btn btn-danger float-right" @click="Logout()">
           Admin Logout
@@ -160,12 +161,15 @@
           />
           <label class="form-check-label" for="featured">Featured roduct</label>
         </div>
-        <br>
+        <br />
         <div class="form-group">
           <label for="Image">
-            <b>Product Image</b> ( <small aria-describedby="Image">Upload 3 Product Images at once</small>)
+            <b>Product Image</b> (
+            <small aria-describedby="Image"
+              >Upload 3 Product Images at once</small
+            >)
           </label>
-         
+
           <input
             type="file"
             class="form-control-file"
@@ -252,7 +256,7 @@
           placeholder="Enter email"
         />
         <small id="emailHelp" class="form-text text-muted"
-          >We'll never share your email with anyone else.</small
+          >Hi Friend! Hacking is injurious to health. Don't try. Ok Bye.</small
         >
       </div>
       <div class="form-group">
@@ -276,6 +280,7 @@ import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import firebase from "firebase";
 import { Editor } from "@toast-ui/vue-editor";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Admin",
@@ -312,13 +317,11 @@ export default {
     getProducts() {
       return this.$store.getters.getProducts;
     },
-    authCredGet(){
-      return this.$store.getters.authCredGet;
-    }
+    ...mapGetters({ user: "user", cred: "authCredGet" }),
   },
   methods: {
     /* generateId() {
-      
+
     }, */
     removeProduct(id) {
       firebase
@@ -326,6 +329,7 @@ export default {
         .ref(`/Products/${id}`)
         .remove()
         .then(() => {
+          this.$store.dispatch('addData')
           window.alert("Product deleted successfully!");
         });
     },
@@ -404,9 +408,9 @@ export default {
 
     onUpload() {
       this.picture = [];
-      var a = 0
+      var a = 0;
       this.imageData.forEach((el) => {
-          a = a+1
+        a = a + 1;
         const storageRef = firebase
           .storage()
           .ref(`/Products/${this.b}/${a}`)
@@ -423,31 +427,37 @@ export default {
           () => {
             this.uploadValue = 100;
             storageRef.snapshot.ref.getDownloadURL().then((url) => {
-              this.imageData = []
-              this.picture.push(url)
+              this.imageData = [];
+              this.picture.push(url);
             });
           }
         );
       });
     },
     Logout() {
+      firebase.auth().signOut();
       this.$store.dispatch("changeAuth");
     },
-    async Auth() {
-        if(this.authId === this.authCredGet.id && this.authPass === this.authCredGet.password){
-          await firebase.auth().signInWithEmailAndPassword(this.authId,this.authPass).then(
-          ()=>{
-            this.$store.dispatch("changeAuth"), 
-          (this.authPass = "")
+    Auth() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.authId, this.authPass)
+        .then(() => {
+          this.authId = "";
+          this.authPass = "";
+          if (this.user.data.userId === this.cred.uid) {
+            this.$store.dispatch("changeAuth");
+          } else {
+            firebase
+              .auth()
+              .signOut()
+              .then(() => {
+                this.authId = "";
+                this.authPass = "";
+                window.alert("Bhag B*dk");
+              });
           }
-          ) 
-        }else{
-          window.alert('BHAG BS*K')
-        }
-        /* .then(this.$store.dispatch("changeAuth"), (this.authPass = ""))
-        .catch(function(error) {
-          console.log(error);
-        }); */
+        });
     },
   },
   created() {},
