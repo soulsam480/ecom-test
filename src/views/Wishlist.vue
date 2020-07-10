@@ -1,7 +1,7 @@
 <template>
   <div class="wishpage container">
     <br />
-    <h5 class="d-inline">{{ user.data.displayName }}'s <h2 class="d-inline">Wishlist</h2></h5>
+    <h5 class="d-inline"><span v-if="user === !null">{{ user.data.displayName }}  's </span><h2 class="d-inline">Wishlist</h2></h5>
     <hr />
     <div v-if="count>0">
       <div class="row">

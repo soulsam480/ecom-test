@@ -37,8 +37,9 @@
             <img src="../assets/heart.svg" alt=""
           /></router-link>
         </li>
-        <li>
-          <img src="../assets/search.svg" alt="" />
+        <li >
+          <a v-if="isSearch" @click="closeSearch"><img src="../assets/close.svg" alt=""/></a>
+          <a v-else @click="isSearch = true"><img src="../assets/search.svg" alt=""/></a>
         </li>
       </ul>
     </div>
@@ -76,8 +77,9 @@
             </div>
           </div>
         </li>
-        <li>
-          <a href><img src="../assets/search.svg" alt=""/></a>
+        <li  style="cursor:pointer">
+          <a v-if="isSearch" @click="closeSearch"><img src="../assets/close.svg" alt=""/></a>
+          <a v-else @click="isSearch = true"><img src="../assets/search.svg" alt=""/></a>
         </li>
         <li>
           <div v-if="wishCount > 0" class="wishcount">
@@ -95,26 +97,66 @@
         </li>
       </ul>
     </div>
+    <div class="search" v-if="isSearch">
+      <input
+        v-model="search"
+        type="search"
+        class="form-control"
+        name="productSearch"
+        id="productSearch"
+        placeholder="Search"
+        autofocus
+      />
+    </div>
+    <div class="searchfilter" v-if="search.length > 0" id="filterdata">
+      <span v-if="filteredSearch.length === 0">Nothing Found</span>
+      <div v-else v-for="item in filteredSearch" :key="item.id" @click="closeSearch">
+        <router-link :to="{ path: '/product/' + item.id }" >
+          <img
+            :src="item.imgUrls[0]"
+            class="d-inline m-1"
+            style="width:40px"
+            alt=""
+          />
+          <h5 class="d-inline m-1">{{ item.name }}</h5>
+          <h6 class="d-inline m-1">₹ {{ item.price }}</h6>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
 import firebase from "firebase";
+import router from "@/router/index.js";
 
 export default {
   name: "Navbar",
   data: function() {
-    return {};
+    return {
+      isSearch: false,
+      search: "",
+    };
   },
   computed: {
     ...mapGetters({
       user: "user",
+      products: "getProducts",
     }),
     ...mapGetters(["cartCount", "wishCount"]),
     ...mapState(["cart", "checkedOut"]),
+    filteredSearch() {
+      return this.products.filter((el) => {
+        return el.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
   },
   methods: {
+    closeSearch() {
+        this.isSearch = false;
+        this.search = ''
+    },
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
       document.getElementById("mnav-wrap").classList.toggle("full");
@@ -130,8 +172,10 @@ export default {
           })
           .then(firebase.auth().signOut(), this.$store.commit("clearCart")),
           this.$store.commit("clearWishlist");
+         router.replace({ name: "Login" });
       } else {
         firebase.auth().signOut();
+       router.replace({ name: "Login" });
       }
     },
     close() {
@@ -143,7 +187,91 @@ export default {
 </script>
 
 <style>
-a:hover{
+a {
+  color: black !important;
+}
+@keyframes search {
+  0% {
+    width: 75px;
+  }
+  25% {
+    width: 150px;
+  }
+  50% {
+    width: 225px;
+  }
+  100% {
+    width: 300px;
+  }
+}
+@keyframes msearch {
+  0% {
+    height: 10px;
+  }
+  25% {
+    height: 20px;
+  }
+  50% {
+    height: 30px;
+  }
+  100% {
+    height: 40px;
+  }
+}
+.searchfilter {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 430px;
+  background-color: #ffebee;
+  padding: 10px;
+}
+.search {
+  right: 125px;
+  position: absolute;
+  z-index: 1000;
+  border-bottom: 1.5px solid black;
+  border-radius: unset;
+}
+@media only screen and (max-width: 768px) {
+  .search {
+    top: 45px;
+    right: 0;
+  }
+  .search input {
+    width: 100vw !important;
+    height: 40px !important;
+    animation-name: msearch !important;
+    animation-duration: 0.2s !important;
+    animation-timing-function: linear !important;
+  }
+  .searchfilter {
+    position: absolute;
+    top: 85px;
+    right: 0;
+    width: 100%;
+  }
+}
+.form-control:focus {
+  background-color: #ffebee !important;
+  box-shadow: none !important;
+  border-color: rgb(238, 238, 238) !important;
+}
+.form-control {
+  color: black !important;
+  border: none !important;
+  background-color: #ffebee !important;
+  border-radius: unset !important;
+}
+
+.search input {
+  width: 300px;
+  height: 30px;
+  animation-name: search;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+}
+a:hover {
   text-decoration: none !important;
 }
 .wishcount {
@@ -282,9 +410,9 @@ a:hover{
   font-size: 19px;
 }
 
-.nav-desktop li:hover {
+/* .nav-desktop li:hover {
   background-color: #fddde2;
-}
+} */
 .full {
   width: 80% !important;
 }

@@ -30,7 +30,6 @@ export default new Vuex.Store({
       starCountRef.on("value", (snapshot) => {
         snapshot.forEach((csnap) => {
           let productFound = main.find((el) => el.id === csnap.id);
-          console.log(productFound);
           productFound
             ? main.splice(main.indexOf(productFound), 1, csnap.val())
             : main.push(csnap.val());
