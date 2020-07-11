@@ -136,6 +136,10 @@
                   Save
                 </button>
               </form>
+              <br>
+              <div v-if="!user.data.emailVerified">
+                  <button class="prod-btn" @click="sendVemail">Send Verification Email ?</button>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -459,6 +463,11 @@ export default {
     };
   },
   methods: {
+    sendVemail(){
+      firebase.auth().currentUser.sendEmailVerification().then(()=>{
+        window.alert('Email Sent! Check inbox')
+      })
+    },
     removeAddress(id) {
       firebase
         .database()

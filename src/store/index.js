@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-
 import firebase from "firebase/app";
 Vue.use(Vuex);
 
@@ -172,9 +171,6 @@ export default new Vuex.Store({
     },
     getAuth(state) {
       return state.auth;
-    },
-    product: (state) => (id) => {
-      return state.productData.find((el) => el.id === id);
     },
     women: (state) => state.productData.filter((el) => el.cats === "Women"),
     men: (state) => state.productData.filter((el) => el.cats === "Men"),

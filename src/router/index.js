@@ -12,7 +12,8 @@ NProgress.configure({
 });
 
 import "nprogress/nprogress.css";
-Vue.use(VueRouter);
+/* import store from "../store/index";
+ */Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
@@ -25,9 +26,6 @@ const routes = [
     props: true,
     component: Product,
     meta: { scrollToTop: true },
-    beforeEnter: (to, form, next) => {
-      next();
-    },
   },
   {
     path: "/men",
@@ -50,13 +48,21 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-
     component: () => import("../views/Login.vue"),
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
+  /*   beforeEnter(to, from, next) {
+      if (store.state.user.loggedIn === true) {
+        next();
+      } else {
+        next({
+          path: "/login",
+        });
+      }
+    }, */
   },
   {
     path: "/cart",
@@ -69,10 +75,10 @@ const routes = [
     component: () => import("../views/Wishlist.vue"),
   },
   {
-    path:'*',
+    path: "*",
     component: () => import("../views/404.vue"),
-    name: 'Fof'
-  }
+    name: "Fof",
+  },
 ];
 
 const router = new VueRouter({

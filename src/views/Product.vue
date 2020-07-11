@@ -166,18 +166,13 @@
 </template>
 
 <script>
-/* import Loader from "@/components/Loader.vue";
- */ import { mapGetters } from "vuex";
-/* import router from "@/router/index.js";
- */ import FeaturedProducts from "@/components/FeaturedProducts.vue";
+import { mapGetters } from "vuex";
+import FeaturedProducts from "@/components/FeaturedProducts.vue";
 import Wishlist from "@/components/Wishlist.vue";
-
-/* import Wishlist from "@/components/Wishlist.vue"
- */ export default {
+ export default {
   name: "Product",
   data() {
     return {
-      id: this.$route.params.id,
       size: "S",
       quantity: 1,
       color: "",
@@ -186,15 +181,12 @@ import Wishlist from "@/components/Wishlist.vue";
     };
   },
   computed: {
-    /*  product() {
-      return this.$store.getters.product(this.id);
-    }, */
     ...mapGetters({
       user: "user",
       products: "getProducts",
     }),
     product() {
-      return this.products.find((el) => el.id === this.id);
+      return this.products.find((el) => el.id === this.$route.params.id);
     },
   },
   methods: {
@@ -221,14 +213,6 @@ import Wishlist from "@/components/Wishlist.vue";
   components: {
     Wishlist,
     FeaturedProducts,
-  },
-  beforeRouteUpdate(to, from, next) {
-    /* const path = `/product/${to.params.id}`;
-     this.$router.push(path); */
-    /*     router.replace({ name: "Product", params: to.params.id });
-     */
-    /*     this.$store.getters.product(to.params.id);
-     */ next();
   },
 };
 </script>

@@ -298,8 +298,8 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import CartSteps from "@/components/CartSteps.vue";
-const axios = require('axios').default;
-export default {
+/* const axios = require('axios').default;
+ */export default {
   name: "Cart",
   data() {
     return {
@@ -337,7 +337,7 @@ export default {
           .slice(2)
           .toLowerCase();
 
-      await axios
+     /*  await axios
         .post("https://us-central1-ecom-test-53555.cloudfunctions.net/payment", {
           amount: 10,
           name: this.cName,
@@ -352,7 +352,7 @@ export default {
           }else{
             window.alert('error')
           }
-        })
+        }) */
       
     },
     guestPay() {

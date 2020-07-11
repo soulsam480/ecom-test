@@ -13,6 +13,7 @@ import VueAgile from "vue-agile";
 import VueLazyload from "vue-lazyload";
 /* const $ = require('jquery')
 window.$ = $ */
+
 Vue.use(VueLazyload);
 // or with options
 Vue.use(VueLazyload, {
