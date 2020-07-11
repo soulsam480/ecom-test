@@ -153,9 +153,10 @@
             >
               <div v-if="!addAddress">
                 <div class="d-flex justify-content-between">
-                  <h5>My Addresses </h5> <button class="prod-btn "  @click="addAddress = true">
-                  +
-                </button>
+                  <h5>My Addresses</h5>
+                  <button class="prod-btn " @click="addAddress = true">
+                    +
+                  </button>
                 </div>
                 <div class="row">
                   <div
@@ -184,7 +185,6 @@
                     </div>
                   </div>
                 </div>
-                
               </div>
               <div v-else>
                 <h5>
@@ -584,7 +584,8 @@ export default {
           .then(
             firebase.auth().signOut(),
             this.$store.commit("clearCart"),
-            this.$store.commit("clearWishlist")
+            this.$store.commit("clearWishlist"),
+            this.$store.commit("clearAddress")
           );
 
         router.replace({ name: "Login" });

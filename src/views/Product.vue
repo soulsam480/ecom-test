@@ -168,7 +168,8 @@
 <script>
 /* import Loader from "@/components/Loader.vue";
  */ import { mapGetters } from "vuex";
-import FeaturedProducts from "@/components/FeaturedProducts.vue";
+/* import router from "@/router/index.js";
+ */ import FeaturedProducts from "@/components/FeaturedProducts.vue";
 import Wishlist from "@/components/Wishlist.vue";
 
 /* import Wishlist from "@/components/Wishlist.vue"
@@ -185,12 +186,16 @@ import Wishlist from "@/components/Wishlist.vue";
     };
   },
   computed: {
-    product() {
+    /*  product() {
       return this.$store.getters.product(this.id);
-    },
+    }, */
     ...mapGetters({
       user: "user",
+      products: "getProducts",
     }),
+    product() {
+      return this.products.find((el) => el.id === this.id);
+    },
   },
   methods: {
     getSize: function(event) {
@@ -218,8 +223,12 @@ import Wishlist from "@/components/Wishlist.vue";
     FeaturedProducts,
   },
   beforeRouteUpdate(to, from, next) {
-    this.$store.getters.product(to.params.id);
-    next();
+    /* const path = `/product/${to.params.id}`;
+     this.$router.push(path); */
+    /*     router.replace({ name: "Product", params: to.params.id });
+     */
+    /*     this.$store.getters.product(to.params.id);
+     */ next();
   },
 };
 </script>

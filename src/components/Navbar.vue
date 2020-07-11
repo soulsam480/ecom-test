@@ -64,7 +64,7 @@
     </router-link>
     <div>
       <ul class="nav-desktop">
-        <li style="margin-left:60px;">
+        <li style="margin-left:40px;">
           <div v-bind:class="{ dropdown: user.loggedIn }">
             <router-link v-if="user.loggedIn" to="/user">
               Hi, {{ user.data.displayName }} !

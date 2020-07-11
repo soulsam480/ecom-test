@@ -136,6 +136,9 @@ export default new Vuex.Store({
         });
       });
     },
+    clearAddress(state) {
+      state.user.address = [];
+    },
   },
   actions: {
     addData(context) {

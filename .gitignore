@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sw?
 deploy.sh
 .ssh/id_rsa
+

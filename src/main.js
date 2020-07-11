@@ -11,7 +11,6 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import VueAgile from "vue-agile";
 import VueLazyload from "vue-lazyload";
-
 /* const $ = require('jquery')
 window.$ = $ */
 Vue.use(VueLazyload);
