@@ -47,7 +47,7 @@
           <p class="p-spec-name">{{ product.name }}</p>
           <h6 class="text-muted">
             <!-- {{ product.desc }} -->
-            Short Description Here
+            {{product.shortDes}}
           </h6>
           <h3>₹ {{ product.price }}</h3>
           <br />
@@ -138,7 +138,10 @@
                   :disabled="color === ''"
                   @click="cartAdd"
                 >
-                  ADD TO CART
+                  <span v-if="cart.find((el) => el.id === product.id)">
+                    <router-link to="/cart">GO TO CART</router-link>
+                  </span>
+                  <span v-else> ADD TO CART </span>
                 </button>
               </div>
             </div>
@@ -154,22 +157,27 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <h4>Description</h4>
+        <h4 class="prod-add">Description</h4>
         <div v-html="product.desc">{{ product.desc }}</div>
       </div>
-      <div class="col-sm-6">
-        <h4>Reviews</h4>
+      <div class="col-sm-6">  
+        <h4 class="prod-add">Reviews</h4>
       </div>
+    </div>  
+    <div>
+      <h4 class="prod-add">You may also like</h4>
+          <FeaturedProducts />
+
     </div>
-    <FeaturedProducts />
+
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import FeaturedProducts from "@/components/FeaturedProducts.vue";
 import Wishlist from "@/components/Wishlist.vue";
- export default {
+export default {
   name: "Product",
   data() {
     return {
@@ -185,6 +193,8 @@ import Wishlist from "@/components/Wishlist.vue";
       user: "user",
       products: "getProducts",
     }),
+    ...mapState(["cart"]),
+
     product() {
       return this.products.find((el) => el.id === this.$route.params.id);
     },
@@ -218,6 +228,13 @@ import Wishlist from "@/components/Wishlist.vue";
 </script>
 
 <style scoped>
+.prod-add::before{
+  position: absolute;
+  content: '';
+  padding: 0.8px 30px;
+  margin-top:30px;
+  background-color: #CE93D8;
+}
 @media only screen and (max-width: 768px) {
   .col-10 {
     max-width: 100% !important;

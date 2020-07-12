@@ -66,9 +66,9 @@ button:focus {
   /*   border: 1px solid black;
  */
 }
-/* .prod:hover {
-  box-shadow: 0 0 20px 0.1px rgba(173, 173, 173, 0.438);
-} */
+.prod:hover {
+  transform: scale(1.01)
+}
 .prod-title {
   padding: 5px 10px;
 }

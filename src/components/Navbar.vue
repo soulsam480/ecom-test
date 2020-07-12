@@ -529,6 +529,7 @@ a:hover {
   -moz-transition-delay: 0s, 0.2s;
   transform: rotate(45deg);
   transition-delay: 0s, 0.2s;
+  
 }
 
 .hamburger.active span:after {
@@ -539,6 +540,7 @@ a:hover {
   -moz-transition-delay: 0s, 0.2s;
   transform: rotate(-45deg);
   transition-delay: 0s, 0.2s;
+  
 }
 
 .main-menu-wrap {

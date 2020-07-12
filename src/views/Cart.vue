@@ -76,7 +76,7 @@
           <h6 class="d-inline">Subtotal:</h6>
           <h5 class="d-inline">₹ {{ cartTotal }}</h5>
           <br />
-          <button class="prod-btn" @click="proceed">Proceed to Payments</button>
+          <button class="prod-btn" @click="proceed('payment')">Proceed to Payments</button>
         </div>
       </section>
 
@@ -87,6 +87,7 @@
       </section>
     </section>
     <section v-else-if="cartUIStatus === 'payment'">
+      <button class="prod-btn" @click="proceed('idle')" >Back</button>
       <h4>Shipping Address</h4>
       <div v-if="user.address.length > 0">
         Select an Address to Proceed
@@ -367,8 +368,8 @@ import CartSteps from "@/components/CartSteps.vue";
         postal: this.postalCode,
       };
     },
-    proceed() {
-      this.$store.commit("updateCartUI", "payment");
+    proceed(data) {
+      this.$store.commit("updateCartUI", data);
     },
     addToCart(item) {
       this.$store.commit("addOneToCart", item);

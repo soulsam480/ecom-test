@@ -172,8 +172,8 @@ export default new Vuex.Store({
     getAuth(state) {
       return state.auth;
     },
-    women: (state) => state.productData.filter((el) => el.cats === "Women"),
-    men: (state) => state.productData.filter((el) => el.cats === "Men"),
+    women: (state) => state.productData.filter((el) => el.cats.includes("Women") ),
+    men: (state) => state.productData.filter((el) => el.cats.includes( "Men")),
     user(state) {
       return state.user;
     },

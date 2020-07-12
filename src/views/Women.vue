@@ -1,8 +1,8 @@
 <template>
-  <div class="women container-fluid">
+  <div class="women container">
     <div class="row">
       <div
-        class="col-6 col-md-2"
+        class="col-6 col-md-3"
         style="padding:10px;"
         v-for="item in women"
         :key="item.id"

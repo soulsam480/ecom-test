@@ -1,13 +1,13 @@
 <template>
   <div class="admin container-fluid">
     <div id="afterlogin" v-if="getAuth">
-      <br>
-    <div>
-      <h5 class="d-inline">Admin: {{user.data.displayName}}</h5>
-      <button class="btn btn-danger btn-sm float-right" @click="Logout()">
-                Logout
-              </button>
-    </div>
+      <br />
+      <div>
+        <h5 class="d-inline">Admin: {{ user.data.displayName }}</h5>
+        <button class="btn btn-danger btn-sm float-right" @click="Logout()">
+          Logout
+        </button>
+      </div>
       <!-- <div class="row d-flex justify-content-center">
         <div class="col-md-4">
            <h4>{{ user.data.displayName }}</h4>
@@ -21,19 +21,30 @@
       <div class="row">
         <div class="col-sm-2">
           <div class="sidebar">
-            <a class="resnav" :class="{ act: sideBar === 'product' }" @click="changeSide('product')"
+            <a
+              class="resnav"
+              :class="{ act: sideBar === 'product' }"
+              @click="changeSide('product')"
               >Product</a
             >
-            <a class="resnav" :class="{ act: sideBar === 'categories' }" @click="changeSide('categories')"
+            <a
+              class="resnav"
+              :class="{ act: sideBar === 'categories' }"
+              @click="changeSide('categories')"
               >Categories</a
             >
-            <a class="resnav" :class="{ act: sideBar === 'media' }" @click="changeSide('media')">Media</a>
+            <a
+              class="resnav"
+              :class="{ act: sideBar === 'media' }"
+              @click="changeSide('media')"
+              >Media</a
+            >
           </div>
         </div>
         <div class="col-sm-10">
           <div id="product" v-if="sideBar === 'product'">
             <h4>Add a Product</h4>
-            <hr>
+            <hr />
             <form>
               <div class="form-group">
                 <label for>
@@ -45,6 +56,18 @@
                   class="form-control"
                   id="inputTitle"
                   placeholder="Product Name"
+                />
+              </div>
+              <div class="form-group">
+                <label for>
+                  <b>Short Description</b>
+                </label>
+                <input
+                  v-model="shortDes"
+                  type="text"
+                  class="form-control"
+                  id="inputShortDesc"
+                  placeholder="Short Description"
                 />
               </div>
               <div class="form-group">
@@ -303,42 +326,50 @@
           </div>
           <div id="cat" v-if="sideBar === 'categories'">
             <h4>Manage Categories</h4>
-            <hr>
+            <hr />
           </div>
           <div id="media" v-if="sideBar === 'media'">
             <h4>Manage Media</h4>
-            <hr>
+            <hr />
           </div>
         </div>
       </div>
     </div>
     <div id="beforelogin" v-else>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input
-          v-model="authId"
-          type="email"
-          class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
-        />
-        <small id="emailHelp" class="form-text text-muted"
-          >Hi Friend! Hacking is injurious to health. Don't try. Ok Bye.</small
-        >
+      <br />
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-4">
+          <h4>Admin Login</h4>
+          <hr />
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input
+              v-model="authId"
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+            />
+            <small id="emailHelp" class="form-text text-muted"
+              >Hi Friend! Hacking is injurious to health. Don't try. Ok
+              Bye.</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input
+              v-model="authPass"
+              type="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+              v-on:keyup.enter="Auth"
+            />
+          </div>
+          <button class="btn btn-success" @click="Auth()">Login</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input
-          v-model="authPass"
-          type="password"
-          class="form-control"
-          id="exampleInputPassword1"
-          placeholder="Password"
-          v-on:keyup.enter="Auth"
-        />
-      </div>
-      <button class="btn btn-success" @click="Auth()">Login</button>
     </div>
   </div>
 </template>
@@ -362,6 +393,7 @@ export default {
       b: "",
       c: "",
       featured: false,
+      shortDes: "",
       checkedSizes: [],
       checkedColors: [],
       checkedCats: [],
@@ -389,11 +421,8 @@ export default {
     ...mapGetters({ user: "user", cred: "authCredGet" }),
   },
   methods: {
-    /* generateId() {
-
-    }, */
-    changeSide(data){
-      this.sideBar = data
+    changeSide(data) {
+      this.sideBar = data;
     },
     removeProduct(id) {
       firebase
@@ -414,7 +443,8 @@ export default {
         (this.checkedCats = main.cats),
         (this.picture = main.imgUrls),
         (this.featured = main.featured),
-        this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
+        (this.shortDes = main.shortDes);
+      this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
       this.onPostEdit = true;
     },
     updateProduct(id) {
@@ -432,9 +462,20 @@ export default {
           imgUrls: this.picture,
           desc: this.postBody,
           featured: this.featured,
+          shortDes: this.shortDes,
         })
         .then(() => {
           window.alert("updated successfully!");
+          this.b = "";
+          this.a = "";
+          this.c = "";
+          this.checkedSizes = "";
+          this.checkedColors = "";
+          this.checkedCats = "";
+          this.picture = "";
+          this.postBody = "";
+          this.featured = "";
+          this.shortDes = "";
         });
       this.onPostEdit = false;
     },
@@ -454,9 +495,20 @@ export default {
           imgUrls: this.picture,
           desc: this.postBody,
           featured: this.featured,
+          shortDes: this.shortDes,
         })
         .then(() => {
           window.alert("Product added Successfully.");
+          this.b = "";
+          this.a = "";
+          this.c = "";
+          this.checkedSizes = "";
+          this.checkedColors = "";
+          this.checkedCats = "";
+          this.picture = "";
+          this.postBody = "";
+          this.featured = "";
+          this.shortDes = "";
         })
         .catch((error) => {
           console.log(error);
@@ -507,13 +559,15 @@ export default {
       });
     },
     async Logout() {
-      await firebase.auth().signOut().then(()=>{
-         this.$store.dispatch("changeAuth");
-      })
-     
+      await firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$store.dispatch("changeAuth");
+        });
     },
-   async Auth() {
-     await firebase
+    async Auth() {
+      await firebase
         .auth()
         .signInWithEmailAndPassword(this.authId, this.authPass)
         .then(() => {
@@ -538,7 +592,7 @@ export default {
 };
 </script>
 <style scoped>
-.sidebar {  
+.sidebar {
   border-radius: 5px;
   height: 100%;
   background-color: #ffebee;
@@ -568,8 +622,8 @@ export default {
     max-width: 100% !important;
     flex: 0 0 100% !important;
   }
-  .col-sm-10{
-    padding-top:10px;
+  .col-sm-10 {
+    padding-top: 10px;
   }
 }
 </style>
