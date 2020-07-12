@@ -138,7 +138,7 @@
               </form>
               <br>
               <div v-if="!user.data.emailVerified">
-                  <button class="prod-btn" @click="sendVemail">Send Verification Email ?</button>
+                  <button class="prod-btn" id="emailv" @click="sendVemail">Send Verification Email ?</button>
               </div>
             </div>
             <div
@@ -464,8 +464,13 @@ export default {
   },
   methods: {
     sendVemail(){
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       firebase.auth().currentUser.sendEmailVerification().then(()=>{
+        document.getElementById('emailv').style.display = 'none'
         window.alert('Email Sent! Check inbox')
+        setTimeout(() => NProgress.done(), 2000)
       })
     },
     removeAddress(id) {
