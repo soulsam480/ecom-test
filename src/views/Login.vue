@@ -96,6 +96,7 @@
                   aria-describedby="emailHelp"
                   placeholder="Enter email"
                 />
+
                 <small id="emailHelp" class="form-text text-muted"
                   >We'll never share your email with anyone else.</small
                 >
@@ -153,8 +154,14 @@ export default {
         .then(() => {
           router.replace({ name: "User" });
           setTimeout(() => NProgress.done(), 2000);
+          this.uId = "";
+          this.uPass = "";
         })
         .catch(function(error) {
+          setTimeout(() => NProgress.done(), 2000);
+          this.uId = "";
+          this.uPass = "";
+
           window.alert(error.message);
         });
     },
@@ -172,15 +179,18 @@ export default {
           setTimeout(() => NProgress.done(), 2000);
         })
         .catch((error) => {
+          setTimeout(() => NProgress.done(), 2000);
+          this.uId = "";
+          this.uPass = "";
           window.alert(error.message);
         });
     },
-    google() {
+    async google() {
       var provider = new firebase.auth.GoogleAuthProvider();
       NProgress.start();
       NProgress.set(0.1);
       NProgress.inc(0.2);
-      firebase
+      await firebase
         .auth()
         .signInWithPopup(provider)
         .then(() => {
@@ -188,6 +198,9 @@ export default {
           setTimeout(() => NProgress.done(), 2000);
         })
         .catch((error) => {
+          console.log(error);
+          setTimeout(() => NProgress.done(), 2000);
+
           window.alert(error.message);
         });
     },

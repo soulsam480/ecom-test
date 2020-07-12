@@ -54,15 +54,7 @@ const routes = [
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
-  /*   beforeEnter(to, from, next) {
-      if (store.state.user.loggedIn === true) {
-        next();
-      } else {
-        next({
-          path: "/login",
-        });
-      }
-    }, */
+    
   },
   {
     path: "/cart",
@@ -82,7 +74,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes,
+/*   mode: "history",
+ */  routes,
   // eslint-disable-next-line no-unused-vars
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };

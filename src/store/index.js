@@ -1,9 +1,9 @@
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex  from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import firebase from "firebase/app";
+import react from '../plugins/react'
 Vue.use(Vuex);
-
 export default new Vuex.Store({
   state: {
     auth: false,
@@ -172,8 +172,9 @@ export default new Vuex.Store({
     getAuth(state) {
       return state.auth;
     },
-    women: (state) => state.productData.filter((el) => el.cats.includes("Women") ),
-    men: (state) => state.productData.filter((el) => el.cats.includes( "Men")),
+    women: (state) =>
+      state.productData.filter((el) => el.cats.includes("Women")),
+    men: (state) => state.productData.filter((el) => el.cats.includes("Men")),
     user(state) {
       return state.user;
     },
@@ -217,6 +218,7 @@ export default new Vuex.Store({
     createPersistedState({
       paths: ["cart", "user.wishlist", "auth"],
     }),
+    react,
   ],
 
   modules: {},

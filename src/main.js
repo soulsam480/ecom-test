@@ -11,6 +11,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import VueAgile from "vue-agile";
 import VueLazyload from "vue-lazyload";
+import config from "./creds/firebase";
 /* const $ = require('jquery')
 window.$ = $ */
 
@@ -25,15 +26,7 @@ Vue.use(VueLazyload, {
 Vue.use(VueAgile);
 Vue.config.productionTip = false;
 
-firebase.initializeApp({
-  apiKey: "AIzaSyCS3qIer_CnkXykQbyoK7XEMeeJvCAYnGQ",
-  authDomain: "ecom-test-53555.firebaseapp.com",
-  databaseURL: "https://ecom-test-53555.firebaseio.com",
-  projectId: "ecom-test-53555",
-  storageBucket: "ecom-test-53555.appspot.com",
-  messagingSenderId: "328860335019",
-  appId: "1:328860335019:web:0af8f449243f35648ef0ee",
-});
+firebase.initializeApp(config);
 
 
 firebase.auth().onAuthStateChanged((user) => {
