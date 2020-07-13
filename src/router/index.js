@@ -71,6 +71,11 @@ const routes = [
     component: () => import("../views/404.vue"),
     name: "Fof",
   },
+  {
+    path:'/search/:query',
+    component: () => import("../views/Search.vue"),
+    name: 'Search'
+  }
 ];
 
 const router = new VueRouter({

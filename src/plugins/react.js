@@ -6,7 +6,7 @@ const react = (store) => {
       if (mutation.type === "addToWishlist") {
         firebase
           .database()
-          .ref(`/Users/${main.userId}`)
+          .ref(`/Users/${main.userId}/shop`)
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
@@ -17,7 +17,7 @@ const react = (store) => {
       } else if (mutation.type === "removeFromWishlist") {
         firebase
           .database()
-          .ref(`/Users/${main.userId}`)
+          .ref(`/Users/${main.userId}/shop`)
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
@@ -28,7 +28,7 @@ const react = (store) => {
       } else if (mutation.type === "addToCart") {
         firebase
           .database()
-          .ref(`/Users/${main.userId}`)
+          .ref(`/Users/${main.userId}/shop`)
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
@@ -39,7 +39,7 @@ const react = (store) => {
       } else if (mutation.type === "removeAllFromCart") {
         firebase
           .database()
-          .ref(`/Users/${main.userId}`)
+          .ref(`/Users/${main.userId}/shop`)
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,

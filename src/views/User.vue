@@ -384,7 +384,7 @@
                   type="submit"
                   @click="saveAddress()"
                   class="prod-btn"
-                  v-if="editAddress"
+                  v-if="!eAddress"
                 >
                   Save Address
                 </button>
@@ -582,7 +582,7 @@ export default {
             (this.uPhone = ""),
             (this.uEmail = ""),
             (this.uName = "");
-          this.addresses = false;
+          this.addAddress = false;
           setTimeout(() => NProgress.done(), 2000);
         });
     },
@@ -590,7 +590,7 @@ export default {
       if (!this.checkedOut) {
         firebase
           .database()
-          .ref(`/Users/${this.user.data.userId}`)
+          .ref(`/Users/${this.user.data.userId}/shop`)
           .set({
             cart: this.cart,
             wishlist: this.user.wishlist,

@@ -272,11 +272,21 @@
               height="500px"
               initialEditType="wysiwyg"
               previewStyle="vertical"
-              v-on:keyup.enter="addData()"
               id="postContent"
             ></editor>
             <br />
-
+            <div class="form-group">
+              <label for>
+                <b>Tags</b>
+              </label>
+              <input
+                v-model="tags"
+                type="text"
+                class="form-control"
+                id="Tags"
+                placeholder="Tags"
+              />
+            </div>
             <br />
             <button
               class="btn btn-primary"
@@ -409,6 +419,7 @@ export default {
       postBody: "",
       onPostEdit: false,
       sideBar: "product",
+      tags: "",
     };
   },
   computed: {
@@ -444,12 +455,13 @@ export default {
         (this.picture = main.imgUrls),
         (this.featured = main.featured),
         (this.shortDes = main.shortDes);
+      this.tags = main.tags.join();
       this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
       this.onPostEdit = true;
     },
     updateProduct(id) {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
-
+      var tags = this.tags.split(",");
       firebase
         .database()
         .ref(`/Products/${id}`)
@@ -463,6 +475,7 @@ export default {
           desc: this.postBody,
           featured: this.featured,
           shortDes: this.shortDes,
+          tags: tags,
         })
         .then(() => {
           window.alert("updated successfully!");
@@ -476,11 +489,13 @@ export default {
           this.postBody = "";
           this.featured = "";
           this.shortDes = "";
+          this.tags = "";
         });
       this.onPostEdit = false;
     },
     addData() {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
+      var tags = this.tags.split(",");
       var newProduct = this.b;
       firebase
         .database()
@@ -496,6 +511,7 @@ export default {
           desc: this.postBody,
           featured: this.featured,
           shortDes: this.shortDes,
+          tags: tags,
         })
         .then(() => {
           window.alert("Product added Successfully.");
@@ -509,6 +525,7 @@ export default {
           this.postBody = "";
           this.featured = "";
           this.shortDes = "";
+          this.tags = "";
         })
         .catch((error) => {
           console.log(error);

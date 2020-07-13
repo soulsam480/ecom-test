@@ -37,9 +37,13 @@
             <img src="../assets/heart.svg" alt=""
           /></router-link>
         </li>
-        <li >
-          <a v-if="isSearch" @click="closeSearch"><img src="../assets/close.svg" alt=""/></a>
-          <a v-else @click="isSearch = true"><img src="../assets/search.svg" alt=""/></a>
+        <li>
+          <a v-if="isSearch" @click="closeSearch"
+            ><img src="../assets/close.svg" alt=""
+          /></a>
+          <a v-else @click="isSearch = true"
+            ><img src="../assets/search.svg" alt=""
+          /></a>
         </li>
       </ul>
     </div>
@@ -77,9 +81,13 @@
             </div>
           </div>
         </li>
-        <li  style="cursor:pointer">
-          <a v-if="isSearch" @click="closeSearch"><img src="../assets/close.svg" alt=""/></a>
-          <a v-else @click="isSearch = true"><img src="../assets/search.svg" alt=""/></a>
+        <li style="cursor:pointer">
+          <a v-if="isSearch" @click="closeSearch"
+            ><img src="../assets/close.svg" alt=""
+          /></a>
+          <a v-else @click="isSearch = true"
+            ><img src="../assets/search.svg" alt=""
+          /></a>
         </li>
         <li>
           <div v-if="wishCount > 0" class="wishcount">
@@ -99,6 +107,7 @@
     </div>
     <div class="search" v-if="isSearch">
       <input
+        autocomplete="off"
         v-model="search"
         type="search"
         class="form-control"
@@ -110,17 +119,26 @@
     </div>
     <div class="searchfilter" v-if="search.length > 0" id="filterdata">
       <span v-if="filteredSearch.length === 0">Nothing Found</span>
-      <div v-else v-for="item in filteredSearch" :key="item.id" @click="closeSearch">
-        <router-link :to="{ path: '/product/' + item.id }" >
-          <img
-            :src="item.imgUrls[0]"
-            class="d-inline m-1"
-            style="width:40px"
-            alt=""
-          />
-          <h5 class="d-inline m-1">{{ item.name }}</h5>
-          <h6 class="d-inline m-1">₹ {{ item.price }}</h6>
-        </router-link>
+      <div v-else @click="closeSearch">
+        <div v-for="item in filteredSearch" :key="item.id">
+          <router-link :to="{ path: '/product/' + item.id }">
+          <div  class="s-div"><img
+              :src="item.imgUrls[0]"
+              class="d-inline m-1"
+              style="width:40px"  
+              alt=""
+            />
+            <h5 class="d-inline m-1">{{ item.name }}</h5>
+            <h6 class="d-inline m-1">₹ {{ item.price }}</h6></div>
+            
+          </router-link>
+        </div>
+        <br>
+        <h6>
+          <router-link :to="{ path: '/search/' + this.search }">
+            See all results for {{ search }}
+          </router-link>
+        </h6>
       </div>
     </div>
   </div>
@@ -148,14 +166,14 @@ export default {
     ...mapState(["cart", "checkedOut"]),
     filteredSearch() {
       return this.products.filter((el) => {
-        return el.name.toLowerCase().includes(this.search.toLowerCase());
+        return el.tags.join().includes(this.search.toLowerCase());
       });
     },
   },
   methods: {
     closeSearch() {
-        this.isSearch = false;
-        this.search = ''
+      this.isSearch = false;
+      this.search = "";
     },
     changeNav() {
       document.getElementById("nav-tog").classList.toggle("active");
@@ -172,10 +190,10 @@ export default {
           })
           .then(firebase.auth().signOut(), this.$store.commit("clearCart")),
           this.$store.commit("clearWishlist");
-         router.replace({ name: "Login" });
+        router.replace({ name: "Login" });
       } else {
         firebase.auth().signOut();
-       router.replace({ name: "Login" });
+        router.replace({ name: "Login" });
       }
     },
     close() {
@@ -187,6 +205,9 @@ export default {
 </script>
 
 <style>
+.s-div:hover{
+background-color: #fddde2;
+}
 a {
   color: black !important;
 }
@@ -529,7 +550,6 @@ a:hover {
   -moz-transition-delay: 0s, 0.2s;
   transform: rotate(45deg);
   transition-delay: 0s, 0.2s;
-  
 }
 
 .hamburger.active span:after {
@@ -540,7 +560,6 @@ a:hover {
   -moz-transition-delay: 0s, 0.2s;
   transform: rotate(-45deg);
   transition-delay: 0s, 0.2s;
-  
 }
 
 .main-menu-wrap {
