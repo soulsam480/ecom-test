@@ -3,8 +3,7 @@
     <div class="row">
       <div
         class="col-6 col-md-3"
-        style="padding:10px;"
-        v-for="item in getProducts"
+        v-for="item in featured"
         :key="item.name"
       >
         <router-link :to="{ path: '/product/' + item.id }" v-if="item.featured">
@@ -35,7 +34,10 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["getProducts"]),
+    ...mapGetters({ products: "getProducts" }),
+    featured() {
+      return this.products.filter((el) => el.featured === true);
+    },
   },
   methods: {},
   created() {},
@@ -43,6 +45,9 @@ export default {
 </script>
 
 <style scoped>
+.col-6,.col-md-3{
+  padding:2px!important;
+}
 a {
   color: unset !important;
   text-decoration: none !important;
@@ -67,7 +72,7 @@ button:focus {
  */
 }
 .prod:hover {
-  transform: scale(1.01)
+  transform: scale(1.01);
 }
 .prod-title {
   padding: 5px 10px;

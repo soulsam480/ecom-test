@@ -3,8 +3,8 @@
     <CartSteps />
     <br />
     <h5 class="d-inline">
-      <!-- <span v-if="user != ''">{{ user.data.displayName }} 's </span> -->
-      <h2 class="d-inline">My Cart</h2>
+      <span v-if="user.data !== null">{{ user.data.displayName }}'s </span>
+      <h2 class="d-inline"> Cart</h2>
     </h5>
     <hr />
     <section v-if="cartUIStatus === 'idle'">

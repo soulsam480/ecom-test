@@ -1,5 +1,5 @@
 <template>
-  <div class="productgrid">
+  <div class="productgrid col-sm-10">
     <div class="row">
       <div
         class="col-6 col-md-3"
@@ -34,6 +34,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.col-6,.col-md-3{
+  padding:4px 3px 4px 3px!important;
+}
+@media only screen and (max-width:768px){
+  .col-sm-10 {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
 a {
   color: unset !important;
   text-decoration: none !important;
@@ -54,12 +63,8 @@ button:focus {
 }
 .prod {
   border-radius: 2px;
-  /*   border: 1px solid black;
- */
 }
-/* .prod:hover {
-  box-shadow: 0 0 20px 0.1px rgba(173, 173, 173, 0.438);
-} */
+
 .prod-title {
   padding: 5px 10px;
 }
@@ -75,6 +80,6 @@ p {
 .prod-img img {
   vertical-align: middle;
   max-width: 100%;
-  border-radius: 0px 0px 2px 2px;
+  border-radius: 2px;
 }
 </style>

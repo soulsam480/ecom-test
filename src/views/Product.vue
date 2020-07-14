@@ -228,6 +228,11 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+}
 .prod-add::before{
   position: absolute;
   content: '';
@@ -242,6 +247,10 @@ export default {
   }
   .col-sm-6 {
     width: 100% !important;
+  }
+  .col-sm-5, .col-sm-7{
+    max-width: 100%;
+    flex: 0 0 100%
   }
 }
 .prod-btn:focus {

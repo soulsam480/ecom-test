@@ -19,8 +19,7 @@ Vue.use(VueLazyload);
 // or with options
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: "dist/error.png",
-  loading: "dist/loading.gif",
+  loading: "./assets/Infinity-1s-200px.svg",
   attempt: 1,
 });
 Vue.use(VueAgile);

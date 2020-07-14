@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <br>
-      <h4>Search results for {{query}}</h4>
+      <h4>Search results for "{{query}}"</h4>
    <ProductGrid :products="searchResults"/>
   </div>
 </template>

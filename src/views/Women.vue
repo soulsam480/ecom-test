@@ -1,12 +1,17 @@
 <template>
   <div class="women container">
-  <ProductGrid :products= "women" />
+    <p>Breadcrumb</p>
+    <div class="row">
+      <FilterBlock />
+      <ProductGrid :products="women" />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import ProductGrid from "@/components/ProductGrid.vue"
+import FilterBlock from "@/components/FilterBlock.vue"
 export default {
   name: "Women",
   computed: {
@@ -15,7 +20,9 @@ export default {
   methods: {},
   created() {},
   components:{
-    ProductGrid
+    ProductGrid,
+    FilterBlock
+    
   }
 };
 </script>

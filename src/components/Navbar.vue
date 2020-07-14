@@ -23,11 +23,13 @@
     <div class="m-leftnav">
       <ul>
         <li>
-          <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
-
-          <router-link to="/cart"
-            ><img src="../assets/bag.svg" alt=""
-          /></router-link>
+           <a v-if="isSearch" @click="closeSearch"
+            ><img src="../assets/close.svg" alt=""
+          /></a>
+          <a v-else @click="isSearch = true"
+            ><img src="../assets/search.svg" alt=""
+          /></a>
+         
         </li>
         <li>
           <div v-if="wishCount > 0" class="wishcount">
@@ -38,12 +40,11 @@
           /></router-link>
         </li>
         <li>
-          <a v-if="isSearch" @click="closeSearch"
-            ><img src="../assets/close.svg" alt=""
-          /></a>
-          <a v-else @click="isSearch = true"
-            ><img src="../assets/search.svg" alt=""
-          /></a>
+          <div class="carttotal" v-if="cartCount > 0">{{ cartCount }}</div>
+
+          <router-link to="/cart"
+            ><img src="../assets/bag.svg" alt=""
+          /></router-link>
         </li>
       </ul>
     </div>
@@ -107,12 +108,13 @@
     </div>
     <div class="search" v-if="isSearch">
       <input
+      v-on:keyup.enter="goSearch"
         autocomplete="off"
         v-model="search"
         type="search"
         class="form-control"
         name="productSearch"
-        id="productSearch"
+        id="productSearch"  
         placeholder="Search"
         autofocus
       />
@@ -171,6 +173,11 @@ export default {
     },
   },
   methods: {
+    goSearch(){
+      router.replace({path:'/search/'+ this.search})
+      this.isSearch = false;
+      this.search = "";
+    },
     closeSearch() {
       this.isSearch = false;
       this.search = "";
@@ -183,7 +190,7 @@ export default {
       if (!this.checkedOut) {
         firebase
           .database()
-          .ref(`/Users/${this.user.data.userId}`)
+          .ref(`/Users/${this.user.data.userId}/shop`)
           .set({
             cart: this.cart,
             wishlist: this.user.wishlist,
@@ -298,14 +305,14 @@ a:hover {
 .wishcount {
   position: absolute;
   border-radius: 1000px;
-  background: black;
-  color: white;
+  background: #ce93d8;
+  color: black;
   font-size: 10px;
   top: 8px;
   right: 53px;
   text-align: center;
   font-size: 10px;
-  font-weight: bold;
+  font-weight:900;
   height: 20px;
   width: 20px;
   line-height: 20px;
@@ -313,14 +320,14 @@ a:hover {
 .carttotal {
   position: absolute;
   border-radius: 1000px;
-  background: black;
-  color: white;
+  background: #ce93d8;
+  color: black;
   font-size: 10px;
   top: 8px;
   right: 12px;
   text-align: center;
   font-size: 10px;
-  font-weight: bold;
+  font-weight:900;
   height: 20px;
   width: 20px;
   line-height: 20px;
@@ -328,7 +335,7 @@ a:hover {
 @media only screen and (max-width: 768px) {
   .carttotal {
     top: -3px;
-    left: 18px;
+    right: 2px;
   }
   .wishcount {
     top: -3px;
@@ -376,6 +383,7 @@ a:hover {
 
 .m-leftnav {
   position: absolute;
+  right: 0;
 }
 .m-leftnav ul {
   display: flex;
@@ -386,7 +394,7 @@ a:hover {
   padding: 0;
 }
 .m-leftnav ul li {
-  padding: 0 9px 0 9px;
+  padding: 0 10px 0 10px;
 }
 .m-leftnav ul li img {
   width: 18px;
@@ -400,14 +408,20 @@ a:hover {
   width: 100%;
   background-color: #ffebee;
   color: black;
-  /*   box-shadow: 0 0 5px .2px rgba(0, 0, 0, 0.466);
- */
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 @media only screen and (max-width: 768px) {
+  .Navbar{
+    justify-content: flex-start;
+
+  }
+  .n-brand {  
+    margin-left: 40px;
+  
+}
   .nav-desktop {
     display: none !important;
   }
@@ -439,10 +453,10 @@ a:hover {
 }
 .hamburger {
   display: block;
-  right: 0;
+  left: 0;
   width: 25px;
   height: 27px;
-  padding: 0px 5px 0 0;
+  padding: 0px 27px 0 10px;
   position: absolute;
   z-index: 3;
   top: 0;
@@ -566,7 +580,7 @@ a:hover {
   float: right;
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   width: 0;
   background: #ffebee;
   width: 0;
@@ -596,7 +610,7 @@ a:hover {
   display: block;
   font-size: 23px;
   padding: 15px 20px;
-  text-align: right;
+  text-align: left;
   text-decoration: none;
 }
 

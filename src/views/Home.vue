@@ -43,11 +43,15 @@ export default {
   components: {
     FeaturedProducts,
     Slider,
-    
-  }
+  },
 };
 </script>
 <style scoped>
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+}
 .cat-img {
   max-width: 100%;
 }

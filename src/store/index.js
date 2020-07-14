@@ -74,7 +74,7 @@ export default new Vuex.Store({
       state.cart = state.cart.filter((el) => el.id !== payload.id);
     },
     fromLogin(state, id) {
-      const cartref = firebase.database().ref(`/Users/${id}/cart`);
+      const cartref = firebase.database().ref(`/Users/${id}/shop/cart`);
       cartref.on("value", (snap) => {
         snap.forEach((csnap) => {
           let itemfound = state.cart.find((el) => el.id === csnap.val().id);
@@ -89,7 +89,7 @@ export default new Vuex.Store({
       });
     },
     addWishes(state, id) {
-      const wishref = firebase.database().ref(`/Users/${id}/wishlist`);
+      const wishref = firebase.database().ref(`/Users/${id}/shop/wishlist`);
       wishref.on("value", (snap) => {
         snap.forEach((csnap) => {
           let wishFound = state.user.wishlist.find(
