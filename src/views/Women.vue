@@ -2,7 +2,6 @@
   <div class="women container">
     <p>Breadcrumb</p>
     <div class="row">
-      <FilterBlock />
       <ProductGrid :products="women" />
     </div>
   </div>
@@ -10,8 +9,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ProductGrid from "@/components/ProductGrid.vue"
-import FilterBlock from "@/components/FilterBlock.vue"
+import ProductGrid from "@/components/ProductGrid.vue";
 export default {
   name: "Women",
   computed: {
@@ -19,14 +17,16 @@ export default {
   },
   methods: {},
   created() {},
-  components:{
+  components: {
     ProductGrid,
-    FilterBlock
-    
-  }
+  },
 };
 </script>
 
 <style scoped>
-
+@media only screen and (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+}
 </style>
