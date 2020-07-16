@@ -13,27 +13,27 @@
           >
           <div>
             <div class="box">
-              <input v-model="size" id="one" value="s" type="checkbox" />
+              <input v-model="size" id="one" value="S" type="checkbox" />
               <span class="check"></span>
               <label for="one">S</label>
             </div>
             <div class="box">
-              <input v-model="size" id="two" value="m" type="checkbox" />
+              <input v-model="size" id="two" value="M" type="checkbox" />
               <span class="check"></span>
               <label for="two">M</label>
             </div>
             <div class="box">
-              <input v-model="size" id="three" value="l" type="checkbox" />
+              <input v-model="size" id="three" value="L" type="checkbox" />
               <span class="check"></span>
               <label for="three">L</label>
             </div>
             <div class="box">
-              <input v-model="size" id="four" value="xl" type="checkbox" />
+              <input v-model="size" id="four" value="XL" type="checkbox" />
               <span class="check"></span>
               <label for="four">XL</label>
             </div>
             <div class="box">
-              <input v-model="size" id="five" value="xxl" type="checkbox" />
+              <input v-model="size" id="five" value="XXL" type="checkbox" />
               <span class="check"></span>
               <label for="five">XXL</label>
             </div>
@@ -118,7 +118,14 @@
               </ul>
             </div>
             <div class="filter" v-if="showContent === 'filter'">
-              <h5>Filters</h5>
+              <h5 class="d-inline">Filters</h5>
+              <span
+                class="text-muted d-inline"
+                @click="color = [] , size = []"
+                v-if="color.length > 0 || size.length > 0"
+              >
+                Clear</span
+              >
               <hr />
               <div class="row">
                 <div class="col-3">
@@ -141,7 +148,7 @@
                       <input
                         v-model="size"
                         id="one"
-                        value="s"
+                        value="S"
                         type="checkbox"
                       />
                       <span class="check"></span>
@@ -151,7 +158,7 @@
                       <input
                         v-model="size"
                         id="two"
-                        value="m"
+                        value="M"
                         type="checkbox"
                       />
                       <span class="check"></span>
@@ -161,7 +168,7 @@
                       <input
                         v-model="size"
                         id="three"
-                        value="l"
+                        value="L"
                         type="checkbox"
                       />
                       <span class="check"></span>
@@ -171,7 +178,7 @@
                       <input
                         v-model="size"
                         id="four"
-                        value="xl"
+                        value="XL"
                         type="checkbox"
                       />
                       <span class="check"></span>
@@ -181,7 +188,7 @@
                       <input
                         v-model="size"
                         id="five"
-                        value="xxl"
+                        value="XXL"
                         type="checkbox"
                       />
                       <span class="check"></span>
@@ -267,7 +274,7 @@
           <div
             class="col-6 col-md-3"
             style="padding:10px;"
-            v-for="item in products"
+            v-for="item in filtered"
             :key="item.id"
           >
             <router-link :to="{ path: '/product/' + item.id }">
@@ -287,7 +294,7 @@
           </div>
         </div>
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
@@ -295,6 +302,27 @@
 export default {
   props: ["products"],
   name: "ProductGrid",
+  computed: {
+    filtered() {
+      const filters = { sizes: this.size, colors: this.color };
+      console.log(filters);
+      return this.products.filter((product) => {
+        return Object.entries(filters).every(
+          ([filterProperty, filterValues]) => {
+            if (!filters[filterProperty].length) {
+              return product; // passing an empty filter means that filter is ignored.
+            }
+            switch (Object.prototype.toString.call(product[filterProperty])) {
+              case "[object Array]":
+                return product[filterProperty].some((productValue) => {
+                  return filterValues.includes(productValue);
+                });
+            }
+          }
+        );
+      });
+    },
+  },
   methods: {
     showFilter(data) {
       this.showContent = data;
