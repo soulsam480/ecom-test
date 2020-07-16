@@ -1,6 +1,8 @@
 <template>
   <div class="men container">
-    <p>Breadcrumb</p>
+    <h3 class="prod-add">Men's Clothing</h3>
+    <!--     <img class="b-img" src="../assets/banner.webp"  alt="">
+ -->
     <ProductGrid :products="men" />
   </div>
 </template>
@@ -23,9 +25,25 @@ export default {
 </script>
 
 <style scoped>
+
+.prod-add::before {
+  position: absolute;
+  content: "";
+  padding: 0.8px 70px;
+  margin-top: 30px;
+  background-color: #ce93d8;
+}
+.prod-add {
+  margin: 30px 0 30px;
+}
 @media only screen and (max-width: 768px) {
   .container {
     max-width: 100%;
   }
+  .prod-add {
+  margin: 10px 0 10px 0;
+
+  }
+
 }
 </style>

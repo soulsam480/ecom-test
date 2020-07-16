@@ -13,32 +13,37 @@ NProgress.configure({
 
 import "nprogress/nprogress.css";
 /* import store from "../store/index";
- */Vue.use(VueRouter);
+ */ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+    meta:{
+      breadCrumb: 'Home'
+    }
   },
   {
     path: "/product/:id",
     name: "Product",
     props: true,
     component: Product,
-    meta: { scrollToTop: true },
+    meta: { scrollToTop: true,
+      dynamic: true,
+      breadCrumb: 'Product' },
   },
   {
     path: "/men",
     name: "Men",
     component: () => import("../views/Men.vue"),
-    meta: { scrollToTop: true },
+    meta: { scrollToTop: true, breadCrumb: 'Men'},
   },
   {
     path: "/women",
     name: "Women",
 
     component: () => import("../views/Women.vue"),
-    meta: { scrollToTop: true },
+    meta: { scrollToTop: true,breadCrumb: 'Women' },
   },
   {
     path: "/fu*ktheadmin",
@@ -49,22 +54,33 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
+    meta:{
+      breadCrumb: 'Login'
+    }
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
-    
+    meta:{
+      breadCrumb: 'User'
+    }
   },
   {
     path: "/cart",
     name: "Cart",
     component: () => import("../views/Cart.vue"),
+    mwt:{
+      breadCrumb: 'Cart'
+    }
   },
   {
     path: "/wishlist",
     name: "WishPage",
     component: () => import("../views/Wishlist.vue"),
+    meta:{
+      breadCrumb: 'Wishlist'
+    }
   },
   {
     path: "*",
@@ -72,15 +88,15 @@ const routes = [
     name: "Fof",
   },
   {
-    path:'/search/:query',
+    path: "/search/:query",
     component: () => import("../views/Search.vue"),
-    name: 'Search'
-  }
+    name: "Search",
+  },
 ];
 
 const router = new VueRouter({
-/*   mode: "history",
- */  routes,
+  /*   mode: "history",
+   */ routes,
   // eslint-disable-next-line no-unused-vars
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };

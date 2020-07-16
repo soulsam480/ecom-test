@@ -4,10 +4,40 @@
       <!--Filter Block-->
       <div class="col-sm-2">
         <div class="filter-large">
-          <h6 class="text-muted">FILTERS</h6>
-          <label for="sizes"
+          <h6 class=" d-inline prod-add">SORT BY</h6>
+          <small
+            class="text-muted d-inline"
+            style="cursor:pointer;"
+            @click="sort = ''"
+            v-if="sort !== ''"
+          >
+            Clear</small
+          >
+          <div class="sort-large">
+            <ul>
+              <li :class="{ fActive: sort === 'pop' }" @click="sort = 'pop'">
+                Most Popular
+              </li>
+              <li :class="{ fActive: sort === 'htl' }" @click="sort = 'htl'">
+                Price High to Low
+              </li>
+              <li :class="{ fActive: sort === 'lth' }" @click="sort = 'lth'">
+                Price Low to High
+              </li>
+              <li :class="{ fActive: sort === 'mr' }" @click="sort = 'mr'">
+                Most Recent
+              </li>
+            </ul>
+          </div>
+          <h6 class=" prod-add">FILTERS</h6>
+          <label for="sizes" style="font-weight:700;"
             >Size
-            <small class="text-muted" v-if="size.length > 0" @click="size = []">
+            <small
+              class="text-muted"
+              style="cursor:pointer;"
+              v-if="size.length > 0"
+              @click="size = []"
+            >
               clear
             </small></label
           >
@@ -38,12 +68,13 @@
               <label for="five">XXL</label>
             </div>
           </div>
-          <label for="color"
+          <label for="color" style="font-weight:700;"
             >Color
             <small
               class="text-muted"
               v-if="color.length > 0"
               @click="color = []"
+              style="cursor:pointer;"
             >
               clear
             </small>
@@ -121,7 +152,7 @@
               <h5 class="d-inline">Filters</h5>
               <span
                 class="text-muted d-inline"
-                @click="color = [] , size = []"
+                @click="(color = []), (size = [])"
                 v-if="color.length > 0 || size.length > 0"
               >
                 Clear</span
@@ -277,7 +308,8 @@
             v-for="item in filtered"
             :key="item.id"
           >
-            <router-link :to="{ path: '/product/' + item.id }">
+<!--           path: '/product/' + item.id
+ -->            <router-link :to="{ name:'Product', params:{id: item.id , name: item.name}}">
               <div class="prod">
                 <div class="prod-img">
                   <img :src="item.imgUrls[0]" alt />
@@ -345,6 +377,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.prod-add::before {
+  position: absolute;
+  content: "";
+  height: 0.1%;
+  width: 40%;
+  margin-top: 22px;
+  background-color: #ce93d8;
+}
+.prod-add {
+  font-weight: 700;
+}
+.sort-large ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0px 10px 15px 10px;
+}
+.sort-large ul li {
+  padding: 2px 0px;
+
+  color: rgb(59, 59, 59);
+  cursor: pointer;
+}
 /* product styles
  */
 .col-6,

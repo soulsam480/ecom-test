@@ -1,9 +1,7 @@
 <template>
   <div class="women container">
-    <p>Breadcrumb</p>
-    <div class="row">
-      <ProductGrid :products="women" />
-    </div>
+    <h3 class="prod-add">Women's Clothing</h3>
+    <ProductGrid :products="women" />
   </div>
 </template>
 
@@ -24,9 +22,22 @@ export default {
 </script>
 
 <style scoped>
+.prod-add::before {
+  position: absolute;
+  content: "";
+  padding: 0.8px 90px;
+  margin-top: 30px;
+  background-color: #ce93d8;
+}
+.prod-add {
+  margin: 30px 0 30px;
+}
 @media only screen and (max-width: 768px) {
   .container {
     max-width: 100%;
+  }
+   .prod-add {
+  margin: 10px 0 10px 0;
   }
 }
 </style>

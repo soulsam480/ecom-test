@@ -6,7 +6,7 @@
         v-for="item in featured"
         :key="item.name"
       >
-        <router-link :to="{ path: '/product/' + item.id }" v-if="item.featured">
+        <router-link :to="{ name:'Product', params:{id:item.id,name:item.name}}" v-if="item.featured">
           <div class="prod">
             <div class="prod-img">
               <img v-lazy="item.imgUrls[0]" alt="" />

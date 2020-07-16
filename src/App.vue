@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Navbar />
+
     <div>
       <router-view />
     </div>
@@ -12,6 +13,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+
 export default {
   components: {
     Navbar,
@@ -24,8 +26,7 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("addData");
-
-  }
+  },
 };
 </script>
 
