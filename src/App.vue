@@ -24,7 +24,7 @@ export default {
       loading: false,
     };
   },
-  beforeMount() {
+  beforeCreate() {
     this.$store.dispatch("addData");
   },
 };

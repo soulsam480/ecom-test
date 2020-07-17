@@ -10,6 +10,8 @@ const react = (store) => {
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
+          }).then(() => {
+            store.dispatch("syncWishes", main.userId);
           })
           .catch((err) => {
             window.alert(err);
@@ -21,6 +23,8 @@ const react = (store) => {
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
+          }) .then(() => {
+            store.dispatch("syncWishes", main.userId);
           })
           .catch((err) => {
             window.alert(err);
@@ -33,6 +37,9 @@ const react = (store) => {
             wishlist: state.user.wishlist,
             cart: state.cart,
           })
+          .then(() => {
+            store.dispatch("syncCart", main.userId);
+          })
           .catch((err) => {
             window.alert(err);
           });
@@ -43,6 +50,9 @@ const react = (store) => {
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
+          })
+          .then(() => {
+            store.dispatch("syncCart", main.userId);
           })
           .catch((err) => {
             window.alert(err);

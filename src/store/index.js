@@ -1,9 +1,11 @@
 import Vue from "vue";
-import Vuex  from "vuex";
+import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import firebase from "firebase/app";
-import react from '../plugins/react'
-Vue.use(Vuex);
+import react from "../plugins/react";
+import { vuexfireMutations, firebaseAction } from "vuexfire";
+/* const db = firebase.database()
+ */ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     auth: false,
@@ -22,7 +24,8 @@ export default new Vuex.Store({
     checkedOut: false,
   },
   mutations: {
-    getData(state) {
+    ...vuexfireMutations,
+    /* getData(state) {
       var starCountRef = firebase.database().ref("/Products");
       var main = state.productData;
       starCountRef.on("value", (snapshot) => {
@@ -37,7 +40,7 @@ export default new Vuex.Store({
             : main.push(csnap.val());
         });
       });
-    },
+    }, */
     cAuth(state) {
       state.auth = !state.auth;
     },
@@ -73,7 +76,7 @@ export default new Vuex.Store({
     removeAllFromCart: (state, payload) => {
       state.cart = state.cart.filter((el) => el.id !== payload.id);
     },
-    fromLogin(state, id) {
+    cartAdd(state, id) {
       const cartref = firebase.database().ref(`/Users/${id}/shop/cart`);
       cartref.on("value", (snap) => {
         snap.forEach((csnap) => {
@@ -89,7 +92,7 @@ export default new Vuex.Store({
       });
     },
     addWishes(state, id) {
-      const wishref = firebase.database().ref(`/Users/${id}/s`);
+      const wishref = firebase.database().ref(`/Users/${id}/shop/wishlist`);
       wishref.on("value", (snap) => {
         snap.forEach((csnap) => {
           let wishFound = state.user.wishlist.find(
@@ -140,9 +143,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    addData(context) {
+    addData:  firebaseAction(({ bindFirebaseRef }) => {
+        // return the promise returned by `bindFirebaseRef`
+        return bindFirebaseRef(
+          "productData",
+          firebase.database().ref(`/Products`)
+        );
+      }),
+  /*   addData(context) {
       context.commit("getData");
-    },
+    }, */
     changeAuth(context) {
       context.commit("cAuth");
     },
@@ -162,8 +172,11 @@ export default new Vuex.Store({
       }
     },
     syncCart({ commit }, id) {
-      commit("fromLogin", id);
+      commit("cartAdd", id);
     },
+    syncWishes({commit},id){
+      commit('addWishes',id)
+    }
   },
   getters: {
     getProducts(state) {
