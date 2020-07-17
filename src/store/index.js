@@ -94,7 +94,7 @@ export default new Vuex.Store({
     addWishes(state, id) {
       const wishref = firebase.database().ref(`/Users/${id}/shop/wishlist`);
       wishref.on("value", (snap) => {
-        snap.forEach((csnap) => {
+        snap.forEach((csnap) => { 
           let wishFound = state.user.wishlist.find(
             (el) => el.id === csnap.val().id
           );
