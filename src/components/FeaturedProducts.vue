@@ -31,7 +31,9 @@ import { mapGetters } from "vuex";
 export default {
   name: "FeaturedProducts",
   data: function() {
-    return {};
+    return {
+      
+    };
   },
   computed: {
     ...mapGetters({ products: "getProducts" }),

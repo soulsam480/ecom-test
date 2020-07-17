@@ -31,7 +31,12 @@ export default {
 </script>
 
 <style>
+img [lazy=loading] {
+    vertical-align: middle;
+    max-width: 100%;
+  }
 @font-face {
+  
   font-family: Function Regular;
   src: url(~@/assets/functionregular.ttf);
 }

@@ -312,7 +312,7 @@
  -->            <router-link :to="{ name:'Product', params:{id: item.id , name: item.name}}">
               <div class="prod">
                 <div class="prod-img">
-                  <img :src="item.imgUrls[0]" alt />
+                  <img v-lazy="item.imgUrls[0]" alt />
                 </div>
                 <div class="prod-title">
                   <p>{{ item.name }}</p>

@@ -11,16 +11,15 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import VueAgile from "vue-agile";
 import VueLazyload from "vue-lazyload";
-import config from "./creds/firebase";
-/* const $ = require('jquery')
-window.$ = $ */
+import config from "./creds/firebase";  
 
-Vue.use(VueLazyload);
-// or with options
+import image from './assets/lazy-img.svg'
+
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  loading: "./assets/Infinity-1s-200px.svg",
-  attempt: 1,
+  loading: image,
+  attempt: 2,
+  observer: true,
 });
 Vue.use(VueAgile);
 Vue.config.productionTip = false;

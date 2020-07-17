@@ -21,6 +21,13 @@
             >
               <img :src="product.imgUrls[1]" class="d-block p-img" alt="..." />
             </div>
+            <div
+              class="carousel-item"
+              data-interval="1500"
+              v-if="product.imgUrls[2]"
+            >
+              <img :src="product.imgUrls[1]" class="d-block p-img" alt="..." />
+            </div>
           </div>
           <a
             class="carousel-control-prev"
