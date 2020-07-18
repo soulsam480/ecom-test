@@ -1,13 +1,12 @@
 <template>
   <div class="admin container-fluid">
     <div id="afterlogin" v-if="getAuth">
-      <br />
-      <div>
+      <!--    <div>
         <h5 class="d-inline">Admin: {{ user.data.displayName }}</h5>
         <button class="btn btn-danger btn-sm float-right" @click="Logout()">
           Logout
         </button>
-      </div>
+      </div> -->
       <!-- <div class="row d-flex justify-content-center">
         <div class="col-md-4">
            <h4>{{ user.data.displayName }}</h4>
@@ -21,6 +20,15 @@
       <div class="row">
         <div class="col-sm-2">
           <div class="sidebar">
+            <a style="border-bottom:1px solid black">
+              <h3>Admin Panel</h3>
+            </a>
+            <a>
+              User: {{ user.data.displayName }}
+              <button class="btn btn-danger btn-sm" @click="Logout()">
+                Logout
+              </button>
+            </a>
             <a
               class="resnav"
               :class="{ act: sideBar === 'product' }"
@@ -43,265 +51,328 @@
         </div>
         <div class="col-sm-10">
           <div id="product" v-if="sideBar === 'product'">
-            <h4>Add a Product</h4>
+            <h4 class=" d-inline">Add a Product</h4>
+            <span
+              class="d-inline"
+              @click="addProd = !addProd"
+              style="font-size:20px; font-weight:bold; padding:0 0 0 10px; cursor:pointer;"
+            >
+              <span v-if="!addProd">&#10095;</span
+              ><span v-if="addProd">&#10094;</span></span
+            >
             <hr />
-            <form>
-              <div class="form-group">
-                <label for>
-                  <b>Product Name</b>
-                </label>
-                <input
-                  v-model="a"
-                  type="text"
-                  class="form-control"
-                  id="inputTitle"
-                  placeholder="Product Name"
-                />
-              </div>
-              <div class="form-group">
-                <label for>
-                  <b>Short Description</b>
-                </label>
-                <input
-                  v-model="shortDes"
-                  type="text"
-                  class="form-control"
-                  id="inputShortDesc"
-                  placeholder="Short Description"
-                />
-              </div>
-              <div class="form-group">
-                <label for="inputDesc">
-                  <b>Product Price</b>
-                </label>
-                <input
-                  v-model="c"
-                  type="text"
-                  class="form-control"
-                  id="inputDesc"
-                  placeholder="Product Price"
-                />
-              </div>
-              <div class="form-group">
-                <legend class="col-form-label pt-0">
-                  <b>Product Sizes</b>
-                </legend>
-                <div class="form-check form-check-inline">
+            <div class="add-prod" v-if="addProd">
+              <form>
+                <div class="form-group">
+                  <label for>
+                    <b>Product Name</b>
+                  </label>
                   <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox1"
-                    value="S"
-                    v-model="checkedSizes"
+                    v-model="a"
+                    type="text"
+                    class="form-control"
+                    id="inputTitle"
+                    placeholder="Product Name"
                   />
-                  <label class="form-check-label" for="inlineCheckbox1"
-                    >S</label
-                  >
+                </div>
+                <div class="form-group">
+                  <label for>
+                    <b>Short Description</b>
+                  </label>
+                  <input
+                    v-model="shortDes"
+                    type="text"
+                    class="form-control"
+                    id="inputShortDesc"
+                    placeholder="Short Description"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="inputDesc">
+                    <b>Product Price</b>
+                  </label>
+                  <input
+                    v-model="c"
+                    type="text"
+                    class="form-control"
+                    id="inputDesc"
+                    placeholder="Product Price"
+                  />
+                </div>
+                <div class="form-group">
+                  <legend class="col-form-label pt-0">
+                    <b>Product Sizes</b>
+                  </legend>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox1"
+                        value="S"
+                        v-model="checkedSizes"
+                      />
+
+                      <span class="check"> </span>
+                      <label class="form-check-label" for="inlineCheckbox1"
+                        >S</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox2"
+                        value="M"
+                        v-model="checkedSizes"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox2"
+                        >M</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox3"
+                        value="L"
+                        v-model="checkedSizes"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox3"
+                        >L</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox4"
+                        value="XL"
+                        v-model="checkedSizes"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox4"
+                        >XL</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox15"
+                        value="XXL"
+                        v-model="checkedSizes"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox15"
+                        >XXL</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group color-block">
+                  <legend class="col-form-label pt-0">
+                    <b>Product Colors</b>
+                  </legend>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox5"
+                        value="black"
+                        v-model="checkedColors"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox5"
+                        >Black</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox6"
+                        value="white"
+                        v-model="checkedColors"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox6"
+                        >White</label
+                      >
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="box">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="inlineCheckbox7"
+                        value="yellow"
+                        v-model="checkedColors"
+                      />
+
+                      <span class="check"></span>
+                      <label class="form-check-label" for="inlineCheckbox7"
+                        >Yellow</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <legend class="col-form-label pt-0">
+                    <b>Product Categories</b>
+                  </legend>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="inlineCheckbox8"
+                      value="Men"
+                      v-model="checkedCats"
+                    />
+                    <label class="form-check-label" for="inlineCheckbox8"
+                      >Men</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="inlineCheckbox9"
+                      value="Women"
+                      v-model="checkedCats"
+                    />
+                    <label class="form-check-label" for="inlineCheckbox9"
+                      >Women</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="inlineCheckbox10"
+                      value="uncat"
+                      v-model="checkedCats"
+                    />
+                    <label class="form-check-label" for="inlineCheckbox10"
+                      >uncat</label
+                    >
+                  </div>
                 </div>
                 <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    id="inlineCheckbox2"
-                    value="M"
-                    v-model="checkedSizes"
+                    id="featured"
+                    :value="true"
+                    v-model="featured"
                   />
-                  <label class="form-check-label" for="inlineCheckbox2"
-                    >M</label
+                  <label class="form-check-label" for="featured"
+                    >Featured roduct</label
                   >
                 </div>
-                <div class="form-check form-check-inline">
+                <br />
+                <div class="form-group">
+                  <label for="Image">
+                    <b>Product Image</b> (
+                    <small aria-describedby="Image"
+                      >Upload 3 Product Images at once</small
+                    >)
+                  </label>
+
                   <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox3"
-                    value="L"
-                    v-model="checkedSizes"
+                    type="file"
+                    class="form-control-file"
+                    @change="previewImage"
+                    accept="image/*"
+                    id="Image"
+                    multiple
                   />
-                  <label class="form-check-label" for="inlineCheckbox3"
-                    >L</label
-                  >
+                  <br />
+                  <p>
+                    {{ uploadValue.toFixed() + "%" }}
+                    <progress
+                      id="progress"
+                      :value="uploadValue"
+                      max="100"
+                    ></progress>
+                  </p>
+                  <button class="btn btn-primary" @click="onUpload()">
+                    <!--           :disabled="!imageData"
+            -->
+                    Upload Image
+                  </button>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox4"
-                    value="XL"
-                    v-model="checkedSizes"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox4"
-                    >XL</label
-                  >
-                </div>
-              </div>
-              <div class="form-group">
-                <legend class="col-form-label pt-0">
-                  <b>Product Colors</b>
-                </legend>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox5"
-                    value="black"
-                    v-model="checkedColors"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox5"
-                    >Black</label
-                  >
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox6"
-                    value="white"
-                    v-model="checkedColors"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox6"
-                    >White</label
-                  >
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox7"
-                    value="yellow"
-                    v-model="checkedColors"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox7"
-                    >Yellow</label
-                  >
-                </div>
-              </div>
-              <div class="form-group">
-                <legend class="col-form-label pt-0">
-                  <b>Product Categories</b>
-                </legend>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox8"
-                    value="Men"
-                    v-model="checkedCats"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox8"
-                    >Men</label
-                  >
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox9"
-                    value="Women"
-                    v-model="checkedCats"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox9"
-                    >Women</label
-                  >
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox10"
-                    value="uncat"
-                    v-model="checkedCats"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox10"
-                    >uncat</label
-                  >
-                </div>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="featured"
-                  :value="true"
-                  v-model="featured"
-                />
-                <label class="form-check-label" for="featured"
-                  >Featured roduct</label
-                >
-              </div>
+              </form>
+              <label for="postContent">
+                <b>Product Description</b>
+              </label>
+              <editor
+                ref="toastuiEditor"
+                :initialValue="editorText"
+                :options="editorOptions"
+                height="500px"
+                initialEditType="wysiwyg"
+                previewStyle="vertical"
+                id="postContent"
+              ></editor>
               <br />
               <div class="form-group">
-                <label for="Image">
-                  <b>Product Image</b> (
-                  <small aria-describedby="Image"
-                    >Upload 3 Product Images at once</small
-                  >)
+                <label for>
+                  <b>Tags</b>
                 </label>
-
                 <input
-                  type="file"
-                  class="form-control-file"
-                  @change="previewImage"
-                  accept="image/*"
-                  id="Image"
-                  multiple
+                  v-model="tags"
+                  type="text"
+                  class="form-control"
+                  id="Tags"
+                  placeholder="Tags"
                 />
-                <br />
-                <p>
-                  {{ uploadValue.toFixed() + "%" }}
-                  <progress
-                    id="progress"
-                    :value="uploadValue"
-                    max="100"
-                  ></progress>
-                </p>
-                <button class="btn btn-primary" @click="onUpload()">
-                  <!--           :disabled="!imageData"
-            -->
-                  Upload Image
-                </button>
               </div>
-            </form>
-            <label for="postContent">
-              <b>Product Description</b>
-            </label>
-            <editor
-              ref="toastuiEditor"
-              :initialValue="editorText"
-              :options="editorOptions"
-              height="500px"
-              initialEditType="wysiwyg"
-              previewStyle="vertical"
-              id="postContent"
-            ></editor>
-            <br />
-            <div class="form-group">
-              <label for>
-                <b>Tags</b>
-              </label>
-              <input
-                v-model="tags"
-                type="text"
-                class="form-control"
-                id="Tags"
-                placeholder="Tags"
-              />
+              <br />
+              <button
+                class="btn btn-primary m-1"
+                @click="addData()"
+                :disabled="onPostEdit"
+              >
+                Commit Product
+              </button>
+              <button
+                class="btn btn-danger m-1"
+                @click="cancel()"
+                :hidden="!onPostEdit"
+              >
+                Cancel
+              </button>
+              <br />
+              <br />
             </div>
-            <br />
-            <button
-              class="btn btn-primary"
-              @click="addData()"
-              :disabled="onPostEdit"
-            >
-              Commit Product
-            </button>
-            <br />
-            <br />
+
             <div>
-              <h3 class="text-center">Update Product</h3>
+              <h4>Manage Products</h4>
+              <hr />
               <div class="row">
                 <div
-                  class="col-sm-4"
+                  class="col-sm-2 p-1"
                   v-for="item in getProducts"
                   :key="item.id"
                 >
@@ -420,6 +491,7 @@ export default {
       onPostEdit: false,
       sideBar: "product",
       tags: "",
+      addProd: false,
     };
   },
   computed: {
@@ -432,6 +504,21 @@ export default {
     ...mapGetters({ user: "user", cred: "authCredGet" }),
   },
   methods: {
+    cancel() {
+      this.onPostEdit = false;
+      this.addProd = false;
+      this.b = "";
+      this.a = "";
+      this.c = "";
+      this.checkedSizes = "";
+      this.checkedColors = "";
+      this.checkedCats = "";
+      this.picture = "";
+      this.postBody = "";
+      this.featured = "";
+      this.shortDes = "";
+      this.tags = "";
+    },
     changeSide(data) {
       this.sideBar = data;
     },
@@ -446,6 +533,8 @@ export default {
         });
     },
     editPost(id) {
+      this.addProd = true;
+      this.onPostEdit = true;
       var main = this.$store.getters.getProducts.find((el) => el.id === id);
       (this.a = main.name),
         (this.c = main.price),
@@ -457,7 +546,6 @@ export default {
         (this.shortDes = main.shortDes);
       this.tags = main.tags.join();
       this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
-      this.onPostEdit = true;
     },
     updateProduct(id) {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
@@ -609,9 +697,66 @@ export default {
 };
 </script>
 <style scoped>
+.color-block .form-check-inline {
+  margin-right: 1.75rem;
+}
+.box {
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.box label {
+  color: black;
+  position: absolute;
+  z-index: 10;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.box input {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+.box input:checked ~ .check {
+  border-color: #ce93d8;
+  box-shadow: 0px 0px 0px 17px #ce93d8 inset;
+}
+.box input:checked ~ .check::after {
+  opacity: 1;
+  transform: scale(1);
+}
+.box .check {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 100000px;
+  border: 1.5px solid #ce93d8;
+  box-shadow: 0px 0px 0px 0px #ce93d8 inset;
+  transition: all 0.15s cubic-bezier(0, 1.05, 0.72, 1.07);
+}
+.box .check::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 4;
+  position: absolute;
+  transform: scale(0);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition-delay: 0.2s !important;
+  transition: all 0.25s cubic-bezier(0, 1.05, 0.72, 1.07);
+}
 .sidebar {
   border-radius: 5px;
-  height: 100%;
+  position: sticky !important;
+  top: 80px !important;
+  height: auto;
   background-color: #ffebee;
   display: flex;
   flex-direction: column;
