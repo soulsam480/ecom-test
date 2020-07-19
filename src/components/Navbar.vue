@@ -126,11 +126,7 @@
             :to="{
               name: 'Product',
               params: {
-                id: item.name
-                  .toLowerCase()
-                  .split(' ')
-                  .join('-'),
-                dataId: item.id,
+                id: item.id
               },
             }"
           >
@@ -187,7 +183,7 @@ export default {
     goSearch() {
       router.push({
         path: "/search",
-        query: { q: this.search } /* props:{query: this.search}  */,
+        query: { q: this.search }
       });
       this.isSearch = false;
       this.search = "";
