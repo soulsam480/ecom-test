@@ -70,7 +70,7 @@
                 <p>
                   Login with Social ID
                 </p>
-                <button class="btn" id="g-signin" @click="google">
+                <button class="btn" id="g-signin" @click="google" type="button">
                   <img src="../assets/glogo.png" style="width:30px" alt="" />
                 </button>
               </div>

@@ -1,8 +1,7 @@
 <template>
   <div class="men container">
     <h3 class="prod-add">Men's Clothing</h3>
-    <!--     <img class="b-img" src="../assets/banner.webp"  alt="">
- -->
+
     <ProductGrid :products="men" />
   </div>
 </template>

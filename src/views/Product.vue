@@ -54,7 +54,7 @@
           <p class="p-spec-name">{{ product.name }}</p>
           <h6 class="text-muted">
             <!-- {{ product.desc }} -->
-            {{product.shortDes}}
+            {{ product.shortDes }}
           </h6>
           <h3>₹ {{ product.price }}</h3>
           <br />
@@ -167,16 +167,14 @@
         <h4 class="prod-add">Description</h4>
         <div v-html="product.desc">{{ product.desc }}</div>
       </div>
-      <div class="col-sm-6">  
+      <div class="col-sm-6">
         <h4 class="prod-add">Reviews</h4>
       </div>
-    </div>  
+    </div>
     <div>
       <h4 class="prod-add">You may also like</h4>
-          <FeaturedProducts />
-
+      <FeaturedProducts />
     </div>
-
   </div>
 </template>
 
@@ -240,12 +238,12 @@ export default {
     max-width: 100%;
   }
 }
-.prod-add::before{
+.prod-add::before {
   position: absolute;
-  content: '';
+  content: "";
   padding: 0.8px 30px;
-  margin-top:30px;
-  background-color: #CE93D8;
+  margin-top: 30px;
+  background-color: #ce93d8;
 }
 @media only screen and (max-width: 768px) {
   .col-10 {
@@ -255,9 +253,10 @@ export default {
   .col-sm-6 {
     width: 100% !important;
   }
-  .col-sm-5, .col-sm-7{
+  .col-sm-5,
+  .col-sm-7 {
     max-width: 100%;
-    flex: 0 0 100%
+    flex: 0 0 100%;
   }
 }
 .prod-btn:focus {

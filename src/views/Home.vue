@@ -7,12 +7,12 @@
         <div class="col-sm-12">
           <div class="row d-flex justify-content-center">
             <div class="col-6 col-sm-4">
-              <router-link to="/men"
+              <router-link to="/category/men"
                 ><img class="cat-img" src="../assets/mencat.webp" alt=""
               /></router-link>
             </div>
             <div class="col-6 col-sm-4">
-              <router-link to="/women"
+              <router-link to="/category/women"
                 ><img class="cat-img" src="../assets/womencat.webp" alt=""
               /></router-link>
             </div>

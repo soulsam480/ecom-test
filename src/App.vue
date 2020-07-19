@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Navbar />
-
     <div>
       <router-view />
     </div>
@@ -31,12 +30,11 @@ export default {
 </script>
 
 <style>
-img [lazy=loading] {
-    vertical-align: middle;
-    max-width: 100%;
-  }
+
+.lazy-img [lazy="loading"] {
+  width: 100% !important;
+}
 @font-face {
-  
   font-family: Function Regular;
   src: url(~@/assets/functionregular.ttf);
 }

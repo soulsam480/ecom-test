@@ -792,7 +792,6 @@ a:hover {
   flex-direction: row !important;
   justify-content: space-evenly;
   background-color: #ffebee;
-  border-radius: 5px;
 }
 
 .tabs-left li:hover {
@@ -804,7 +803,8 @@ a:hover {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start;
-    height: 600px;
+    height: auto;
+    position: sticky !important;
   }
 }
 </style>

@@ -4,29 +4,8 @@
     <h5 class="d-inline"><span v-if="user.data !== null">{{ user.data.displayName }}'s </span><h2 class="d-inline"> Wishlist</h2></h5>
     <hr />
     <div v-if="count>0">
-      <div class="row">
-      <div
-        class="col-6 col-md-3"
-        style="padding:10px;"
-        v-for="wish in wishes"
-        :key="wish.id"
-      >
-        <router-link :to="{ path: '/product/' + wish.id }">
-          <div class="prod">
-            <div class="prod-img">
-              <img :src="wish.imgUrls[0]" alt />
-            </div>
-            <div class="prod-title">
-              <p>{{ wish.name }}</p>
-              <small> ₹ {{ wish.price }}</small>
-            </div>
-          </div>
-        </router-link>
-        <div style="padding-top:10px">
-          <button class="prod-btn" @click="remove(wish)">Remove</button>
-        </div>
-      </div>
-    </div>
+        <ProductGrid :products="wishes"/>
+
     </div>
     <div v-else>
       <h5> It's empty. Let's add something !</h5>
@@ -36,6 +15,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ProductGrid from '@/components/ProductGrid.vue'
 export default {
   name: "WishPage",
   computed: {
@@ -47,6 +27,9 @@ export default {
       this.$store.commit("removeFromWishlist", wish);
     },
   },
+  components:{
+    ProductGrid
+  }
 };
 </script>
 

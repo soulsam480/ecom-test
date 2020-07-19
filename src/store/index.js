@@ -4,8 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 import firebase from "firebase/app";
 import react from "../plugins/react";
 import { vuexfireMutations, firebaseAction } from "vuexfire";
-/* const db = firebase.database()
- */ Vue.use(Vuex);
+Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     auth: false,
@@ -25,22 +24,6 @@ export default new Vuex.Store({
   },
   mutations: {
     ...vuexfireMutations,
-    /* getData(state) {
-      var starCountRef = firebase.database().ref("/Products");
-      var main = state.productData;
-      starCountRef.on("value", (snapshot) => {
-        snapshot.forEach((csnap) => {
-          let productFound = main.find((el) => el.id === csnap.val().id);
-          productFound
-            ? main.splice(
-                main.findIndex((x) => x.id === productFound.id),
-                1,
-                csnap.val()
-              )
-            : main.push(csnap.val());
-        });
-      });
-    }, */
     cAuth(state) {
       state.auth = !state.auth;
     },
@@ -144,15 +127,12 @@ export default new Vuex.Store({
   },
   actions: {
     addData:  firebaseAction(({ bindFirebaseRef }) => {
-        // return the promise returned by `bindFirebaseRef`
         return bindFirebaseRef(
           "productData",
           firebase.database().ref(`/Products`)
         );
       }),
-  /*   addData(context) {
-      context.commit("getData");
-    }, */
+
     changeAuth(context) {
       context.commit("cAuth");
     },

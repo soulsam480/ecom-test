@@ -1,12 +1,13 @@
 <template>
   <div class="admin container-fluid">
     <div id="afterlogin" v-if="getAuth">
-      <!--    <div>
+      <br>
+         <div>
         <h5 class="d-inline">Admin: {{ user.data.displayName }}</h5>
         <button class="btn btn-danger btn-sm float-right" @click="Logout()">
           Logout
         </button>
-      </div> -->
+      </div>
       <!-- <div class="row d-flex justify-content-center">
         <div class="col-md-4">
            <h4>{{ user.data.displayName }}</h4>
@@ -20,7 +21,7 @@
       <div class="row">
         <div class="col-sm-2">
           <div class="sidebar">
-            <a style="border-bottom:1px solid black">
+            <!-- <a style="border-bottom:1px solid black" >
               <h3>Admin Panel</h3>
             </a>
             <a>
@@ -28,7 +29,7 @@
               <button class="btn btn-danger btn-sm" @click="Logout()">
                 Logout
               </button>
-            </a>
+            </a> -->
             <a
               class="resnav"
               :class="{ act: sideBar === 'product' }"
@@ -753,7 +754,6 @@ export default {
   transition: all 0.25s cubic-bezier(0, 1.05, 0.72, 1.07);
 }
 .sidebar {
-  border-radius: 5px;
   position: sticky !important;
   top: 80px !important;
   height: auto;

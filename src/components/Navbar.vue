@@ -6,8 +6,8 @@
     <div class="main-menu-wrap" id="mnav-wrap">
       <div class="main-menu" @click="close">
         <router-link to="/">Home</router-link>
-        <router-link to="/men">Men</router-link>
-        <router-link to="/women">Women</router-link>
+        <router-link to="/category/men">Men</router-link>
+        <router-link to="/category/women">Women</router-link>
         <a href>Accessories</a>
         <hr />
         <div>
@@ -23,13 +23,12 @@
     <div class="m-leftnav">
       <ul>
         <li>
-           <a v-if="isSearch" @click="closeSearch"
+          <a v-if="isSearch" @click="closeSearch"
             ><img src="../assets/close.svg" alt=""
           /></a>
           <a v-else @click="isSearch = true"
             ><img src="../assets/search.svg" alt=""
           /></a>
-         
         </li>
         <li>
           <div v-if="wishCount > 0" class="wishcount">
@@ -54,10 +53,10 @@
           <router-link to="/">Home</router-link>
         </li>
         <li>
-          <router-link to="/men">Men</router-link>
+          <router-link to="/category/men">Men</router-link>
         </li>
         <li>
-          <router-link to="/women">Women</router-link>
+          <router-link to="/category/women">Women</router-link>
         </li>
         <li>
           <a href>Accessories</a>
@@ -108,13 +107,13 @@
     </div>
     <div class="search" v-if="isSearch">
       <input
-      v-on:keyup.enter="goSearch"
+        v-on:keyup.enter="goSearch"
         autocomplete="off"
         v-model="search"
         type="search"
         class="form-control"
         name="productSearch"
-        id="productSearch"  
+        id="productSearch"
         placeholder="Search"
         autofocus
       />
@@ -123,21 +122,33 @@
       <span v-if="filteredSearch.length === 0">Nothing Found</span>
       <div v-else @click="closeSearch">
         <div v-for="item in filteredSearch" :key="item.id">
-          <router-link :to="{ path: '/product/' + item.id }">
-          <div  class="s-div"><img
-              :src="item.imgUrls[0]"
-              class="d-inline m-1"
-              style="width:40px"  
-              alt=""
-            />
-            <h5 class="d-inline m-1">{{ item.name }}</h5>
-            <h6 class="d-inline m-1">₹ {{ item.price }}</h6></div>
-            
+          <router-link
+            :to="{
+              name: 'Product',
+              params: {
+                id: item.name
+                  .toLowerCase()
+                  .split(' ')
+                  .join('-'),
+                dataId: item.id,
+              },
+            }"
+          >
+            <div class="s-div">
+              <img
+                :src="item.imgUrls[0]"
+                class="d-inline m-1"
+                style="width:40px"
+                alt=""
+              />
+              <h5 class="d-inline m-1">{{ item.name }}</h5>
+              <h6 class="d-inline m-1">₹ {{ item.price }}</h6>
+            </div>
           </router-link>
         </div>
-        <br>
+        <br />
         <h6>
-          <router-link :to="{ path: '/search/' + this.search }">
+          <router-link :to="{ path: '/search', query: { q: this.search} }">
             See all results for {{ search }}
           </router-link>
         </h6>
@@ -173,8 +184,11 @@ export default {
     },
   },
   methods: {
-    goSearch(){
-      router.replace({path:'/search/'+ this.search})
+    goSearch() {
+      router.push({
+        path: "/search",
+        query: { q: this.search } /* props:{query: this.search}  */,
+      });
       this.isSearch = false;
       this.search = "";
     },
@@ -212,8 +226,8 @@ export default {
 </script>
 
 <style>
-.s-div:hover{
-background-color: #fddde2;
+.s-div:hover {
+  background-color: #fddde2;
 }
 a {
   color: black !important;
@@ -312,7 +326,7 @@ a:hover {
   right: 53px;
   text-align: center;
   font-size: 10px;
-  font-weight:900;
+  font-weight: 900;
   height: 20px;
   width: 20px;
   line-height: 20px;
@@ -327,7 +341,7 @@ a:hover {
   right: 12px;
   text-align: center;
   font-size: 10px;
-  font-weight:900;
+  font-weight: 900;
   height: 20px;
   width: 20px;
   line-height: 20px;
@@ -414,14 +428,12 @@ a:hover {
   justify-content: space-between;
 }
 @media only screen and (max-width: 768px) {
-  .Navbar{
+  .Navbar {
     justify-content: flex-start;
-
   }
-  .n-brand {  
+  .n-brand {
     margin-left: 40px;
-  
-}
+  }
   .nav-desktop {
     display: none !important;
   }

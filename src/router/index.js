@@ -19,31 +19,29 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta:{
-      breadCrumb: 'Home'
-    }
+    meta: {
+      breadCrumb: "Home",
+    },
   },
   {
-    path: "/product/:id",
+    path: "/p/:id",
     name: "Product",
     props: true,
     component: Product,
-    meta: { scrollToTop: true,
-      dynamic: true,
-      breadCrumb: 'Product' },
+    meta: { scrollToTop: true, dynamic: true, breadCrumb: "Product" },
   },
   {
-    path: "/men",
+    path: "/category/men",
     name: "Men",
     component: () => import("../views/Men.vue"),
-    meta: { scrollToTop: true, breadCrumb: 'Men'},
+    meta: { scrollToTop: true, breadCrumb: "Men" },
   },
   {
-    path: "/women",
+    path: "/category/women",
     name: "Women",
 
     component: () => import("../views/Women.vue"),
-    meta: { scrollToTop: true,breadCrumb: 'Women' },
+    meta: { scrollToTop: true, breadCrumb: "Women" },
   },
   {
     path: "/fu*ktheadmin",
@@ -54,33 +52,33 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
-    meta:{
-      breadCrumb: 'Login'
-    }
+    meta: {
+      breadCrumb: "Login",
+    },
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
-    meta:{
-      breadCrumb: 'User'
-    }
+    meta: {
+      breadCrumb: "User",
+    },
   },
   {
     path: "/cart",
     name: "Cart",
     component: () => import("../views/Cart.vue"),
-    mwt:{
-      breadCrumb: 'Cart'
-    }
+    mwt: {
+      breadCrumb: "Cart",
+    },
   },
   {
     path: "/wishlist",
     name: "WishPage",
     component: () => import("../views/Wishlist.vue"),
-    meta:{
-      breadCrumb: 'Wishlist'
-    }
+    meta: {
+      breadCrumb: "Wishlist",
+    },
   },
   {
     path: "*",
@@ -88,15 +86,17 @@ const routes = [
     name: "Fof",
   },
   {
-    path: "/search/:query",
+    path: "/search",
     component: () => import("../views/Search.vue"),
     name: "Search",
-  },
+/*     props:true,
+ */  },
 ];
 
 const router = new VueRouter({
-  /*   mode: "history",
-   */ routes,
+  base: process.env.BASE_URL,
+  mode: "history",
+  routes,
   // eslint-disable-next-line no-unused-vars
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };

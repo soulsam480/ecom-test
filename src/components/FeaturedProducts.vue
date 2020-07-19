@@ -1,12 +1,11 @@
 <template>
   <div class="featuredProducts">
     <div class="row">
-      <div
-        class="col-6 col-md-3"
-        v-for="item in featured"
-        :key="item.name"
-      >
-        <router-link :to="{ name:'Product', params:{id:item.id,name:item.name}}" v-if="item.featured">
+      <div class="col-6 col-md-3" v-for="item in featured" :key="item.name">
+        <router-link
+          :to="{ name: 'Product', params: { id: item.id} }"
+          v-if="item.featured"
+        >
           <div class="prod">
             <div class="prod-img">
               <img v-lazy="item.imgUrls[0]" alt="" />
@@ -31,9 +30,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "FeaturedProducts",
   data: function() {
-    return {
-      
-    };
+    return {};
   },
   computed: {
     ...mapGetters({ products: "getProducts" }),
@@ -47,8 +44,9 @@ export default {
 </script>
 
 <style scoped>
-.col-6,.col-md-3{
-  padding:2px!important;
+.col-6,
+.col-md-3 {
+  padding: 2px !important;
 }
 a {
   color: unset !important;
@@ -90,6 +88,8 @@ p {
 }
 .prod-img img {
   vertical-align: middle;
+  width: 100%;
+
   max-width: 100%;
   border-radius: 0px 0px 2px 2px;
 }

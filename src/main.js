@@ -20,6 +20,7 @@ Vue.use(VueLazyload, {
   loading: image,
   attempt: 2,
   observer: true,
+  listenEvents: [ 'scroll' ]
 });
 Vue.use(VueAgile);
 Vue.config.productionTip = false;

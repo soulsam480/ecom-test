@@ -308,8 +308,7 @@
             v-for="item in filtered"
             :key="item.id"
           >
-<!--           path: '/product/' + item.id
- -->            <router-link :to="{ name:'Product', params:{id: item.id , name: item.name}}">
+            <router-link :to="{ name:'Product', params:{id: item.id}}">
               <div class="prod">
                 <div class="prod-img">
                   <img v-lazy="item.imgUrls[0]" alt />
@@ -342,7 +341,7 @@ export default {
         return Object.entries(filters).every(
           ([filterProperty, filterValues]) => {
             if (!filters[filterProperty].length) {
-              return product; // passing an empty filter means that filter is ignored.
+              return product;
             }
             switch (Object.prototype.toString.call(product[filterProperty])) {
               case "[object Array]":
@@ -454,6 +453,7 @@ p {
 }
 .prod-img img {
   vertical-align: middle;
+  width:100%;
   max-width: 100%;
   border-radius: 2px;
 }
