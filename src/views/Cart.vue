@@ -3,7 +3,7 @@
     <CartSteps />
     <br />
     <h5 class="d-inline">
-      <span v-if="user.data !== null">{{ user.data.displayName }}'s </span>
+      <span v-if="user.data !== null">{{ user.data.displayName.split(' ')[0] }}'s </span>
       <h2 class="d-inline"> Cart</h2>
     </h5>
     <hr />

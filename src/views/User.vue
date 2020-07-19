@@ -27,7 +27,13 @@
           >
             <li class="nav-item">
               <a
-                class="nav-link active"
+                :class="[
+                  {
+                    active:
+                      this.$route.hash === '#' || this.$route.hash === ' ',
+                  },
+                ]"
+                class="nav-link"
                 id="pills-home-tab"
                 data-toggle="pill"
                 href="#pills-home"
@@ -39,27 +45,34 @@
             </li>
             <li class="nav-item">
               <a
+                :class="[
+                  { active: this.$route.hash === '#pills-orders' },
+                ]"
                 class="nav-link"
-                id="pills-profile-tab"
+                id="pills-orders-tab"
                 data-toggle="pill"
-                href="#pills-profile"
+                href="#pills-orders"
                 role="tab"
-                aria-controls="pills-profile"
+                aria-controls="pills-oders"
                 aria-selected="false"
                 >Orders</a
               >
             </li>
             <li class="nav-item">
               <a
+                :class="[
+                  { active: this.$route.hash === '#pills-address' },
+                ]"
                 class="nav-link"
-                id="pills-contact-tab"
+                id="pills-address-tab"
                 data-toggle="pill"
-                href="#pills-contact"
+                href="#pills-address"
                 role="tab"
-                aria-controls="pills-contact"
+                aria-controls="pills-address"
                 aria-selected="false"
-                >Addresses</a
               >
+                Address
+              </a>
             </li>
             <li class="nav-item">
               <a
@@ -78,7 +91,11 @@
         <div class="col-sm-9">
           <div class="tab-content" id="pills-tabContent">
             <div
-              class="tab-pane fade show active"
+              class="tab-pane fade"
+              :class="[
+                'show',
+                { active: this.$route.hash === '#' || this.$route.hash === '' },
+              ]"
               id="pills-home"
               role="tabpanel"
               aria-labelledby="pills-home-tab"
@@ -136,24 +153,35 @@
                   Save
                 </button>
               </form>
-              <br>
+              <br />
               <div v-if="!user.data.emailVerified">
-                  <button class="prod-btn" id="emailv" @click="sendVemail">Send Verification Email ?</button>
+                <button class="prod-btn" id="emailv" @click="sendVemail">
+                  Send Verification Email ?
+                </button>
               </div>
             </div>
             <div
+              :class="[
+                'show',
+                { active: this.$route.hash === '#pills-orders' },
+              ]"
               class="tab-pane fade"
-              id="pills-profile"
+              id="pills-orders"
               role="tabpanel"
-              aria-labelledby="pills-profile-tab"
+              aria-labelledby="pills-orders-tab"
             >
+              rgtrt
               <div class="row"></div>
             </div>
             <div
+              :class="[
+                'show',
+                { active: this.$route.hash === '#pills-address' },
+              ]"
               class="tab-pane fade"
-              id="pills-contact"
+              id="pills-address"
               role="tabpanel"
-              aria-labelledby="pills-contact-tab"
+              aria-labelledby="pills-address-tab"
             >
               <div v-if="!addAddress">
                 <div class="d-flex justify-content-between">
@@ -463,15 +491,18 @@ export default {
     };
   },
   methods: {
-    sendVemail(){
+    sendVemail() {
       NProgress.start();
       NProgress.set(0.1);
       NProgress.inc(0.2);
-      firebase.auth().currentUser.sendEmailVerification().then(()=>{
-        document.getElementById('emailv').style.display = 'none'
-        window.alert('Email Sent! Check inbox')
-        setTimeout(() => NProgress.done(), 2000)
-      })
+      firebase
+        .auth()
+        .currentUser.sendEmailVerification()
+        .then(() => {
+          document.getElementById("emailv").style.display = "none";
+          window.alert("Email Sent! Check inbox");
+          setTimeout(() => NProgress.done(), 2000);
+        });
     },
     removeAddress(id) {
       firebase
@@ -704,6 +735,27 @@ export default {
         });
     },
   },
+  // eslint-disable-next-line no-unused-vars
+  /*   beforeRouteEnter (to, from, next) {
+     
+     if(to.fullPath.includes('#')){
+    const hash = to.fullPath.split("#");
+     console.log(to.fullPath)
+     console.log(hash)
+    
+     next(vm => {
+console.log(vm.country)
+    $('#pills-tab a[href="#'+hash[1]+'"]').tab("show");    // access to component instance via `vm`
+  })
+     }
+    // called when the route that renders this component has changed,
+    // but this component is reused in the new route.
+    // For example, for a route with dynamic params `/foo/:id`, when we
+    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+    // will be reused, and this hook will be called when that happens.
+    // has access to `this` component instance.
+    next()
+  } */
 };
 </script>
 

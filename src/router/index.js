@@ -94,13 +94,19 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  base: process.env.BASE_URL,
-  mode: "history",
+  /* base: process.env.BASE_URL,
+  mode: "history", */
   routes,
   // eslint-disable-next-line no-unused-vars
   scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+        return savedPosition;
+    }
+    if (to.hash) {
+        return { selector: to.hash };
+    }
     return { x: 0, y: 0 };
-  },
+}
 });
 router.beforeEach((to, from, next) => {
   NProgress.start();

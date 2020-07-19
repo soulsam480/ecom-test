@@ -16,6 +16,10 @@
           </router-link>
           <router-link v-else to="/login"> Login</router-link>
         </div>
+        <div v-if="user.loggedIn" >
+          <router-link :to="{ path:'/user', hash: '#pills-orders' }">Orders</router-link>
+              <router-link :to="{ path:'/user', hash: '#pills-address' }">Address</router-link>
+        </div>
         <router-link to="/wishlist">Wishlist</router-link>
         <a v-if="user.loggedIn" @click="logOut">Sign Out</a>
       </div>
@@ -75,8 +79,8 @@
             </router-link>
             <router-link v-else to="/login"> Login</router-link>
             <div class="d-content">
-              <a href="">Orders</a>
-              <a href="">Addresses</a>
+              <router-link :to="{ path:'/user', hash: '#pills-orders' }">Orders</router-link>
+              <router-link :to="{ path:'/user', hash: '#pills-address' }">Address</router-link>
               <a @click="logOut">Sign Out</a>
             </div>
           </div>
@@ -617,7 +621,7 @@ a:hover {
   color: #353e4a;
   display: block;
   font-size: 23px;
-  padding: 15px 20px;
+  padding: 7px 17px;
   text-align: left;
   text-decoration: none;
 }
