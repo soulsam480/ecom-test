@@ -192,7 +192,7 @@
                 </div>
                 <div class="row">
                   <div
-                    class="col-sm-4"
+                    class="col-sm-4 p-1"
                     v-for="address in addresses"
                     :key="address.id"
                   >

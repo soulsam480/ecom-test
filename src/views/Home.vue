@@ -21,7 +21,7 @@
       </div>
       <p class="h-intro">NEW ARRIVALS</p>
       <div class="container">
-        <FeaturedProducts />
+        <FeaturedProducts :products='featured' />
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
 <script>
 import FeaturedProducts from "@/components/FeaturedProducts.vue";
 import Slider from "@/components/Slider.vue";
-
+import { mapGetters } from "vuex";
 // @ is an alias to /src
 export default {
   name: "Home",
@@ -38,6 +38,12 @@ export default {
     return {
       name: "",
     };
+  },
+  computed:{
+       ...mapGetters({ products: "getProducts" }),
+    featured() {
+      return this.products.slice().sort((a,b) => b.time- a.time ).slice(0,4)
+    },
   },
   methods: {},
   components: {

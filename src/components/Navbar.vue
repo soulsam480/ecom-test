@@ -373,7 +373,6 @@ a:hover {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  font-size: 19px;
   cursor: pointer;
 }
 
@@ -454,7 +453,7 @@ a:hover {
 }
 .nav-desktop a {
   text-decoration: none;
-  font-size: 19px;
+  font-size: 17px;
 }
 
 /* .nav-desktop li:hover {

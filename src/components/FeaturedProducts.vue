@@ -1,10 +1,9 @@
 <template>
   <div class="featuredProducts">
     <div class="row">
-      <div class="col-6 col-md-3" v-for="item in featured" :key="item.name">
+      <div class="col-6 col-md-3" v-for="item in products" :key="item.name">
         <router-link
-          :to="{ name: 'Product', params: { id: item.id} }"
-          v-if="item.featured"
+          :to="{ name: 'Product', params: { id: item.id } }"
         >
           <div class="prod">
             <div class="prod-img">
@@ -12,10 +11,14 @@
             </div>
             <div class="prod-title">
               <p>{{ item.name }}</p>
-              <small> ₹ {{ item.price }}</small>
+              <h6> ₹ {{ item.price }}</h6>
+              <small>Colors</small>
+               <div class="color-picker" id="color">
+              <div v-if="item.colors.includes('black')" class="black"></div>
+              <div v-if="item.colors.includes('white')" class="white"></div>
+              <div v-if="item.colors.includes('yellow')" class="yellow"></div>
             </div>
-            <div style="padding-top:10px">
-              <button class="prod-btn">Buy</button>
+            
             </div>
           </div>
         </router-link>
@@ -25,18 +28,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+
 
 export default {
   name: "FeaturedProducts",
+  props: ['products'],
   data: function() {
     return {};
   },
   computed: {
-    ...mapGetters({ products: "getProducts" }),
-    featured() {
-      return this.products.filter((el) => el.featured === true);
-    },
+ 
   },
   methods: {},
   created() {},
@@ -44,6 +45,27 @@ export default {
 </script>
 
 <style scoped>
+.black {
+  background-color: black;
+}
+.white {
+  background-color: white;
+}
+.yellow {
+  background-color: yellow;
+}
+.color-picker div {
+  padding: 6px;
+  border: 0.5px solid black !important;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
 .col-6,
 .col-md-3 {
   padding: 2px !important;
@@ -55,17 +77,7 @@ a {
 button:focus {
   outline: none;
 }
-.prod-btn {
-  width: 100%;
-  background: #ce93d8;
-  border-radius: 2px;
-  font-size: 14px;
-  border: none;
-  padding: 7px 10px;
-}
-.prod-btn:hover {
-  background-color: #d29eda;
-}
+
 .prod {
   border-radius: 2px;
   /*   border: 1px solid black;
@@ -80,8 +92,8 @@ button:focus {
 .prod-title p {
   font-size: 18px;
 }
-.prod-title small {
-  font-size: 16px;
+.prod-title h6 {
+  margin-bottom:2px;
 }
 p {
   margin: 0;

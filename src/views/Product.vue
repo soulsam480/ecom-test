@@ -26,7 +26,7 @@
               data-interval="1500"
               v-if="product.imgUrls[2]"
             >
-              <img :src="product.imgUrls[1]" class="d-block p-img" alt="..." />
+              <img :src="product.imgUrls[2]" class="d-block p-img" alt="..." />
             </div>
           </div>
           <a
@@ -88,6 +88,13 @@
               @click="size = 'XL'"
             >
               XL
+            </div>
+            <div
+              :class="{ act: size === 'XXL' }"
+              v-if="product.sizes.includes('XXL')"
+              @click="size = 'XXL'"
+            >
+              XXL
             </div>
           </div>
           <label for="color"
@@ -173,7 +180,7 @@
     </div>
     <div>
       <h4 class="prod-add">You may also like</h4>
-      <FeaturedProducts />
+      <FeaturedProducts :products="featured" />
     </div>
   </div>
 </template>
@@ -202,6 +209,9 @@ export default {
 
     product() {
       return this.products.find((el) => el.id === this.$route.params.id);
+    },
+    featured() {
+     return this.products.filter(el => el.id !== this.product.id).slice(0,4)
     },
   },
   methods: {

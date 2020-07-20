@@ -1,35 +1,17 @@
 <template>
   <div class="admin container-fluid">
     <div id="afterlogin" v-if="getAuth">
-      <br>
-         <div>
+      <br />
+      <div>
         <h5 class="d-inline">Admin: {{ user.data.displayName }}</h5>
         <button class="btn btn-danger btn-sm float-right" @click="Logout()">
           Logout
         </button>
       </div>
-      <!-- <div class="row d-flex justify-content-center">
-        <div class="col-md-4">
-           <h4>{{ user.data.displayName }}</h4>
-              <h6>{{ user.data.email }}</h6>
-              <button class="btn btn-outline-danger btn-sm" @click="logOut()">
-                Logout
-              </button>
-        </div>
-      </div> -->
       <br />
       <div class="row">
         <div class="col-sm-2">
           <div class="sidebar">
-            <!-- <a style="border-bottom:1px solid black" >
-              <h3>Admin Panel</h3>
-            </a>
-            <a>
-              User: {{ user.data.displayName }}
-              <button class="btn btn-danger btn-sm" @click="Logout()">
-                Logout
-              </button>
-            </a> -->
             <a
               class="resnav"
               :class="{ act: sideBar === 'product' }"
@@ -52,7 +34,7 @@
         </div>
         <div class="col-sm-10">
           <div id="product" v-if="sideBar === 'product'">
-            <h4 class=" d-inline">Add a Product</h4>
+            <h4 class=" d-inline">Manage Product</h4>
             <span
               class="d-inline"
               @click="addProd = !addProd"
@@ -279,18 +261,7 @@
                     >
                   </div>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="featured"
-                    :value="true"
-                    v-model="featured"
-                  />
-                  <label class="form-check-label" for="featured"
-                    >Featured roduct</label
-                  >
-                </div>
+
                 <br />
                 <div class="form-group">
                   <label for="Image">
@@ -474,7 +445,6 @@ export default {
       a: "",
       b: "",
       c: "",
-      featured: false,
       shortDes: "",
       checkedSizes: [],
       checkedColors: [],
@@ -516,7 +486,6 @@ export default {
       this.checkedCats = "";
       this.picture = "";
       this.postBody = "";
-      this.featured = "";
       this.shortDes = "";
       this.tags = "";
     },
@@ -543,7 +512,6 @@ export default {
         (this.checkedColors = main.colors),
         (this.checkedCats = main.cats),
         (this.picture = main.imgUrls),
-        (this.featured = main.featured),
         (this.shortDes = main.shortDes);
       this.tags = main.tags.join();
       this.$refs.toastuiEditor.invoke("setHtml", `${main.desc}`);
@@ -562,7 +530,6 @@ export default {
           cats: this.checkedCats,
           imgUrls: this.picture,
           desc: this.postBody,
-          featured: this.featured,
           shortDes: this.shortDes,
           tags: tags,
         })
@@ -576,7 +543,6 @@ export default {
           this.checkedCats = "";
           this.picture = "";
           this.postBody = "";
-          this.featured = "";
           this.shortDes = "";
           this.tags = "";
         });
@@ -585,6 +551,8 @@ export default {
     addData() {
       this.postBody = this.$refs.toastuiEditor.invoke("getHtml");
       var tags = this.tags.split(",");
+      const stamp = new Date().getTime();
+
       var newProduct = this.b;
       firebase
         .database()
@@ -598,9 +566,9 @@ export default {
           cats: this.checkedCats,
           imgUrls: this.picture,
           desc: this.postBody,
-          featured: this.featured,
           shortDes: this.shortDes,
           tags: tags,
+          time: stamp,
         })
         .then(() => {
           window.alert("Product added Successfully.");
@@ -612,7 +580,6 @@ export default {
           this.checkedCats = "";
           this.picture = "";
           this.postBody = "";
-          this.featured = "";
           this.shortDes = "";
           this.tags = "";
         })
@@ -624,7 +591,7 @@ export default {
       this.b =
         Math.random()
           .toString(36)
-          .slice(2) +
+          .slice(2).toUpperCase() +
         Math.random()
           .toString(36)
           .slice(2);

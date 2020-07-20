@@ -308,17 +308,29 @@
             v-for="item in filtered"
             :key="item.id"
           >
-            <router-link :to="{ name:'Product', params:{id: item.id}}">
+            <router-link :to="{ name: 'Product', params: { id: item.id } }">
               <div class="prod">
                 <div class="prod-img">
                   <img v-lazy="item.imgUrls[0]" alt />
                 </div>
                 <div class="prod-title">
                   <p>{{ item.name }}</p>
-                  <small> ₹ {{ item.price }}</small>
-                </div>
-                <div style="padding-top:10px">
-                  <button class="prod-btn">Buy</button>
+                  <h6>₹ {{ item.price }}</h6>
+                  <small>Colors</small>
+                  <div class="color-picker-feature">
+                    <div
+                      v-if="item.colors.includes('black')"
+                      class="black"
+                    ></div>
+                    <div
+                      v-if="item.colors.includes('white')"
+                      class="white"
+                    ></div>
+                    <div
+                      v-if="item.colors.includes('yellow')"
+                      class="yellow"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </router-link>
@@ -336,22 +348,24 @@ export default {
   computed: {
     filtered() {
       const filters = { sizes: this.size, colors: this.color };
-      console.log(filters);
-      return this.products.filter((product) => {
-        return Object.entries(filters).every(
-          ([filterProperty, filterValues]) => {
-            if (!filters[filterProperty].length) {
-              return product;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.products
+        .sort((a, b) => b.time - a.time)
+        .filter((product) => {
+          return Object.entries(filters).every(
+            ([filterProperty, filterValues]) => {
+              if (!filters[filterProperty].length) {
+                return product;
+              }
+              switch (Object.prototype.toString.call(product[filterProperty])) {
+                case "[object Array]":
+                  return product[filterProperty].some((productValue) => {
+                    return filterValues.includes(productValue);
+                  });
+              }
             }
-            switch (Object.prototype.toString.call(product[filterProperty])) {
-              case "[object Array]":
-                return product[filterProperty].some((productValue) => {
-                  return filterValues.includes(productValue);
-                });
-            }
-          }
-        );
-      });
+          );
+        });
     },
   },
   methods: {
@@ -400,6 +414,27 @@ export default {
 }
 /* product styles
  */
+.black {
+  background-color: black;
+}
+.white {
+  background-color: white;
+}
+.yellow {
+  background-color: yellow;
+}
+.color-picker-feature div {
+  padding: 6px;
+  border: 0.5px solid black !important;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.color-picker-feature {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
 .col-6,
 .col-md-3 {
   padding: 4px 3px 4px 3px !important;
@@ -424,17 +459,7 @@ a {
 button:focus {
   outline: none;
 }
-.prod-btn {
-  width: 100%;
-  background: #ce93d8;
-  border-radius: 2px;
-  font-size: 14px;
-  border: none;
-  padding: 5px 10px;
-}
-.prod-btn:hover {
-  opacity: 0.9;
-}
+
 .prod {
   border-radius: 2px;
 }
@@ -445,15 +470,15 @@ button:focus {
 .prod-title p {
   font-size: 18px;
 }
-.prod-title small {
-  font-size: 16px;
+.prod-title h6 {
+  margin-bottom: 2px;
 }
 p {
   margin: 0;
 }
 .prod-img img {
   vertical-align: middle;
-  width:100%;
+  width: 100%;
   max-width: 100%;
   border-radius: 2px;
 }
