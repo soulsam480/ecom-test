@@ -1,25 +1,29 @@
 <template>
   <div class="wishpage container">
     <br />
-    <h5 class="d-inline"><span v-if="user.data !== null">{{ user.data.displayName.split(' ')[0] }}'s </span><h2 class="d-inline"> Wishlist</h2></h5>
+    <h5 class="d-inline">
+      <span v-if="user.data !== null"
+        >{{ user.data.displayName.split(" ")[0] }}'s
+      </span>
+      <h2 class="d-inline">Wishlist</h2>
+    </h5>
     <hr />
-    <div v-if="count>0">
-        <ProductGrid :products="wishes"/>
-
+    <div v-if="count > 0">
+      <ProductGrid :products="wishes" :isWishlist="true" />
     </div>
     <div v-else>
-      <h5> It's empty. Let's add something !</h5>
+      <h5>It's empty. Let's add something !</h5>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import ProductGrid from '@/components/ProductGrid.vue'
+import ProductGrid from "@/components/ProductGrid.vue";
 export default {
   name: "WishPage",
   computed: {
-    ...mapGetters({ user: "user",count: "wishCount" }),
+    ...mapGetters({ user: "user", count: "wishCount" }),
     ...mapGetters({ wishes: "getWishlist" }),
   },
   methods: {
@@ -27,9 +31,9 @@ export default {
       this.$store.commit("removeFromWishlist", wish);
     },
   },
-  components:{
-    ProductGrid
-  }
+  components: {
+    ProductGrid,
+  },
 };
 </script>
 
@@ -37,7 +41,8 @@ export default {
 @media only screen and (max-width: 768px) {
   .container {
     max-width: 100%;
-  }}
+  }
+}
 a {
   color: unset !important;
   text-decoration: none !important;

@@ -334,6 +334,7 @@
                 </div>
               </div>
             </router-link>
+            <button v-if="isWishlist" @click="remove(item)" class="prod-btn">Remove</button>
           </div>
         </div>
       </div>
@@ -343,7 +344,7 @@
 
 <script>
 export default {
-  props: ["products"],
+  props: ["products", "isWishlist"],
   name: "ProductGrid",
   computed: {
     filtered() {
@@ -373,6 +374,9 @@ export default {
       this.showContent = data;
       this.showFilterDiv = true;
     },
+    remove(data){
+      this.$store.commit("removeFromWishlist",data)
+    }
   },
   created() {},
   components: {},
@@ -390,6 +394,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.prod-btn {
+  background: #ce93d8;
+  border-radius: 2px;
+  font-size: 14px;
+  border: none;
+  padding: 5px 20px;
+  width: 100%;
+}
 .prod-add::before {
   position: absolute;
   content: "";

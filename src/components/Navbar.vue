@@ -16,9 +16,13 @@
           </router-link>
           <router-link v-else to="/login"> Login</router-link>
         </div>
-        <div v-if="user.loggedIn" >
-          <router-link :to="{ path:'/user', hash: '#pills-orders' }">Orders</router-link>
-              <router-link :to="{ path:'/user', hash: '#pills-address' }">Address</router-link>
+        <div v-if="user.loggedIn">
+          <router-link :to="{ path: '/user', hash: '#pills-orders' }"
+            >Orders</router-link
+          >
+          <router-link :to="{ path: '/user', hash: '#pills-address' }"
+            >Address</router-link
+          >
         </div>
         <router-link to="/wishlist">Wishlist</router-link>
         <a v-if="user.loggedIn" @click="logOut">Sign Out</a>
@@ -26,6 +30,14 @@
     </div>
     <div class="m-leftnav">
       <ul>
+        <li>
+          <router-link v-if="user.loggedIn" to="/user">
+            <img src="../assets/user.svg" alt="" />
+          </router-link>
+          <router-link v-else to="/login">
+            <img src="../assets/user.svg" alt="" />
+          </router-link>
+        </li>
         <li>
           <a v-if="isSearch" @click="closeSearch"
             ><img src="../assets/close.svg" alt=""
@@ -79,8 +91,12 @@
             </router-link>
             <router-link v-else to="/login"> Login</router-link>
             <div class="d-content">
-              <router-link :to="{ path:'/user', hash: '#pills-orders' }">Orders</router-link>
-              <router-link :to="{ path:'/user', hash: '#pills-address' }">Address</router-link>
+              <router-link :to="{ path: '/user', hash: '#pills-orders' }"
+                >Orders</router-link
+              >
+              <router-link :to="{ path: '/user', hash: '#pills-address' }"
+                >Address</router-link
+              >
               <a @click="logOut">Sign Out</a>
             </div>
           </div>
@@ -130,7 +146,7 @@
             :to="{
               name: 'Product',
               params: {
-                id: item.id
+                id: item.id,
               },
             }"
           >
@@ -148,7 +164,7 @@
         </div>
         <br />
         <h6>
-          <router-link :to="{ path: '/search', query: { q: this.search} }">
+          <router-link :to="{ path: '/search', query: { q: this.search } }">
             See all results for {{ search }}
           </router-link>
         </h6>
@@ -187,7 +203,7 @@ export default {
     goSearch() {
       router.push({
         path: "/search",
-        query: { q: this.search }
+        query: { q: this.search },
       });
       this.isSearch = false;
       this.search = "";
@@ -353,7 +369,7 @@ a:hover {
   }
   .wishcount {
     top: -3px;
-    left: 55px;
+    right: 38px;
   }
 }
 /* Dropdown Content (Hidden by Default) */
@@ -623,7 +639,7 @@ a:hover {
   padding: 7px 17px;
   text-align: left;
   text-decoration: none;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .main-menu a:hover,
