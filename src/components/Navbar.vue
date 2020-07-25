@@ -623,6 +623,7 @@ a:hover {
   padding: 7px 17px;
   text-align: left;
   text-decoration: none;
+  white-space:nowrap;
 }
 
 .main-menu a:hover,
