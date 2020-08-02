@@ -140,13 +140,17 @@
     </div>
     <div class="searchfilter" v-if="search.length > 0" id="filterdata">
       <span v-if="filteredSearch.length === 0">Nothing Found</span>
-      <div v-else @click="closeSearch">
+      <div style=" overflow-y: scroll;" v-else @click="closeSearch">
         <div v-for="item in filteredSearch" :key="item.id">
           <router-link
             :to="{
               name: 'Product',
               params: {
-                id: item.id,
+                _slug: item.name
+                    .toLowerCase()
+                    .split(' ')
+                    .join('-'),
+                  dataId: item.id,
               },
             }"
           >

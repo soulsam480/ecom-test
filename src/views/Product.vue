@@ -200,6 +200,92 @@ export default {
       loading: false,
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.product.name} | Tiaamo.com`,
+      link: [
+        {
+          rel: "canonical",
+          href: `https://store.sambitsahoo.com/#/p/${this.product.name
+            .toLowerCase()
+            .split(" ")
+            .join("-")}`,
+        },
+      ],
+      meta: [
+        {
+          name: "description",
+          content:
+            "Buy " +
+            this.product.name +
+            " from Tiaamo.com at Best Prices. " +
+            this.product.shortDes,
+        },
+        {
+          property:'og:type',
+          content: 'product'
+        },
+        {
+          property:'og:title',
+          content: `${this.product.name} | Tiaamo.com`
+        },
+        {
+          property:'og:description',
+          content: "Buy " +
+            this.product.name +
+            " from Tiaamo.com at Best Prices. " +
+            this.product.shortDes,
+        },
+        {
+          property:'og:url',
+          content: `https://store.sambitsahoo.com/#/p/${this.product.name
+            .toLowerCase()
+            .split(" ")
+            .join("-")}`,
+        },
+        {
+          property:'og:site_name',
+          content: "Tiaamo.com",
+        },
+        {
+          property:'og:image',
+          content: this.product.imgUrls[0],
+        },
+        {
+          property:'og:image:secure_url',
+          content: this.product.imgUrls[0],
+        },
+        {
+          property:'width',
+          content: "1024",
+        },
+        {
+          property:'height',
+          content: "1024",
+        },
+        {
+          property:'twitter:card',
+          content: this.product.imgUrls[0],
+        },
+        {
+          property:'twitter:description',
+          content: "Buy " +
+            this.product.name +
+            " from Tiaamo.com at Best Prices. " +
+            this.product.shortDes,
+        },
+        {
+          property:'twitter:title',
+          content: `${this.product.name} | Tiaamo.com`,
+        },
+        {
+          property:'twitter:image',
+          content:this.product.imgUrls[0] ,
+        },
+
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       user: "user",
@@ -208,10 +294,12 @@ export default {
     ...mapState(["cart"]),
 
     product() {
-      return this.products.find((el) => el.id === this.$route.params.id);
+      return this.products.find((el) => el.id === this.$route.params.dataId);
     },
     featured() {
-     return this.products.filter(el => el.id !== this.product.id).slice(0,4)
+      return this.products
+        .filter((el) => el.id !== this.product.id)
+        .slice(0, 4);
     },
   },
   methods: {

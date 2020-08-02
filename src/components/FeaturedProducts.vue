@@ -3,7 +3,16 @@
     <div class="row">
       <div class="col-6 col-md-3" v-for="item in products" :key="item.name">
         <router-link
-          :to="{ name: 'Product', params: { id: item.id } }"
+          :to="{
+            name: 'Product',
+            params: {
+              _slug: item.name
+                .toLowerCase()
+                .split(' ')
+                .join('-'),
+              dataId: item.id,
+            },
+          }"
         >
           <div class="prod">
             <div class="prod-img">
@@ -11,14 +20,13 @@
             </div>
             <div class="prod-title">
               <p>{{ item.name }}</p>
-              <h6> ₹ {{ item.price }}</h6>
+              <h6>₹ {{ item.price }}</h6>
               <small>Colors</small>
-               <div class="color-picker" id="color">
-              <div v-if="item.colors.includes('black')" class="black"></div>
-              <div v-if="item.colors.includes('white')" class="white"></div>
-              <div v-if="item.colors.includes('yellow')" class="yellow"></div>
-            </div>
-            
+              <div class="color-picker" id="color">
+                <div v-if="item.colors.includes('black')" class="black"></div>
+                <div v-if="item.colors.includes('white')" class="white"></div>
+                <div v-if="item.colors.includes('yellow')" class="yellow"></div>
+              </div>
             </div>
           </div>
         </router-link>
@@ -28,17 +36,13 @@
 </template>
 
 <script>
-
-
 export default {
   name: "FeaturedProducts",
-  props: ['products'],
+  props: ["products"],
   data: function() {
     return {};
   },
-  computed: {
- 
-  },
+  computed: {},
   methods: {},
   created() {},
 };
@@ -93,7 +97,7 @@ button:focus {
   font-size: 18px;
 }
 .prod-title h6 {
-  margin-bottom:2px;
+  margin-bottom: 2px;
 }
 p {
   margin: 0;

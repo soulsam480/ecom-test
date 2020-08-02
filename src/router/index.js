@@ -24,7 +24,7 @@ const routes = [
     },
   },
   {
-    path: "/p/:id",
+    path: "/p/:_slug",
     name: "Product",
     props: true,
     component: Product,

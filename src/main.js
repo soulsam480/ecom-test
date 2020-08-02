@@ -11,16 +11,18 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import VueAgile from "vue-agile";
 import VueLazyload from "vue-lazyload";
-import config from "./creds/firebase";  
+import config from "./creds/firebase";
+import VueMeta from "vue-meta";
 
-import image from './assets/lazy-img.svg'
+import image from "./assets/lazy-img.svg";
+Vue.use(VueMeta);
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   loading: image,
   attempt: 2,
   observer: true,
-  listenEvents: [ 'scroll' ]
+  listenEvents: ["scroll"],
 });
 Vue.use(VueAgile);
 Vue.config.productionTip = false;

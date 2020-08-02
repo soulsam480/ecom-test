@@ -308,7 +308,18 @@
             v-for="item in filtered"
             :key="item.id"
           >
-            <router-link :to="{ name: 'Product', params: { id: item.id } }">
+            <router-link
+              :to="{
+                name: 'Product',
+                params: {
+                  _slug: item.name
+                    .toLowerCase()
+                    .split(' ')
+                    .join('-'),
+                  dataId: item.id,
+                },
+              }"
+            >
               <div class="prod">
                 <div class="prod-img">
                   <img v-lazy="item.imgUrls[0]" alt />
@@ -334,7 +345,9 @@
                 </div>
               </div>
             </router-link>
-            <button v-if="isWishlist" @click="remove(item)" class="prod-btn">Remove</button>
+            <button v-if="isWishlist" @click="remove(item)" class="prod-btn">
+              Remove
+            </button>
           </div>
         </div>
       </div>
@@ -374,9 +387,9 @@ export default {
       this.showContent = data;
       this.showFilterDiv = true;
     },
-    remove(data){
-      this.$store.commit("removeFromWishlist",data)
-    }
+    remove(data) {
+      this.$store.commit("removeFromWishlist", data);
+    },
   },
   created() {},
   components: {},
