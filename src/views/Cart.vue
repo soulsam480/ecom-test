@@ -283,21 +283,12 @@
       </div>
     </section>
 
-    <section v-else-if="cartUIStatus === 'payment'" class="success">
-      <h2>Success!</h2>
-      <p>
-        Thank you for your purchase. You'll be receiving your items in 4
-        business days.
-      </p>
-      <p>Forgot something?</p>
-
-      <router-link to="/" class="prod-btn">Home</router-link>
-    </section>
-
-    <section v-else-if="cartUIStatus === 'failure'">
-      <p>
-        Oops, something went wrong. Redirecting you to your cart to try again.
-      </p>
+    <section v-else-if="cartUIStatus === 'payment'">
+      <button class="prod-btn" @click="proceed('checkout')">Back</button><br />
+      <h5>Pay with</h5>
+      <button class="prod-btn" @click="userPay">
+        <img src="../assets/paytm.svg" style="width:60px" alt="" />
+      </button>
     </section>
   </div>
 </template>
@@ -343,15 +334,15 @@ export default {
         orderId: this.orderId,
         cart: [...this.cart],
       };
-      console.log(order);
       this.$store.commit("localOrder", order);
+      this.proceed("payment");
     },
     userPay() {
       axios({
         method: "post",
         url: "http://localhost:9000/.netlify/functions/payment",
         data: {
-          amount: 1,
+          amount:this.cartTotal,
           name: this.user.displayName,
           email: this.user.email,
           orderid: this.orderId,
@@ -420,13 +411,13 @@ export default {
 
 <style scoped>
 .prod-btn {
-  margin: 10px 0;
+  margin: 5px 0;
   color: black;
   background: #ce93d8;
   border-radius: 2px;
   font-size: 17px;
   border: none;
-  padding: 7px 20px;
+  padding: 5px 15px;
 }
 .prod-btn:hover {
   background-color: #c17bce;

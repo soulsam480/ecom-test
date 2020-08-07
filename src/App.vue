@@ -100,6 +100,8 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch("addData");
+    /*     this.$store.dispatch("addOrders");
+     */
   },
 };
 </script>

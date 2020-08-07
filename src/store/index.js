@@ -128,6 +128,9 @@ export default new Vuex.Store({
     localOrder: (state, load) => {
       state.order = load;
     },
+    clearLocalOrder: (state) => {
+      state.order = {};
+    },
   },
   actions: {
     addData: firebaseAction(({ bindFirebaseRef }) => {
@@ -136,7 +139,16 @@ export default new Vuex.Store({
         firebase.database().ref(`/Products`)
       );
     }),
-
+    /* addOrders: firebaseAction(({ bindFirebaseRef }) => {
+      const date = `${Date().slice(11, 15)}_${Date().slice(
+        4,
+        7
+      )}_${Date().slice(8, 10)}`;
+      return bindFirebaseRef(
+        "orders",
+        firebase.database().ref(`/Orders/${date}`)
+      );
+    }), */
     changeAuth(context) {
       context.commit("cAuth");
     },
@@ -212,6 +224,9 @@ export default new Vuex.Store({
     },
     getLocalOrder: (state) => {
       return state.order;
+    },
+    getOrders: (state) => {
+      return state.orders;
     },
   },
   plugins: [
