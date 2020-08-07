@@ -100,7 +100,10 @@
               <p class="card-header">{{ item.adName }}</p>
               <div class="card-body p-1">
                 <div class="btn-group">
-                  <button class="btn btn-info btn-sm" @click="userPay">
+                  <button
+                    class="btn btn-info btn-sm"
+                    @click="createOrder(item)"
+                  >
                     Select
                   </button>
                 </div>
@@ -332,33 +335,18 @@ export default {
   },
   methods: {
     createOrder(ad) {
-      this.orderId =
-        Math.random()
-          .toString(20)
-          .substr(2, 10)
-          .toUpperCase() +
-        Math.random()
-          .toString(20)
-          .substr(2, 10)
-          .toUpperCase();
+      var array = new Uint32Array(1);
+      window.crypto.getRandomValues(array);
+      this.orderId = "OD" + array[0];
       const order = {
         address: { ...ad },
         orderId: this.orderId,
         cart: [...this.cart],
       };
+      console.log(order);
       this.$store.commit("localOrder", order);
     },
     userPay() {
-      this.orderId =
-        Math.random()
-          .toString(20)
-          .substr(2, 10)
-          .toUpperCase() +
-        Math.random()
-          .toString(20)
-          .substr(2, 10)
-          .toUpperCase();
-      console.log(this.orderId);
       axios({
         method: "post",
         url: "http://localhost:9000/.netlify/functions/payment",
