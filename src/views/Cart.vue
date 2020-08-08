@@ -340,9 +340,10 @@ export default {
     userPay() {
       axios({
         method: "post",
-        url: "http://localhost:9000/.netlify/functions/payment",
+        url:
+          "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
         data: {
-          amount:this.cartTotal,
+          amount: this.cartTotal,
           name: this.user.displayName,
           email: this.user.email,
           orderid: this.orderId,
@@ -362,7 +363,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err);
+          window.alert(err)
         });
     },
     guestPay() {
@@ -378,7 +379,7 @@ export default {
       };
       axios({
         method: "post",
-        url: "http://localhost:9000/.netlify/functions/payment",
+        url: "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
         data: {
           amount: 1,
           name: this.user.displayName,

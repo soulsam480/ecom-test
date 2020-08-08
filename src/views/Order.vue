@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div v-if="altResponse !== ''">
-      <p>{{ altResponse }}</p>
-    </div>
-    <div v-else>
+    <div>
       {{ response }}
     </div>
   </div>
@@ -17,7 +14,6 @@ export default {
   name: "Order",
   data() {
     return {
-      altResponse: " ",
       response: "",
     };
   },
@@ -48,7 +44,8 @@ export default {
               .then(async () => {
                 await axios({
                   method: "post",
-                  url: "http://localhost:9000/.netlify/functions/syncOrder",
+                  url:
+                    "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/syncOrder",
                   data: this.order,
                   headers: {
                     "Content-Type": "application/json",
@@ -60,16 +57,17 @@ export default {
                     this.$store.commit("clearCart");
                   })
                   .catch(() => {
-                    this.altResponse = "Failed";
+                    this.response = "Failed";
                     this.$store.commit("clearLocalOrder");
                     this.$store.commit("clearCart");
                   });
               });
+          } else {
+            this.response = "Failed";
+            this.$store.commit("clearLocalOrder");
+            this.$store.commit("clearCart");
           }
         });
-    } else {
-      this.altResponse = "Failed";
-      this.$store.commit("clearLocalOrder");
     }
   },
 };
