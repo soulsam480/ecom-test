@@ -10,7 +10,8 @@ const react = (store) => {
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
-          }).then(() => {
+          })
+          .then(() => {
             store.dispatch("syncWishes", main.userId);
           })
           .catch((err) => {
@@ -23,7 +24,8 @@ const react = (store) => {
           .set({
             wishlist: state.user.wishlist,
             cart: state.cart,
-          }) .then(() => {
+          })
+          .then(() => {
             store.dispatch("syncWishes", main.userId);
           })
           .catch((err) => {

@@ -11,76 +11,87 @@
     <hr />
     <section v-if="cartUIStatus === 'idle'">
       <section v-if="cartCount > 0">
-        <table class="table table-borderless">
-          <thead class="w-100">
-            <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody class="w-100">
-            <tr v-for="item in cart" :key="item.id">
-              <td>
-                <div class="row">
-                  <div class="col-xs-5">
+        <div>
+          <div class="row">
+            <div class="col-sm-9">
+              <div v-for="item in cart" :key="item.id">
+                <div class="row p-1">
+                  <div class="col-sm-4 lp-cart">
                     <img
                       v-lazy="item.imgUrls[0]"
                       :alt="item.name"
                       class="product-img"
                     />
                   </div>
-                  <div class="col-xs-7">
+                  <div class="col-sm-8  rp-cart">
+                    <button
+                      @click="removeAllFromCart(item)"
+                      class="delete-product"
+                    >
+                      x
+                    </button>
                     <h5 class="product-name">{{ item.name }}</h5>
-                    <h6 v-if="item.size" class="product-size">
-                      Size: {{ item.size }}
+                    <h6 class="d-inline" v-if="item.size">
+                      Size: {{ item.size }} /
                     </h6>
+                    <h6 class="d-inline" v-if="item.color">
+                      Color: {{ item.color }}
+                    </h6>
+                    <h5 class="product-name">₹ {{ item.price }}</h5>
+                    <div class="quantity">
+                      <!-- this is quantity -->
+                      <button
+                        @click="removeOneFromCart(item)"
+                        style="padding:2px 12px"
+                        class="update-num"
+                      >
+                        -
+                      </button>
+                      <strong> {{ item.quantity }}</strong>
+
+                      <button
+                        @click="addToCart(item)"
+                        style="padding:2px 9px"
+                        class="update-num"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <!-- this is quantity -->
                   </div>
                 </div>
-              </td>
-              <td>
-                <h5 class="price">{{ item.price }}</h5>
-              </td>
-              <td>
-                <div>
-                  <button
-                    @click="removeOneFromCart(item)"
-                    style="padding:2px 5px"
-                    class="update-num"
-                  >
-                    &darr;
-                  </button>
-                  <strong> {{ item.quantity }}</strong>
+              </div>
+            </div>
+            <div class="col-sm-3 side-check">
+              <h5>Price Details</h5>
+              <hr>
+              <h6 class="d-inline float-left">Total Price:</h6>
+              <h6 class="d-inline float-right">₹ {{ cartTotal }}</h6>
+              <br />
+              <hr />
 
-                  <button
-                    @click="addToCart(item)"
-                    style="padding:2px 5px"
-                    class="update-num"
-                  >
-                    &uarr;
-                  </button>
-                </div>
-              </td>
-              <td>
-                <h5>{{ item.quantity * item.price }}</h5>
-              </td>
-              <td>
-                <button @click="removeAllFromCart(item)" class="delete-product">
-                  X
+              <h6 class="d-inline float-left">Delivery:</h6>
+              <h6 class="d-inline float-right">NA</h6>
+              <br />
+              <hr />
+              <h5 class="d-inline float-left">TOTAL:</h5>
+              <h5 class="d-inline float-right">₹ {{ cartTotal }}</h5>
+              <br />
+              <br />
+              <div class="payment text-right ">
+                <button
+                  class="prod-btn"
+                  :disabled="user.loggedIn === false"
+                  @click="proceed('checkout')"
+                >
+                  Proceed to Checkout
                 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="payment text-right ">
-          <h6 class="d-inline">Subtotal:</h6>
-          <h5 class="d-inline">₹ {{ cartTotal }}</h5>
-          <br />
-          <button class="prod-btn" @click="proceed('checkout')">
-            Proceed to Checkout
-          </button>
+                <p v-if="!user.loggedIn" class="text-muted">
+                  Please Login to continue
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -344,10 +355,10 @@ export default {
           "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
         data: {
           amount: this.cartTotal,
-          name: this.user.displayName,
-          email: this.user.email,
+          name: this.user.data.displayName,
+          email: this.user.data.email,
           orderid: this.orderId,
-          mobile: this.user.pNum,
+          mobile: this.user.data.pNum,
         },
         headers: {
           "Content-Type": "application/json",
@@ -363,36 +374,8 @@ export default {
           });
         })
         .catch((err) => {
-          window.alert(err)
+          window.alert(err);
         });
-    },
-    guestPay() {
-      this.cAddress = {
-        name: this.cName,
-        email: this.cEmail,
-        phone: this.cPhone,
-        country: this.country,
-        street: this.street,
-        city: this.city,
-        state: this.state,
-        postal: this.postalCode,
-      };
-      axios({
-        method: "post",
-        url: "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
-        data: {
-          amount: 1,
-          name: this.user.displayName,
-          email: this.user.email,
-          orderid: this.orderId,
-          mobile: this.user.pNum,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).catch((err) => {
-        console.log(err);
-      });
     },
     proceed(data) {
       this.$store.commit("updateCartUI", data);
@@ -411,6 +394,16 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 768px) {
+  .lp-cart {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  .rp-cart {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+}
 .prod-btn {
   margin: 5px 0;
   color: black;
@@ -439,9 +432,9 @@ tr {
   text-align: center;
 }
 .product-img {
-  float: left;
-  margin-right: 15px;
-  width: 100px;
+  margin: auto;
+  display: block;
+  max-width: 100%;
 }
 
 .product-name,
@@ -456,10 +449,22 @@ tr {
 .product-size {
   font-weight: 100;
 }
-
-.num {
-  text-align: right;
+.quantity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+  width: 150px;
+  background-color: #ffebee;
 }
+.quantity strong {
+  width: 100%;
+  text-align: center !important;
+  border: none;
+  font-weight: bold;
+  color: black;
+}
+
 .update-num {
   background: #ce93d8;
   border-radius: 2px;
@@ -475,10 +480,9 @@ tr {
 }
 
 .delete-product {
+  float: right;
   border: none;
   padding: 0px 8px;
-  vertical-align: middle;
-  border-radius: 50%;
   font-weight: bold;
 }
 </style>

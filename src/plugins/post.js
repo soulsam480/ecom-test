@@ -1,3 +1,5 @@
+//This plugin is used to perform form action request from jsvascript.
+//This is derived from https://github.com/jisaacks/react-post/blob/master/src/post.js
 function isDate(val) {
   // Cross realm comptatible
   return Object.prototype.toString.call(val) === "[object Date]";
@@ -19,7 +21,6 @@ function buildForm({ action, target, params }) {
   const form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("action", action);
-  console.log(action);
   form.setAttribute("target", target);
 
   Object.keys(params).forEach((key) => {
@@ -36,7 +37,6 @@ function buildForm({ action, target, params }) {
 export default function post(details) {
   const form = buildForm(details);
   document.body.appendChild(form);
-  console.log(form);
   form.submit();
   form.remove();
 }

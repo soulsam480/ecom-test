@@ -139,16 +139,6 @@ export default new Vuex.Store({
         firebase.database().ref(`/Products`)
       );
     }),
-    /* addOrders: firebaseAction(({ bindFirebaseRef }) => {
-      const date = `${Date().slice(11, 15)}_${Date().slice(
-        4,
-        7
-      )}_${Date().slice(8, 10)}`;
-      return bindFirebaseRef(
-        "orders",
-        firebase.database().ref(`/Orders/${date}`)
-      );
-    }), */
     changeAuth(context) {
       context.commit("cAuth");
     },
