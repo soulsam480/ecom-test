@@ -100,6 +100,8 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch("addData");
+    /*     this.$store.dispatch("addOrders");
+     */
   },
 };
 </script>
@@ -109,8 +111,10 @@ export default {
   width: 100% !important;
 }
 @font-face {
-  font-family: Function Regular;
-  src: url(~@/assets/functionregular.ttf);
+  font-family: "Function Regular";
+  src: url(~@/assets/functionregular.woff2) format("woff2"),
+    url(~@/assets/functionregular.woff) format("woff"),
+    url(~@/assets/functionregular.ttf) format("truetype");
 }
 #app {
   font-family: Function Regular;

@@ -1,22 +1,24 @@
 <template>
   <section>
-    <div class="shopping">
+    <!-- <div class="shopping">
       <h5 :class="{ active: cartUIStatus === 'idle' && cartCount === 0 }">
         01
       </h5>
       <h6>Shopping Cart</h6>
+    </div> -->
+    <div class="shopping">
+      <h5 :class="{ active: cartUIStatus === 'idle' }">01</h5>
+      <h6>Cart</h6>
     </div>
     <div class="checkout">
-      <h5 :class="{ active: cartUIStatus === 'idle' && cartCount > 0 }">02</h5>
-      <h6>Check out</h6>
-    </div>
-    <div class="checkout">
-      <h5 :class="{ active: cartUIStatus === 'payment' && cartCount > 0 }">03</h5>
-      <h6>Payments</h6>
+      <h5 :class="{ active: cartUIStatus === 'checkout' && cartCount > 0 }">
+        02
+      </h5>
+      <h6>Checkout</h6>
     </div>
     <div class="order">
-      <h5 :class="{ active: cartUIStatus === 'success' }">04</h5>
-      <h6>Order Complete</h6>
+      <h5 :class="{ active: cartUIStatus === 'payment' }">03</h5>
+      <h6>Payments</h6>
     </div>
   </section>
 </template>
@@ -36,7 +38,7 @@ export default {
 <style scoped>
 section {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
   grid-column-gap: 70px;
   grid-row-gap: 0px;
@@ -57,17 +59,12 @@ h5 {
   color: #555;
 }
 h5.active {
-  background: #CE93D8;
-  border: 1px solid #CE93D8;
+  background: #ce93d8;
+  border: 1px solid #ce93d8;
   color: white;
 }
 h4 {
   margin-top: 20px;
   color: #555;
-}
-@media screen and (max-width: 768px) {
-  section {
-    grid-column-gap: 30px !important;
-  }
 }
 </style>

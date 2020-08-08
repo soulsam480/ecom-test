@@ -21,6 +21,7 @@ export default new Vuex.Store({
     cart: [],
     cartUIStatus: "idle",
     checkedOut: false,
+    order: {},
   },
   mutations: {
     ...vuexfireMutations,
@@ -77,7 +78,7 @@ export default new Vuex.Store({
     addWishes(state, id) {
       const wishref = firebase.database().ref(`/Users/${id}/shop/wishlist`);
       wishref.on("value", (snap) => {
-        snap.forEach((csnap) => { 
+        snap.forEach((csnap) => {
           let wishFound = state.user.wishlist.find(
             (el) => el.id === csnap.val().id
           );
@@ -124,15 +125,30 @@ export default new Vuex.Store({
     clearAddress(state) {
       state.user.address = [];
     },
+    localOrder: (state, load) => {
+      state.order = load;
+    },
+    clearLocalOrder: (state) => {
+      state.order = {};
+    },
   },
   actions: {
-    addData:  firebaseAction(({ bindFirebaseRef }) => {
-        return bindFirebaseRef(
-          "productData",
-          firebase.database().ref(`/Products`)
-        );
-      }),
-
+    addData: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef(
+        "productData",
+        firebase.database().ref(`/Products`)
+      );
+    }),
+    /* addOrders: firebaseAction(({ bindFirebaseRef }) => {
+      const date = `${Date().slice(11, 15)}_${Date().slice(
+        4,
+        7
+      )}_${Date().slice(8, 10)}`;
+      return bindFirebaseRef(
+        "orders",
+        firebase.database().ref(`/Orders/${date}`)
+      );
+    }), */
     changeAuth(context) {
       context.commit("cAuth");
     },
@@ -154,9 +170,9 @@ export default new Vuex.Store({
     syncCart({ commit }, id) {
       commit("cartAdd", id);
     },
-    syncWishes({commit},id){
-      commit('addWishes',id)
-    }
+    syncWishes({ commit }, id) {
+      commit("addWishes", id);
+    },
   },
   getters: {
     getProducts(state) {
@@ -206,10 +222,16 @@ export default new Vuex.Store({
     getAddresses: (state) => {
       return state.user.address;
     },
+    getLocalOrder: (state) => {
+      return state.order;
+    },
+    getOrders: (state) => {
+      return state.orders;
+    },
   },
   plugins: [
     createPersistedState({
-      paths: ["cart", "user.wishlist", "auth"],
+      paths: ["cart", "user.wishlist", "auth", "order"],
     }),
     react,
   ],

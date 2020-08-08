@@ -3,8 +3,10 @@
     <CartSteps />
     <br />
     <h5 class="d-inline">
-      <span v-if="user.data !== null">{{ user.data.displayName.split(' ')[0] }}'s </span>
-      <h2 class="d-inline"> Cart</h2>
+      <span v-if="user.data !== null"
+        >{{ user.data.displayName.split(" ")[0] }}'s
+      </span>
+      <h2 class="d-inline">Cart</h2>
     </h5>
     <hr />
     <section v-if="cartUIStatus === 'idle'">
@@ -76,7 +78,9 @@
           <h6 class="d-inline">Subtotal:</h6>
           <h5 class="d-inline">₹ {{ cartTotal }}</h5>
           <br />
-          <button class="prod-btn" @click="proceed('payment')">Proceed to Payments</button>
+          <button class="prod-btn" @click="proceed('checkout')">
+            Proceed to Checkout
+          </button>
         </div>
       </section>
 
@@ -86,18 +90,20 @@
         <router-link to="/" class="prod-btn">Home</router-link>
       </section>
     </section>
-    <section v-else-if="cartUIStatus === 'payment'">
-      <button class="prod-btn" @click="proceed('idle')" >Back</button>
-      <h4>Shipping Address</h4>
+    <section v-else-if="cartUIStatus === 'checkout'">
+      <button class="prod-btn" @click="proceed('idle')">Back</button>
       <div v-if="user.address.length > 0">
         Select an Address to Proceed
         <div class="row">
-          <div class="col-sm-4" v-for="address in addresses" :key="address.id">
+          <div class="col-sm-4 p-1" v-for="item in addresses" :key="item.id">
             <div class="card">
-              <p class="card-header">{{ address.adName }}</p>
+              <p class="card-header">{{ item.adName }}</p>
               <div class="card-body p-1">
                 <div class="btn-group">
-                  <button class="btn btn-info btn-sm" @click="userPay(address)">
+                  <button
+                    class="btn btn-info btn-sm"
+                    @click="createOrder(item)"
+                  >
                     Select
                   </button>
                 </div>
@@ -277,21 +283,12 @@
       </div>
     </section>
 
-    <section v-else-if="cartUIStatus === 'success'" class="success">
-      <h2>Success!</h2>
-      <p>
-        Thank you for your purchase. You'll be receiving your items in 4
-        business days.
-      </p>
-      <p>Forgot something?</p>
-
-      <router-link to="/" class="prod-btn">Home</router-link>
-    </section>
-
-    <section v-else-if="cartUIStatus === 'failure'">
-      <p>
-        Oops, something went wrong. Redirecting you to your cart to try again.
-      </p>
+    <section v-else-if="cartUIStatus === 'payment'">
+      <button class="prod-btn" @click="proceed('checkout')">Back</button><br />
+      <h5>Pay with</h5>
+      <button class="prod-btn" @click="userPay">
+        <img src="../assets/paytm.svg" style="width:60px" alt="" />
+      </button>
     </section>
   </div>
 </template>
@@ -299,8 +296,9 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import CartSteps from "@/components/CartSteps.vue";
-/* const axios = require('axios').default;
- */export default {
+const axios = require("axios").default;
+import post from "../plugins/post";
+export default {
   name: "Cart",
   data() {
     return {
@@ -314,6 +312,7 @@ import CartSteps from "@/components/CartSteps.vue";
       postalCode: "",
       cAddress: {},
       orderId: "",
+      url: "",
     };
   },
   components: {
@@ -326,35 +325,46 @@ import CartSteps from "@/components/CartSteps.vue";
     ...mapGetters({ addresses: "getAddresses" }),
   },
   methods: {
-    async userPay(address) {
-      this.cAddress = address;
-      this.orderId =
-        Math.random()
-          .toString(36)
-          .slice(2)
-          .toLowerCase() +
-        Math.random()
-          .toString(36)
-          .slice(2)
-          .toLowerCase();
-
-     /*  await axios
-        .post("https://us-central1-ecom-test-53555.cloudfunctions.net/payment", {
-          amount: 10,
-          name: this.cName,
-          email: this.cEmail,
-          mobile: this.cPhone,
+    createOrder(ad) {
+      var array = new Uint32Array(1);
+      window.crypto.getRandomValues(array);
+      this.orderId = "OD" + array[0];
+      const order = {
+        address: { ...ad },
+        orderId: this.orderId,
+        cart: [...this.cart],
+      };
+      this.$store.commit("localOrder", order);
+      this.proceed("payment");
+    },
+    userPay() {
+      axios({
+        method: "post",
+        url:
+          "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
+        data: {
+          amount: this.cartTotal,
+          name: this.user.displayName,
+          email: this.user.email,
           orderid: this.orderId,
-          custid: this.user.data.userId
+          mobile: this.user.pNum,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(async (res) => {
+          const params = res.data.params;
+          params["CHECKSUMHASH"] = res.data.checksum;
+          post({
+            action: res.data.action,
+            target: "_self",
+            params: params,
+          });
         })
-        .then((response) =>{
-          if(response === 'success'){
-            window.alert('success')
-          }else{
-            window.alert('error')
-          }
-        }) */
-      
+        .catch((err) => {
+          window.alert(err)
+        });
     },
     guestPay() {
       this.cAddress = {
@@ -367,6 +377,22 @@ import CartSteps from "@/components/CartSteps.vue";
         state: this.state,
         postal: this.postalCode,
       };
+      axios({
+        method: "post",
+        url: "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/payment",
+        data: {
+          amount: 1,
+          name: this.user.displayName,
+          email: this.user.email,
+          orderid: this.orderId,
+          mobile: this.user.pNum,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     proceed(data) {
       this.$store.commit("updateCartUI", data);
@@ -386,13 +412,13 @@ import CartSteps from "@/components/CartSteps.vue";
 
 <style scoped>
 .prod-btn {
-  margin: 10px 0;
+  margin: 5px 0;
   color: black;
   background: #ce93d8;
   border-radius: 2px;
   font-size: 17px;
   border: none;
-  padding: 7px 20px;
+  padding: 5px 15px;
 }
 .prod-btn:hover {
   background-color: #c17bce;
