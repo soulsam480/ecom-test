@@ -196,8 +196,6 @@ export default {
       size: "S",
       quantity: 1,
       color: "",
-      tempcart: [],
-      loading: false,
     };
   },
   metaInfo() {
@@ -222,67 +220,68 @@ export default {
             this.product.shortDes,
         },
         {
-          property:'og:type',
-          content: 'product'
+          property: "og:type",
+          content: "product",
         },
         {
-          property:'og:title',
-          content: `${this.product.name} | Tiaamo.com`
+          property: "og:title",
+          content: `${this.product.name} | Tiaamo.com`,
         },
         {
-          property:'og:description',
-          content: "Buy " +
+          property: "og:description",
+          content:
+            "Buy " +
             this.product.name +
             " from Tiaamo.com at Best Prices. " +
             this.product.shortDes,
         },
         {
-          property:'og:url',
+          property: "og:url",
           content: `https://store.sambitsahoo.com/#/p/${this.product.name
             .toLowerCase()
             .split(" ")
             .join("-")}`,
         },
         {
-          property:'og:site_name',
+          property: "og:site_name",
           content: "Tiaamo.com",
         },
         {
-          property:'og:image',
+          property: "og:image",
           content: this.product.imgUrls[0],
         },
         {
-          property:'og:image:secure_url',
+          property: "og:image:secure_url",
           content: this.product.imgUrls[0],
         },
         {
-          property:'width',
+          property: "width",
           content: "1024",
         },
         {
-          property:'height',
+          property: "height",
           content: "1024",
         },
         {
-          property:'twitter:card',
+          property: "twitter:card",
           content: this.product.imgUrls[0],
         },
         {
-          property:'twitter:description',
-          content: "Buy " +
+          property: "twitter:description",
+          content:
+            "Buy " +
             this.product.name +
             " from Tiaamo.com at Best Prices. " +
             this.product.shortDes,
         },
         {
-          property:'twitter:title',
+          property: "twitter:title",
           content: `${this.product.name} | Tiaamo.com`,
         },
         {
-          property:'twitter:image',
-          content:this.product.imgUrls[0] ,
+          property: "twitter:image",
+          content: this.product.imgUrls[0],
         },
-
       ],
     };
   },
@@ -294,7 +293,13 @@ export default {
     ...mapState(["cart"]),
 
     product() {
-      return this.products.find((el) => el.id === this.$route.params.dataId);
+      return this.products.find(
+        (el) =>
+          el.name
+            .toLowerCase()
+            .split(" ")
+            .join("-") === this.$route.params._slug
+      );
     },
     featured() {
       return this.products
@@ -309,17 +314,16 @@ export default {
       this.size = toString(si);
     },
     cartAdd() {
-      if (this.product.sizes && !this.size) {
-        this.showSizeRequiredMessage = true;
-        return;
-      }
       let item = this.product;
       item = {
-        ...item,
+        imgUrls: item.imgUrls,
+        name: item.name,
         quantity: this.quantity,
         size: this.size,
+        color: this.color,
+        id: item.id,
+        price: item.price,
       };
-      this.tempcart.push(item);
       this.$store.commit("addToCart", { ...item });
     },
   },

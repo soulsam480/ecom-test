@@ -150,7 +150,6 @@
                     .toLowerCase()
                     .split(' ')
                     .join('-'),
-                  dataId: item.id,
               },
             }"
           >

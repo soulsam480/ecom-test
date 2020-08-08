@@ -35,33 +35,35 @@ export default {
         .on("value", async (res) => {
           const orders = Object.values(res.val());
           if (orders.find((el) => el.orderId === this.order.orderId)) {
-            await firebase
-              .database()
-              .ref(
-                `/Users/${this.user.data.userId}/orders/${this.order.orderId}`
-              )
-              .set(this.order)
-              .then(async () => {
-                await axios({
-                  method: "post",
-                  url:
-                    "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/syncOrder",
-                  data: this.order,
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                })
-                  .then(() => {
-                    this.response = "Order was placed successfully !";
-                    this.$store.commit("clearLocalOrder");
-                    this.$store.commit("clearCart");
+            if (this.user.loggedIn) {
+              await firebase
+                .database()
+                .ref(
+                  `/Users/${this.user.data.userId}/orders/${this.order.orderId}`
+                )
+                .set(this.order)
+                .then(async () => {
+                  await axios({
+                    method: "post",
+                    url:
+                      "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/syncOrder",
+                    data: this.order,
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
                   })
-                  .catch(() => {
-                    this.response = "Failed";
-                    this.$store.commit("clearLocalOrder");
-                    this.$store.commit("clearCart");
-                  });
-              });
+                    .then(() => {
+                      this.response = "Order was placed successfully !";
+                      this.$store.commit("clearLocalOrder");
+                      this.$store.commit("clearCart");
+                    })
+                    .catch(() => {
+                      this.response = "Failed";
+                      this.$store.commit("clearLocalOrder");
+                      this.$store.commit("clearCart");
+                    });
+                });
+            }
           } else {
             this.response = "Failed";
             this.$store.commit("clearLocalOrder");
