@@ -40,13 +40,25 @@ export default {
               .ref(
                 `/Users/${this.user.data.userId}/orders/${this.order.orderId}`
               )
-              .set(this.order)
+              .set({
+                ...this.order,
+                pay_method: "Paytm",
+              })
               .then(async () => {
                 await axios({
                   method: "post",
                   url:
                     "https://hopeful-mirzakhani-a59182.netlify.app/.netlify/functions/syncOrder",
-                  data: this.order,
+                  data: {
+                    ...this.order,
+                    user: {
+                      uid: this.user.data.userId,
+                      name: this.user.data.displayName,
+                      email: this.user.data.email,
+                      mobile: this.user.data.pNum,
+                    },
+                    pay_method: "Paytm",
+                  },
                   headers: {
                     "Content-Type": "application/json",
                   },

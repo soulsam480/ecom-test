@@ -34,12 +34,9 @@ firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     store.dispatch("syncCart", user.uid);
     store.dispatch("syncWishes", user.uid);
-    /*     store.dispatch("addWishes", user.uid);
-     */ store.commit("syncAddress", user.uid);
+    store.commit("syncAddress", user.uid);
+    store.commit("syncOrders", user.uid);
   }
-  /* if (user) {
-    store.dispatch("addWishes", user.uid);
-  } */
 });
 
 new Vue({
