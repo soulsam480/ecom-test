@@ -64,7 +64,7 @@
             </div>
             <div class="col-sm-3 side-check">
               <h5>Price Details</h5>
-              <hr>
+              <hr />
               <h6 class="d-inline float-left">Total Price:</h6>
               <h6 class="d-inline float-right">₹ {{ cartTotal }}</h6>
               <br />
@@ -102,9 +102,12 @@
       </section>
     </section>
     <section v-else-if="cartUIStatus === 'checkout'">
-      <button class="prod-btn" @click="proceed('idle')">Back</button>
+      <button class="prod-btn float-right" @click="proceed('idle')">
+        Back
+      </button>
+      <h4>Deliver to</h4>
+      <br />
       <div v-if="user.address.length > 0">
-        Select an Address to Proceed
         <div class="row">
           <div class="col-sm-4 p-1" v-for="item in addresses" :key="item.id">
             <div class="card">
@@ -124,179 +127,19 @@
         </div>
       </div>
       <div v-else>
-        <form class="form-horizontal">
-          <fieldset>
-            <div class="form-group">
-              <label>Full Name</label>
-              <div class="controls">
-                <input
-                  v-model="cName"
-                  id="full-name"
-                  name="full-name"
-                  type="text"
-                  placeholder="Full Name"
-                  class="form-control"
-                />
-                <p class="help-block"></p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Country</label>
-              <div class="controls">
-                <input
-                  disabled
-                  v-model="country"
-                  id="region"
-                  name="region"
-                  type="text"
-                  placeholder="Country"
-                  class="form-control"
-                />
-                <p class="help-block"></p>
-              </div>
-            </div>
-            <!-- address-line1 input-->
-            <div class="form-group">
-              <label>Street Address</label>
-              <input
-                v-model="street"
-                id="address-line1"
-                name="address-line1"
-                type="text"
-                placeholder="Street Address"
-                class="form-control"
-              />
-              <small id="help-block" class="form-text text-muted">
-                Street address, P.O. box, company name, c/o
-              </small>
-            </div>
-            <!-- address-line2 input-->
-
-            <!-- city input-->
-            <div class="form-group">
-              <label>City / Town</label>
-              <div class="controls">
-                <input
-                  v-model="city"
-                  id="city"
-                  name="city"
-                  type="text"
-                  placeholder="city"
-                  class="form-control"
-                />
-                <small id="help-block" class="form-text text-muted">
-                  City, Town or Local Landmark
-                </small>
-              </div>
-            </div>
-            <!-- State input-->
-            <div class="form-group">
-              <label>State</label>
-              <div>
-                <select
-                  v-model="state"
-                  name="state"
-                  id="state"
-                  class="form-control"
-                >
-                  <option disabled value="Please Select One"
-                    >Please Select One</option
-                  >
-                  <option value="Andhra Pradesh">Andhra Pradesh</option>
-                  <option value="Andaman and Nicobar Islands"
-                    >Andaman and Nicobar Islands</option
-                  >
-                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                  <option value="Assam">Assam</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="Chandigarh">Chandigarh</option>
-                  <option value="Chhattisgarh">Chhattisgarh</option>
-                  <option value="Dadar and Nagar Haveli"
-                    >Dadar and Nagar Haveli</option
-                  >
-                  <option value="Daman and Diu">Daman and Diu</option>
-                  <option value="Delhi">Delhi</option>
-                  <option value="Lakshadweep">Lakshadweep</option>
-                  <option value="Puducherry">Puducherry</option>
-                  <option value="Goa">Goa</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="Haryana">Haryana</option>
-                  <option value="Himachal Pradesh">Himachal Pradesh</option>
-                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Kerala">Kerala</option>
-                  <option value="Madhya Pradesh">Madhya Pradesh</option>
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Manipur">Manipur</option>
-                  <option value="Meghalaya">Meghalaya</option>
-                  <option value="Mizoram">Mizoram</option>
-                  <option value="Nagaland">Nagaland</option>
-                  <option value="Odisha">Odisha</option>
-                  <option value="Punjab">Punjab</option>
-                  <option value="Rajasthan">Rajasthan</option>
-                  <option value="Sikkim">Sikkim</option>
-                  <option value="Tamil Nadu">Tamil Nadu</option>
-                  <option value="Telangana">Telangana</option>
-                  <option value="Tripura">Tripura</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  <option value="Uttarakhand">Uttarakhand</option>
-                  <option value="West Bengal">West Bengal</option>
-                </select>
-              </div>
-            </div>
-            <!-- postal-code input-->
-            <div class="form-group">
-              <label>Postal Code</label>
-              <div class="controls">
-                <input
-                  v-model="postalCode"
-                  id="postal-code"
-                  name="postal-code"
-                  type="text"
-                  placeholder="Postal code"
-                  class="form-control"
-                />
-                <p class="help-block"></p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <div class="controls">
-                <input
-                  v-model="cEmail"
-                  id="Email"
-                  name="email"
-                  type="email"
-                  placeholder="Email Address"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <div class="controls">
-                <input
-                  v-model="cPhone"
-                  id="Phone-number"
-                  name="Phone-number"
-                  type="tel"
-                  placeholder="Phone Number"
-                  class="form-control"
-                />
-                <p class="help-block"></p>
-              </div>
-            </div>
-            <!-- country select -->
-          </fieldset>
-        </form>
-        <button class="prod-btn" @click="guestPay">Proceed to Payments</button>
+        <p>Please add an Address to Proceed</p>
+        <router-link to="/user#pills-address" class="prod-btn"
+          >Address</router-link
+        >
       </div>
     </section>
 
     <section v-else-if="cartUIStatus === 'payment'">
-      <button class="prod-btn" @click="proceed('checkout')">Back</button><br />
-      <h5>Pay with</h5>
+      <button class="prod-btn float-right" @click="proceed('checkout')">
+        Back
+      </button>
+      <h4>Pay With</h4>
+      <br />
       <button class="prod-btn" @click="userPay">
         <img src="../assets/paytm.svg" style="width:60px" alt="" />
       </button>
@@ -340,11 +183,18 @@ export default {
       var array = new Uint32Array(1);
       window.crypto.getRandomValues(array);
       this.orderId = "OD" + array[0];
+      const date = `${Date().slice(8, 10)}th ${Date().slice(
+        4,
+        7
+      )} ${Date().slice(11, 15)}`;
       const order = {
         address: { ...ad },
         orderId: this.orderId,
         cart: [...this.cart],
+        status: "Pending",
+        placedOn: date,
       };
+      console.log({ ...order });
       this.$store.commit("localOrder", order);
       this.proceed("payment");
     },

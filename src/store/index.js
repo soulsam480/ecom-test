@@ -4,6 +4,9 @@ import createPersistedState from "vuex-persistedstate";
 import firebase from "firebase/app";
 import react from "../plugins/react";
 import { vuexfireMutations, firebaseAction } from "vuexfire";
+
+//All imports
+
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
@@ -14,9 +17,7 @@ export default new Vuex.Store({
       data: null,
       wishlist: [],
       address: [],
-    },
-    authCred: {
-      uid: "lSC134A31NZqjxaEtGvaKfG0PTA3",
+      orders: [],
     },
     cart: [],
     cartUIStatus: "idle",
@@ -25,9 +26,7 @@ export default new Vuex.Store({
   },
   mutations: {
     ...vuexfireMutations,
-    cAuth(state) {
-      state.auth = !state.auth;
-    },
+
     setLogIn(state, value) {
       state.user.loggedIn = value;
     },
@@ -114,7 +113,7 @@ export default new Vuex.Store({
           );
           adFound
             ? state.user.address.splice(
-                state.user.addData.findIndex((x) => x.id === adFound.id),
+                state.user.address.findIndex((x) => x.id === adFound.id),
                 1,
                 csnap.val()
               )
@@ -131,6 +130,25 @@ export default new Vuex.Store({
     clearLocalOrder: (state) => {
       state.order = {};
     },
+    syncOrders: (state, id) => {
+      const odRef = firebase.database().ref(`/Users/${id}/orders`);
+      odRef.on("value", (snap) => {
+        snap.forEach((csnap) => {
+          let odFound = state.user.orders.find(
+            (el) => el.orderId === csnap.val().orderId
+          );
+          odFound
+            ? state.user.orders.splice(
+                state.user.orders.findIndex(
+                  (x) => x.orderId === odFound.orderId
+                ),
+                1,
+                csnap.val()
+              )
+            : state.user.orders.push(csnap.val());
+        });
+      });
+    },
   },
   actions: {
     addData: firebaseAction(({ bindFirebaseRef }) => {
@@ -139,9 +157,7 @@ export default new Vuex.Store({
         firebase.database().ref(`/Products`)
       );
     }),
-    changeAuth(context) {
-      context.commit("cAuth");
-    },
+
     fetchUser({ commit }, user) {
       commit("setLogIn", user !== null);
       if (user) {
@@ -168,23 +184,16 @@ export default new Vuex.Store({
     getProducts(state) {
       return state.productData;
     },
-    getAuth(state) {
-      return state.auth;
-    },
     women: (state) =>
       state.productData.filter((el) => el.cats.includes("Women")),
     men: (state) => state.productData.filter((el) => el.cats.includes("Men")),
     user(state) {
       return state.user;
     },
-    authCredGet(state) {
-      return state.authCred;
-    },
+
     cartCount: (state) => {
       if (!state.cart.length) return 0;
       return state.cart.length;
-      /*       return state.cart.reduce((ac, next) => ac + next.quantity, 0);
-       */
     },
     cartTotal: (state) => {
       if (!state.cart.length) return 0;
@@ -216,7 +225,7 @@ export default new Vuex.Store({
       return state.order;
     },
     getOrders: (state) => {
-      return state.orders;
+      return state.user.orders;
     },
   },
   plugins: [

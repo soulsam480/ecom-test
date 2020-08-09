@@ -45,9 +45,7 @@
             </li>
             <li class="nav-item">
               <a
-                :class="[
-                  { active: this.$route.hash === '#pills-orders' },
-                ]"
+                :class="[{ active: this.$route.hash === '#pills-orders' }]"
                 class="nav-link"
                 id="pills-orders-tab"
                 data-toggle="pill"
@@ -60,9 +58,7 @@
             </li>
             <li class="nav-item">
               <a
-                :class="[
-                  { active: this.$route.hash === '#pills-address' },
-                ]"
+                :class="[{ active: this.$route.hash === '#pills-address' }]"
                 class="nav-link"
                 id="pills-address-tab"
                 data-toggle="pill"
@@ -170,8 +166,31 @@
               role="tabpanel"
               aria-labelledby="pills-orders-tab"
             >
-              rgtrt
-              <div class="row"></div>
+              <div v-if="orders.length > 0">
+                <div class=" p-1" v-for="order in orders" :key="order.id">
+                  <div class="o-card">
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <h5 class="d-inline ">{{ order.cart[0].name }}</h5>
+                        <p
+                          v-if="order.cart.length > 1"
+                          class="d-inline text-muted"
+                        >
+                          and {{ order.cart.length - 1 }} more
+                        </p>
+                        <p>Placed on: {{ order.placedOn }}</p>
+                        <p>{{ order.status }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <img :src="order.cart[0].imgUrls[0]" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <p>You haven't Ordered anything!!</p>
+              </div>
             </div>
             <div
               :class="[
@@ -467,6 +486,7 @@ export default {
     ...mapGetters({
       user: "user",
       addresses: "getAddresses",
+      orders: "getOrders",
     }),
     ...mapState(["cart", "checkedOut"]),
   },
@@ -688,26 +708,6 @@ export default {
         this.uName = data.displayName;
         this.picture = data.imgUrl;
       }
-      /*   const storageRef = await firebase
-        .storage()
-        .ref(`/Users/${data.userId}`)
-        .put(this.imageData);
-      storageRef.on(
-        `state_changed`,
-        snapshot => {
-          this.uploadValue =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        },
-        error => {
-          console.log(error.message);
-        },
-        () => {
-          this.uploadValue = 100;
-          storageRef.snapshot.ref.getDownloadURL().then(url => {
-            this.picture = url;
-          });
-        }
-      ); */
       await firebase
         .storage()
         .ref(`/Users/${data.userId}`)
@@ -735,33 +735,23 @@ export default {
         });
     },
   },
-  // eslint-disable-next-line no-unused-vars
-  /*   beforeRouteEnter (to, from, next) {
-     
-     if(to.fullPath.includes('#')){
-    const hash = to.fullPath.split("#");
-     console.log(to.fullPath)
-     console.log(hash)
-    
-     next(vm => {
-console.log(vm.country)
-    $('#pills-tab a[href="#'+hash[1]+'"]').tab("show");    // access to component instance via `vm`
-  })
-     }
-    // called when the route that renders this component has changed,
-    // but this component is reused in the new route.
-    // For example, for a route with dynamic params `/foo/:id`, when we
-    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
-    // will be reused, and this hook will be called when that happens.
-    // has access to `this` component instance.
-    next()
-  } */
 };
 </script>
 
-<style scoped>
-.prod-btn:focus {
-  outline: none;
+<style lang="scss" scoped>
+.o-card {
+  padding: 10px;
+  border-radius: 2px;
+  width: 100%;
+  background-color: rgb(245, 245, 245);
+  img {
+    width: 100%;
+    margin: auto;
+    display: block;
+  }
+  p {
+    margin-block-end: 5px;
+  }
 }
 
 .prod-btn {
@@ -771,17 +761,21 @@ console.log(vm.country)
   border: none;
   padding: 7px 20px;
   margin: 5px;
+  &:hover {
+    opacity: 0.9;
+    &:focus {
+      outline: none;
+    }
+  }
 }
-.prod-btn:hover {
-  opacity: 0.9;
-}
-.form-control:focus {
-  background-color: #ffebee;
-  box-shadow: none;
-  border-color: rgb(238, 238, 238);
-}
+
 .form-control {
   color: black;
+  &:focus {
+    background-color: #ffebee;
+    box-shadow: none;
+    border-color: rgb(238, 238, 238);
+  }
 }
 
 .col-xs-5,
@@ -799,6 +793,9 @@ console.log(vm.country)
   }
 }
 @media (min-width: 768px) {
+  .o-card img {
+    width: 150px;
+  }
   .col-sm-3 {
     max-width: 25% !important;
     flex: 0 0 25%;
@@ -812,6 +809,14 @@ console.log(vm.country)
   }
 }
 @media only screen and (max-width: 768px) {
+  .col-sm-8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+  .col-sm-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
   .form-control {
     width: 100% !important;
   }
@@ -844,12 +849,12 @@ a:hover {
   flex-direction: row !important;
   justify-content: space-evenly;
   background-color: #ffebee;
+  &li:hover {
+    background-color: #fddde2;
+    opacity: 0.9 !important;
+  }
 }
 
-.tabs-left li:hover {
-  background-color: #fddde2;
-  opacity: 0.9 !important;
-}
 @media only screen and (min-width: 768px) {
   .tabs-left {
     display: flex !important;
