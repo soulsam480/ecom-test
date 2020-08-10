@@ -37,7 +37,6 @@ export default new Vuex.Store({
       state.cartUIStatus = payload;
     },
     clearCart: (state) => {
-      //this clears the cart
       (state.cart = []), (state.cartUIStatus = "idle");
     },
     addToCart: (state, payload) => {
@@ -77,7 +76,8 @@ export default new Vuex.Store({
     addWishes(state, id) {
       const wishref = firebase.database().ref(`/Users/${id}/shop/wishlist`);
       wishref.on("value", (snap) => {
-        snap.forEach((csnap) => {
+        state.user.wishlist = Object.values(snap.val());
+        /*  snap.forEach((csnap) => {
           let wishFound = state.user.wishlist.find(
             (el) => el.id === csnap.val().id
           );
@@ -88,7 +88,7 @@ export default new Vuex.Store({
                 csnap.val()
               )
             : state.user.wishlist.push(csnap.val());
-        });
+        }); */
       });
     },
     clearWishlist(state) {
@@ -107,18 +107,7 @@ export default new Vuex.Store({
     syncAddress: (state, id) => {
       const adRef = firebase.database().ref(`/Users/${id}/address`);
       adRef.on("value", (snap) => {
-        snap.forEach((csnap) => {
-          let adFound = state.user.address.find(
-            (el) => el.id === csnap.val().id
-          );
-          adFound
-            ? state.user.address.splice(
-                state.user.address.findIndex((x) => x.id === adFound.id),
-                1,
-                csnap.val()
-              )
-            : state.user.address.push(csnap.val());
-        });
+        state.user.address = Object.values(snap.val());
       });
     },
     clearAddress(state) {
@@ -130,23 +119,10 @@ export default new Vuex.Store({
     clearLocalOrder: (state) => {
       state.order = {};
     },
-    syncOrders: (state, id) => {
-      const odRef = firebase.database().ref(`/Users/${id}/orders`);
+    syncOrders: async (state, id) => {
+      const odRef = await firebase.database().ref(`/Users/${id}/orders`);
       odRef.on("value", (snap) => {
-        snap.forEach((csnap) => {
-          let odFound = state.user.orders.find(
-            (el) => el.orderId === csnap.val().orderId
-          );
-          odFound
-            ? state.user.orders.splice(
-                state.user.orders.findIndex(
-                  (x) => x.orderId === odFound.orderId
-                ),
-                1,
-                csnap.val()
-              )
-            : state.user.orders.push(csnap.val());
-        });
+        state.user.orders = Object.values(snap.val());
       });
     },
   },

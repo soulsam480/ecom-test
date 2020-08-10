@@ -193,8 +193,9 @@ export default {
         cart: [...this.cart],
         status: "Pending",
         placedOn: date,
+        pay_method: "Paytm",
+        amount: this.cartTotal,
       };
-      console.log({ ...order });
       this.$store.commit("localOrder", order);
       this.proceed("payment");
     },
@@ -243,7 +244,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @media only screen and (max-width: 768px) {
   .lp-cart {
     flex: 0 0 33.333333%;
@@ -262,34 +263,18 @@ export default {
   font-size: 17px;
   border: none;
   padding: 5px 15px;
-}
-.prod-btn:hover {
-  background-color: #c17bce;
+  &:hover {
+    background-color: #c17bce;
+  }
 }
 button:focus {
   outline: none;
 }
-tr {
-  border-bottom: 1px solid black;
-  width: 100%;
-}
-.loader {
-  display: flex;
-  justify-content: center;
-}
 
-.success {
-  text-align: center;
-}
 .product-img {
   margin: auto;
   display: block;
   max-width: 100%;
-}
-
-.product-name,
-.product-size {
-  text-align: left;
 }
 
 .product-name {
