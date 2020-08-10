@@ -122,7 +122,9 @@ export default new Vuex.Store({
     syncOrders: async (state, id) => {
       const odRef = await firebase.database().ref(`/Users/${id}/orders`);
       odRef.on("value", (snap) => {
-        state.user.orders = Object.values(snap.val());
+        state.user.orders = Object.values(snap.val()).sort(
+          (a, b) => b.stamp - a.stamp
+        );
       });
     },
   },

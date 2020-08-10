@@ -187,6 +187,7 @@ export default {
         4,
         7
       )} ${Date().slice(11, 15)}`;
+      const stamp = new Date().getTime();
       const order = {
         address: { ...ad },
         orderId: this.orderId,
@@ -195,6 +196,7 @@ export default {
         placedOn: date,
         pay_method: "Paytm",
         amount: this.cartTotal,
+        stamp: stamp,
       };
       this.$store.commit("localOrder", order);
       this.proceed("payment");

@@ -471,14 +471,12 @@
 
 <script>
 import NProgress from "f:/MY CODEBASE/ecom-test/node_modules/nprogress";
-
 NProgress.configure({
   showSpinner: false,
   trickleSpeed: 200,
   easing: "ease",
   speed: 500,
 });
-
 import "nprogress/nprogress.css";
 import { mapGetters, mapState } from "vuex";
 import firebase from "firebase";

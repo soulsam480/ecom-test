@@ -53,7 +53,6 @@
         <div class="p-spec">
           <p class="p-spec-name">{{ product.name }}</p>
           <h6 class="text-muted">
-            <!-- {{ product.desc }} -->
             {{ product.shortDes }}
           </h6>
           <h3>₹ {{ product.price }}</h3>
@@ -150,12 +149,12 @@
                 <button
                   class="prod-btn"
                   :disabled="color === ''"
-                  @click="cartAdd"
+                  
                 >
                   <span v-if="cart.find((el) => el.id === product.id)">
                     <router-link to="/cart">GO TO CART</router-link>
                   </span>
-                  <span v-else> ADD TO CART </span>
+                  <span @click="cartAdd" v-else> ADD TO CART </span>
                 </button>
               </div>
             </div>
