@@ -1,9 +1,13 @@
 <template>
-  <div class="container py-3">
+  <div class="container">
+    <p>{{ response }}</p>
     <div v-if="orderDetail !== undefined">
       <div class="order">
         <div class="o-details">
-          <h6 class="text-muted">Order ID: {{ orderDetail.orderId }} / Status: {{ order.status }}</h6>
+          <h6 class="text-muted">
+            Order ID: {{ orderDetail.orderId }} / Status:
+            {{ orderDetail.status }}
+          </h6>
           <hr />
           <div>
             <div class="row">
@@ -12,7 +16,7 @@
                 v-for="p in orderProducts"
                 :key="p.id"
               >
-                <div class="row p-1 ">
+                <div class="row">
                   <div class="col-sm-4 lp-cart">
                     <img
                       v-lazy="p.imgUrls[0]"
@@ -111,7 +115,7 @@ export default {
       firebase
         .database()
         .ref(`/Orders/${date}`)
-        .on("value", async (res) => {
+        .once("value", async (res) => {
           const orders = Object.values(res.val());
           if (orders.find((el) => el.orderId === this.order.orderId)) {
             await firebase
@@ -145,8 +149,7 @@ export default {
                     this.$store.commit("clearLocalOrder");
                     this.$store.commit("clearCart");
                   })
-                  .catch((err) => {
-                    console.log(err);
+                  .catch(() => {
                     this.response = "Failed";
                     this.$store.commit("clearLocalOrder");
                     this.$store.commit("clearCart");
@@ -165,16 +168,18 @@ export default {
 
 <style lang="scss" scoped>
 .main-order {
-  padding: 10px;
+  padding: 10px 15px;
 }
 @media only screen and (max-width: 768px) {
   .lp-cart {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
+    padding: 0 10px;
   }
   .rp-cart {
     flex: 0 0 66.666667%;
     max-width: 66.666667%;
+    padding: 0 10px;
   }
 }
 .product-img {
