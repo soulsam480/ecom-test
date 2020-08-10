@@ -167,8 +167,11 @@
               aria-labelledby="pills-orders-tab"
             >
               <div v-if="orders.length > 0">
-                <div class=" p-1" v-for="order in orders" :key="order.id">
-                  <div class="o-card">
+                <h5 class="text-center">Select an Order for more Information</h5>
+                
+                <div class=" p-1" v-for="order in orders" :key="order.orderId">
+                  <router-link :to="{path: '/order', query: { order_id: order.orderId }}">
+                    <div class="o-card">
                     <div class="row">
                       <div class="col-sm-8">
                         <h5 class="d-inline ">{{ order.cart[0].name }}</h5>
@@ -179,13 +182,14 @@
                           and {{ order.cart.length - 1 }} more
                         </p>
                         <p>Placed on: {{ order.placedOn }}</p>
-                        <p>{{ order.status }}</p>
+                        <p>Status: {{ order.status }}</p>
                       </div>
                       <div class="col-sm-4">
                         <img :src="order.cart[0].imgUrls[0]" alt="" />
                       </div>
                     </div>
                   </div>
+                  </router-link>
                 </div>
               </div>
               <div v-else>
@@ -211,7 +215,7 @@
                 </div>
                 <div class="row">
                   <div
-                    class="col-sm-4 p-1"
+                    class="col-sm-3 p-1"
                     v-for="address in addresses"
                     :key="address.id"
                   >

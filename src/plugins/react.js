@@ -59,6 +59,20 @@ const react = (store) => {
           .catch((err) => {
             window.alert(err);
           });
+      } else if (mutation.type === "clearCart") {
+        firebase
+          .database()
+          .ref(`/Users/${main.userId}/shop`)
+          .set({
+            wishlist: state.user.wishlist,
+            cart: [],
+          })
+          .then(() => {
+            store.dispatch("syncCart", main.userId);
+          })
+          .catch((err) => {
+            window.alert(err);
+          });
       }
     }
   });
