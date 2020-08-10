@@ -1,6 +1,92 @@
 <template>
   <div class="container">
-    <p>{{ response }}</p>
+    <!-- this is order confirmation -->
+    <div v-if="response !== ' '">
+      <div v-if="response === 'SUCCESS'" class="order-conf">
+        <img class="o-info" src="../assets/tick.svg" alt="" />
+        <h4 class="text-center">We've received your order !</h4>
+        <h6 class="text-center">Order No. #{{ confOrder.orderId }}</h6>
+        <h5 class="text-center">
+          <b>Status: {{ confOrder.status }}</b>
+        </h5>
+        <h6 class="text-center">
+          An confirmation email has been sent on your E- mail address
+        </h6>
+        <hr />
+        <div>
+          <div class="row">
+            <div
+              class="col-sm-6 main-order"
+              v-for="p in confOrder.cart"
+              :key="p.id"
+            >
+              <div class="row">
+                <div class="col-sm-4 lp-cart">
+                  <img
+                    v-lazy="p.imgUrls[0]"
+                    :alt="p.name"
+                    class="product-img"
+                  />
+                </div>
+                <div class="col-sm-8 rp-cart">
+                  <h5 class="product-name">{{ p.name }}</h5>
+                  <h6 v-if="p.size">Size: {{ p.size }}</h6>
+                  <h6 v-if="p.color">Color: {{ p.color }}</h6>
+                  <h6 v-if="p.quantity">Quantity: {{ p.quantity }}</h6>
+                  <h6 v-if="p.price">Price: {{ p.price }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="s-details col-sm-6">
+            <h5>Shipping Details</h5>
+            <hr />
+            <div class="ship">
+              <h5>{{ confOrder.address.name }}</h5>
+              <p>
+                {{ confOrder.address.street }}, {{ confOrder.address.city }} ,
+                <br />
+                {{ confOrder.address.postal }},{{ confOrder.address.state }}
+              </p>
+              <h5>Phone Number</h5>
+              <p>{{ confOrder.address.phone }}</p>
+            </div>
+          </div>
+          <div class="p-details col-sm-6">
+            <h5>Price Details</h5>
+            <hr />
+            <div class="price">
+              <h6 class="float-left">Total Price:</h6>
+              <h6 class="float-right">₹ {{ confOrder.amount }}</h6>
+            </div>
+            <div class="price">
+              <h6 class="float-left">Shipping Fee:</h6>
+              <h6 class="float-right">
+                <!--  ₹{{ orderDetail.amount }} -->
+                NA
+              </h6>
+            </div>
+            <div class="price">
+              <h5 class="float-left">Total Amount:</h5>
+              <h5 class="float-right">₹ {{ confOrder.amount }}</h5>
+            </div>
+            <div class="price">
+              <h6 class="float-left">Paid Through:</h6>
+              <h6 class="float-right">{{ confOrder.pay_method }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="order-fail">
+        <img class="o-info" src="../assets/sad.svg" alt="" />
+        <h4 class="text-center">Order Failed!</h4>
+        <h5 class="text-center">There has been some error !</h5>
+      </div>
+    </div>
+    <!--This is Order detail by router query-->
     <div v-if="orderDetail !== undefined">
       <div class="order">
         <div class="o-details">
@@ -82,6 +168,13 @@
 </template>
 
 <script>
+import NProgress from "f:/MY CODEBASE/ecom-test/node_modules/nprogress";
+NProgress.configure({
+  showSpinner: false,
+  trickleSpeed: 200,
+  easing: "ease",
+  speed: 500,
+});
 const axios = require("axios").default;
 import firebase from "firebase";
 import { mapGetters } from "vuex";
@@ -89,18 +182,29 @@ export default {
   name: "Order",
   data() {
     return {
-      response: "",
+      response: " ",
     };
   },
   computed: {
     ...mapGetters({ user: "user", orders: "getOrders" }),
     orderDetail() {
-      return this.orders.find(
-        (el) => el.orderId === this.$route.query.order_id
-      );
+      if (this.$route.query.order_id) {
+        return this.orders.find(
+          (el) => el.orderId === this.$route.query.order_id
+        );
+      } else {
+        return undefined;
+      }
     },
     orderProducts() {
-      return this.orderDetail.cart;
+      if (this.$route.query.order_id) {
+        return this.orderDetail.cart;
+      } else {
+        return undefined;
+      }
+    },
+    confOrder() {
+      return this.orders[0];
     },
     order() {
       return this.$store.getters.getLocalOrder;
@@ -108,6 +212,9 @@ export default {
   },
   created() {
     if (this.$route.query.paytm_response === "TXN_SUCCESS") {
+      NProgress.start();
+      NProgress.set(0.1);
+      NProgress.inc(0.2);
       const date = `${Date().slice(11, 15)}_${Date().slice(
         4,
         7
@@ -127,6 +234,7 @@ export default {
                 ...this.order,
               })
               .then(async () => {
+                this.$store.commit("syncOrders", this.user.data.userId);
                 await axios({
                   method: "post",
                   url:
@@ -145,20 +253,23 @@ export default {
                   },
                 })
                   .then(() => {
-                    this.response = "Order was placed successfully !";
+                    this.response = "SUCCESS";
                     this.$store.commit("clearLocalOrder");
                     this.$store.commit("clearCart");
+                    setTimeout(() => NProgress.done(), 5000);
                   })
                   .catch(() => {
-                    this.response = "Failed";
+                    this.response = "FAILED";
                     this.$store.commit("clearLocalOrder");
                     this.$store.commit("clearCart");
+                    setTimeout(() => NProgress.done(), 5000);
                   });
               });
           } else {
-            this.response = "Failed";
+            this.response = "FAILED";
             this.$store.commit("clearLocalOrder");
             this.$store.commit("clearCart");
+            setTimeout(() => NProgress.done(), 5000);
           }
         });
     }
@@ -167,6 +278,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  padding-top: 20px;
+}
+.o-info {
+  padding: 5px;
+  display: block;
+  width: 55px;
+  margin: auto;
+}
 .main-order {
   padding: 10px 15px;
 }
